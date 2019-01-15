@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Asset Auto Updater</title>
+    <link href="static/form1.css" rel="stylesheet" type="text/css" />
+	  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet"> 
+ 	  <script src="static/lib/jquery-3.3.1.min.js"></script>
+  </head>
+  <body>
+    <form action="/data" method="POST" enctype=multipart/form-data>
+     
+      <div>
+        <label for="name">Username:</label>
+        <input type="text" id ="name" name="user_name" placeholder="3 Char ID" minlength= "3" maxlength="3" required >
+      </div>
+      <div>
+        <label for="pass">Password: </label>
+        <input type="password" id="password" name="user_password" placeholder="Password" required>
+      </div>
+	   <!--<div>-->
+    <!--    <label for="email">Email: </label>-->
+    <!--    <input type="email" id="email" name="user_email" placeholder="E-mail" required>-->
+    <!--  </div>-->
+	
+	  <div class="box">
+		<label for="file">Excel File:</label>
+		<input type="file" name="fileUpload" id="fileUpload" class = "inputfile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required/>
+		<label for="fileUpload" id="btnLabel" ><span id="fileUp">Choose a File&hellip;</span></label> 
+		<div id = "submit">
+				<input id="subbtn" type= "submit" value="Run Script" name= "submit">
+		</div>
+   </form>
+   
+    <div id="alerts" style="min-height:100% width:80%">
+  	{% with messages = get_flashed_messages() %}
+  	  {% if messages %}
+  	    {% for message in messages %}
+	  <div id='alert_message' role="alert">
+	  <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>-->
+	    {{message}}
+		</div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
+	
+	{% block body %}{% endblock %}
+	</div>
+   
+   
+    <script src="static/form1.js"></script>
+  </body>
+</html>
