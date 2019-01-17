@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.secret_key = '▒JO▒(▒)ty▒+▒!'
 UPLOAD_FOLDER = '/tmp'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SERVER_NAME'] = ''
 #socketio = SocketIO(app)
 
 
@@ -42,8 +43,8 @@ def data():
                 if (dataToSendBack["multiple_records"] == "True" ):
                    tmp.write("\nThe following asset numbers had multiple entries: \n" + str(dataToSendBack["duplicate"]))
         finally:
-            flash('Script exectution complete')
-            return send_file(path, as_attachment = True, mimetype = "text/plain", attachment_filename = "Results" + datetime.datetime.now().strftime('%c')+ ".txt")
+            #flash('Script exectution complete')
+            return send_file(path, as_attachment = True, mimetype = "text/plain", attachment_filename = "Results " + datetime.datetime.now().strftime('%c')+ ".txt")
     
     
     
@@ -52,7 +53,7 @@ def data():
    #return jsonify({'username': username, 'pass': password, 'email': email, 'filename': path + "/" + filename.filename})        #will be made into redirect back to '/'
     #comunicate with other script and pull post values 
 
-@app.route('/landing')              #can fix some issues when deployed on apache since template render no longer needed. Can just use redirects with html loaded using apache by default
+@app.route('/landing')              #not used currently, 
 def landing():
     handle, path = tempfile.mkstemp(prefix='Results_')
     try:
