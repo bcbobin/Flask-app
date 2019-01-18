@@ -57,7 +57,37 @@ def record_retrieve(req_number):
     #print(sysrecords)
     sysid = sysrecords['records']
     sysid = sysid[0]
-  
+    #print(sysid)
+    print("\n")
+    child = sysid['variables']
+    print(child)
+    print("\n")
+    recipient = child[0]['children'][1]['value']
+    print ("On behalf of: ", recipient)
+    print("\n")
+    department = child[0]['children'][2]['value']
+    print ("Department: ", department)
+    category = child[1]
+    print ("category: ",category)
+    print("\n")
+    child3 = child[2]
+    print ("child3: ",child3)
+    print("\n")
+    child4 = child[3]
+    print ("child4: ",child4, len(child4))
+    print("\n")
+    email = child[4]['children'][2]['children'][0]['value']
+    print("email: " ,email)
+    phone = child[4]['children'][0]['children'][0]['value']
+    print ("phone: ",phone,)
+    print("\n")
+    child6 = child[5]
+    print ("child6: ",child6, len(child6))
+    print("\n")
+    child7 = child[6]
+    print ("child7: ", child7)
+    print("\n")
+    
     #getting info from database as a dictionary using sysid
     try:
       geturl = "https://economical.service-now.com/sc_req_item.do?JSONv2&sysparm_sys_id=" + str(sysid['sys_id']) +"&displayvalue=true"
