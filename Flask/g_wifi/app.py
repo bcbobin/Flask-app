@@ -30,7 +30,8 @@ def data():
     s_email = request.form['sponsoremail'].lower()
     #TODO - is an economical check required for sponser_email
     ritm_num = request.form['ritm']
-    duration = request.form['length']
+    duration = int(request.form['length'])
+    print (duration)
     if((s_username == "wifiadmin" and s_password == "4Wifi_Aut@mate") or (s_username == "servicedesk" and s_password == "SDesk_Aut@mate")):
         auth = main.authorize(util.admin(), util.adminp())
     else:
@@ -38,7 +39,7 @@ def data():
     if auth == -1:
         flash("Authorization Failed, try again")
     else:
-        data = main.record_retrieve(ritm_num)
+        data = main.record_retrieve(ritm_num, duration)
         if data['ritm_not_found'] == "true":
             flash('Record could not be retrieved')
         elif data['fail'] == "true":
@@ -47,8 +48,6 @@ def data():
             flash("guest user email format incorrect, check RITM form!")
         elif data['approval'] == "needed" and (s_username == "wifiadmin" or s_username == "servicedesk"):
             flash("time requested needs Networking Approval(7+ days)!" )
-        elif data['invalid_date'] == "true":
-            flash("date on request is invalid, check RITM form")
         else:
             guest_pass = main.pass_gen()
             counter = 0
@@ -70,7 +69,7 @@ def data():
                     flash("Username: " +data['guest_email']+ ' \n\n     Password: '+ guest_pass) 
                     flash(' \n\n Guest Company: '+data['company']+'     \n\n Guest Email: '+data['guest_email'])
                     flash(' \n\n Guest Phone: '+data['guest_phone']+'    \n\n Sponsor Email: '+s_email)
-                    flash(' \n\n Start Date: '+ data['start_date'] + '    \n\n Expires on: '+  data['end_date'])
+                    flash(' \n\n Time Given: '+ data['time_active'] + '    \n\n Expires on: '+  data['end_date'])
                     break
             if(counter == 3):
                 flash("Controller is busy, try again in 5 minutes")

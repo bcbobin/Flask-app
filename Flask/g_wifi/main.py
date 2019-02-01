@@ -16,7 +16,7 @@ import urllib
 #import pandas as pd
 #import xlrd
 #for date and time 
-from datetime import datetime
+import datetime
 import string
 import random 
 import smtplib 
@@ -47,14 +47,14 @@ def authorize(username, password):
         urllib.request.install_opener(opener)
     return 0
 
-def record_retrieve(req_number):
-    curr_date = datetime.now()                             
+def record_retrieve(req_number, duration):
+    curr_date = datetime.datetime.now()                             
     info = {}
     info['ritm_not_found'] = "false"
     info['fail'] = "false"
     info['approval'] = "false"
     info['email_invalid'] = "false"
-    info['invalid_date'] = "false"
+    
     #retreive item sysid by sending a query
     idurl = "https://economical.service-now.com/sc_req_item.do?JSONv2&sysparm_action=getRecords&sysparm_query=active=true^GOTOnumberLIKE" + str(req_number) + "^ORDERBYnumber&displayvariables=true&displayvalue=true"
     req = urllib.request.Request(idurl)
@@ -74,15 +74,7 @@ def record_retrieve(req_number):
         sponsor_name = child[0]['children'][0]['value']
         recipient = child[0]['children'][1]['value']
         department = child[0]['children'][2]['value']
-        email = child[4]['children'][2]['children'][0]['value']
-        start_date = child[5]['children'][0]['value']
-        end_date = child[5]['children'][2]['value']
-        info['start_date'] = start_date                          #add the values to dict before they get changed 
-        info['end_date'] = end_date
-        start_date = start_date.rsplit(' ', 1)[0]
-        start_date = datetime.strptime(start_date, "%Y-%m-%d")
-        end_date = end_date.rsplit(' ', 1)[0]
-        end_date = datetime.strptime(end_date, "%Y-%m-%d")
+        email = child[4]['children'][2]['children'][0]['value']  
         phone = child[4]['children'][0]['children'][0]['value']
         details = child[6]['children'][0]['value']
     except(KeyError, IndexError):
@@ -94,18 +86,23 @@ def record_retrieve(req_number):
     except(IndexError):
         info['email_invalid'] = "true"
         return info
+        
+    if(int(duration) > 604800):
+        info['approval'] = "needed"
+    today = datetime.datetime.today().weekday()
+    if(duration == 604800 and (today == 2 or today == 3 or today == 4)):  # 0=Monday 7=Sunday
+        duration = duration + ((7-today)*86400)  #give time until next friday when run midweek or later 
     
+    #print all pulled info
     print ("Opened by : ", sponsor_name)    
     print ("On behalf of: ", recipient) 
     print ("Department: ", department)  
     print("email: " ,email)
     print ("phone: ",phone)
     print ("company: ", company)
-    print ("Start: ",start_date)
-    print ("End: ", end_date)
     print("Details: ", details)
-    print ("Curr date: ", curr_date)
     
+    #set all info to dict for transfering data
     info['guest_email'] = email.lower() 
     info['s_dept'] = department 
     info['sponser_name'] = sponsor_name 
@@ -113,25 +110,14 @@ def record_retrieve(req_number):
     info['guest_phone'] = phone
     info['company'] = company 
     info['details'] = details 
-    
-    
-    days = (end_date - start_date)
-    seconds = days.total_seconds()
-    if(seconds > 604800):
-        info['approval'] = "needed"
-    if(seconds == 0):
-        seconds = 86400
-    actual_seconds = end_date - curr_date
-    if (actual_seconds < 0):
-        info['invalid_date'] = "true"
-    actual_seconds = actual_seconds.total_seconds()
-    info['duration_seconds'] = int(actual_seconds)
-    print("Seconds: ", actual_seconds, "\n")
-    
+    info['duration_seconds'] = duration
+    info['time_active'] = datetime.timedelta(seconds=duration)
+    info['end_date'] = curr_date + info['time_active']
+   
     return info
 
     
-def pass_gen(size = 8, chars=string.ascii_uppercase + string.digits):
+def pass_gen(size = 8, chars='abcdefghjkmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ' + string.digits + '!@#$%^&*()'):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
@@ -155,12 +141,6 @@ def update_records(ritm):
     urllib.request.urlopen(update)
 
 
-
-
-
-#authorize("irg", "")
-#record_retrieve("RITM0072297")
-#TODO- ask what credectials to use when authorizing and closing the request
 
 
 
