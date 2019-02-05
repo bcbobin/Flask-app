@@ -1,0 +1,201 @@
+/*this styles the blue bare header on the screen*/
+#header{
+	width:100%;
+	max-width:110%;
+	background-color:#003359;
+	margin:0;
+	padding: 0;
+}
+
+/*this class is for the home, VLAN move, guest wifi, and contact buttons*/
+.button {            
+	background-color: #003359; 
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	display: inline-block;
+	font-size: 16px;
+	margin: 0px 0px;
+	cursor: pointer;
+	transition:0.3s;
+} 
+.navbtn {
+	background-color: #003359; 
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	display: inline-block;
+	font-size: 16px;
+	margin: 0px 0px;
+	cursor: pointer;
+	transition:0.3s;
+}
+.pressed{
+	background-color: #60c2e9;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	display: inline-block;
+	font-size: 16px;
+	margin: 0px 0px;
+	cursor: pointer;
+	transition:0.3s;
+}
+
+/*Changes the color of the buttons when hovering over them*/
+.btn-group .navbtn:hover, .btn-group .navbtn:focus{
+	background-color: #60c2e9 ;
+}
+
+/*styles the button on the guest wifi page*/
+#guestButtons{
+	background-color:#AA272F;
+	border:none;
+	padding:16.5px 32px;
+	font-size:20px;
+	cursor:pointer;
+	color:white;
+	width:24.525%;
+	transition:0.3s;
+}
+
+#guestButtons:hover{
+	background-color:rgb(180,0,0);
+}
+
+/*sets all the pages to not visible when you start the page up*/
+#homeForm, #vlanMove,#WiFi,#contact,#about, #guestWiFi, #guestSearch, #guestDelete, #guestExtend{
+	display:none;
+}
+
+/*the border around all of the forms*/
+.backgroundForms {
+	position:absolute;
+	right:20vh;
+	left: 20vh;
+	width:60vh;
+	min-width:1000px;
+	border:2px solid black;
+	padding:25px;
+	font-size:25px;
+	margin: 0 auto
+}
+
+#vlanMove input[type=text], #guestWiFi input[type=text], input[type=password], #guestDelete input[type=text], #guestExtend input[type=text]{
+	border:1px solid black;
+	border-radius:5px;
+	width:97.5%;
+	font-size:20px;
+	padding:10px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+#guestSearch input[type=text]{
+	border:1px solid black;
+	border-radius:5px;
+	width:90%;
+	font-size:20px;
+	padding:10px;
+	margin-top:10px;
+}
+#alerts{
+	position: relative;
+    text-align: center;
+    margin: 0 auto;
+    min-width: 35em;
+    font-weight: 600;
+	font-size: 1.5em;
+}
+
+/*the search button on the search for user and delete user page*/
+.searchButton{
+	background-color:white;
+	width:5%;
+	height:45px;
+	border: 1px solid black;
+	border-radius:5px;
+	display:inline-block;
+	cursor:pointer;
+	position:absolute;
+	top:291px;
+}
+
+/*the search button on the extended time page*/
+.searchButton1{
+	background-color:white;
+	width:5%;
+	height:45px;
+	border: 1px solid black;
+	border-radius:5px;
+	display:inline-block;
+	cursor:pointer;
+	position:absolute;
+	top:385px;
+}
+
+.searchButton:hover{
+	background-color:rgb(100,100,100);
+}
+
+select{
+	border:1px solid black;
+	border-radius:5px;
+	width:100%;
+	font-size:20px;
+	padding:10px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+/*formats the submit button on the VLAN Move page*/
+.submitButton{
+	background-color:#AA272F;
+	width:100%;
+	color:white;
+	padding:15px;
+	cursor:pointer;
+	font-size:20px;
+	margin: 20px 0px;
+	border: none;
+}
+
+.submitButton:hover{
+	background-color:rgb(180,0,0);
+}
+	
+.labelformat{
+	text-align:center;
+}
+footer{
+	background-color: #003359;
+	color: white;
+	height: 10%;
+	width: 100%;
+	font-size: 1em;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	
+	
+}
+#tag{
+	padding-left: 5vh;
+	display: inline;
+	
+}
+
+#contactfooter{
+	display: inline;
+	text-align: right;
+	padding-right: 5vh;
+
+}
+body{
+	position: relative;
+	min-height: 100%;
+	
+}

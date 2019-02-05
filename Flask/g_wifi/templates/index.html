@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Search</title>
+
+<link href="static/home.css" rel="stylesheet" type="text/css">    <!-- acesses the css file-->
+<!-- Load an icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="static/jquery-ui/jquery.js"></script>
+<script src="static/jquery-ui/jquery-ui.js"></script>
+ <script>
+function initForm(){
+ 	var form = $('#guestWiFi');
+        form.on('submit', function (e) {
+          var tho ="starting";
+		  alert (tho);
+          e.preventDefault();
+
+	  
+		  var formData = form.serialize();
+		$.ajax({
+			method: form.attr('method'),
+			url:  form.attr('action'),
+			data:  formData,
+			success: function(data) {
+
+			    alert (data);
+				var data1 = data.toLowerCase();
+				
+				var n = data1.search("failed");
+				if ( n == -1) { var goodresults="<div id='content'><img src='pass.PNG'  height='100px' width='100px' /></div>";
+				} else { var goodresults="<div id='content'><img src='images/fail.PNG'  height='100px' width='100px' /></div>";}
+				
+				var content = " <div id='content' >" + goodresults + data + "</div>" ;
+				$( "#result" ).empty().append( content );
+			
+			},
+			error: function (jqXHR, exception) {
+				var msg = '';
+				if (jqXHR.status === 0) {
+					msg = 'Not connect.\n Verify Network.';
+				} else if (jqXHR.status == 404) {
+					msg = 'Requested page not found. [404]';
+				} else if (jqXHR.status == 500) {
+					msg = 'Internal Server Error [500].';
+				} else if (exception === 'parsererror') {
+					msg = 'Requested JSON parse failed.';
+				} else if (exception === 'timeout') {
+					msg = 'Time out error.';
+				} else if (exception === 'abort') {
+					msg = 'Ajax request aborted.';
+				} else {
+					msg = 'Uncaught Error.\n' + jqXHR.responseText;
+					$( "#result" ).empty().append( jqXHR.responseText );
+				}
+		 }
+    })
+	
+
+        });
+ 
+ }
+
+ function initForm1(){
+ 	var form = $('#guestSearch');
+        form.on('submit', function (e) {
+          var tho ="Searching.....";
+		  alert (tho);
+		  
+          e.preventDefault();
+
+	  
+		  var formData = form.serialize();
+		$.ajax({
+			method: form.attr('method'),
+			url:  form.attr('action'),
+			data:  formData,
+			success: function(data) {
+			
+				//This is what I added to pull the name out of the data
+				nameStart=data.indexOf("Name")+45; //this finds the start position of the name (email) in the data string
+				nameEnd=data.indexOf("WLAN")-1;  //this find the end position of the name (email) in the data string
+				UserName=data.slice(nameStart,nameEnd); //slices the email address out of the data string]
+				timeStart=data.indexOf("Description")-32; //this finds the start position of the time remaining in the data string
+				timeEnd=data.indexOf("Description");  //this finds the end position of the time remaining in the data string
+				timeRemaining=data.slice(timeStart,timeEnd); //slices the users time remaining out of the data string
+				document.getElementById("dataHere").innerHTML=UserName + "has " +timeRemaining +" remaining";
+				
+				alert (data);// -->data from python for search
+				data.show();
+				
+				
+			
+			},
+			error: function (jqXHR, exception) {
+				var msg = '';
+				if (jqXHR.status === 0) {
+					msg = 'Not connect.\n Verify Network.';
+				} else if (jqXHR.status == 404) {
+					msg = 'Requested page not found. [404]';
+				} else if (jqXHR.status == 500) {
+					msg = 'Internal Server Error [500].';
+				} else if (exception === 'parsererror') {
+					msg = 'Requested JSON parse failed.';
+				} else if (exception === 'timeout') {
+					msg = 'Time out error.';
+				} else if (exception === 'abort') {
+					msg = 'Ajax request aborted.';
+				} else {
+					msg = 'Uncaught Error.\n' + jqXHR.responseText;
+					$( "#result1" ).empty().append( jqXHR.responseText );
+				}
+		 }
+    })
+	
+
+        });
+
+ }
+ 
+  function initForm2(){
+ 	var form = $('#guestDelete');
+        form.on('submit', function (e) {
+          var tho ="Searching.....";
+		  alert (tho);
+		  
+          e.preventDefault();
+
+	  
+		  var formData = form.serialize();
+		$.ajax({
+			method: form.attr('method'),
+			url:  form.attr('action'),
+			data:  formData,
+			success: function(data) {
+			  
+				alert (data);
+				data.show();
+				
+				
+			
+			},
+			error: function (jqXHR, exception) {
+				var msg = '';
+				if (jqXHR.status === 0) {
+					msg = 'Not connect.\n Verify Network.';
+				} else if (jqXHR.status == 404) {
+					msg = 'Requested page not found. [404]';
+				} else if (jqXHR.status == 500) {
+					msg = 'Internal Server Error [500].';
+				} else if (exception === 'parsererror') {
+					msg = 'Requested JSON parse failed.';
+				} else if (exception === 'timeout') {
+					msg = 'Time out error.';
+				} else if (exception === 'abort') {
+					msg = 'Ajax request aborted.';
+				} else {
+					msg = 'Uncaught Error.\n' + jqXHR.responseText;
+					$( "#result1" ).empty().append( jqXHR.responseText );
+				}
+		 }
+    })
+	
+
+        });
+ 
+ }
+
+
+function initForm3(){
+ 	var form = $('#guestExtend');
+        form.on('submit', function (e) {
+          var tho ="Searching.....";
+		  alert (tho);
+		  
+          e.preventDefault();
+
+	  
+		  var formData = form.serialize();
+		$.ajax({
+			method: form.attr('method'),
+			url:  form.attr('action'),
+			data:  formData,
+			success: function(data) {
+			  
+				alert (data);
+				data.show();
+				
+				
+			
+			},
+			error: function (jqXHR, exception) {
+				var msg = '';
+				if (jqXHR.status === 0) {
+					msg = 'Not connect.\n Verify Network.';
+				} else if (jqXHR.status == 404) {
+					msg = 'Requested page not found. [404]';
+				} else if (jqXHR.status == 500) {
+					msg = 'Internal Server Error [500].';
+				} else if (exception === 'parsererror') {
+					msg = 'Requested JSON parse failed.';
+				} else if (exception === 'timeout') {
+					msg = 'Time out error.';
+				} else if (exception === 'abort') {
+					msg = 'Ajax request aborted.';
+				} else {
+					msg = 'Uncaught Error.\n' + jqXHR.responseText;
+					$( "#result1" ).empty().append( jqXHR.responseText );
+				}
+		 }
+    })
+	
+
+        });
+ 
+ } 
+ 
+function openTab(){
+	//overload function default tabs
+	openTab(null);
+}
+
+function openTab(sel){
+ $("#accordion").accordion({
+         active: false,
+         collapsible: true,
+         autoHeight: false,
+         navigation: true,
+         header: 'a.menuitem'
+    }); 
+
+    $(".menuitem").click(function(event){
+        window.location.hash=this.hash;
+		
+    });
+
+    //get the hash value
+    var locationHash = window.location.hash;
+
+    //split the value
+    var hashSplit = locationHash.split('#');
+
+    //get the tab number
+    var currentTab = hashSplit[1];
+
+if (sel!=null){
+	currentTab = sel +1;
+}
+
+    window.setTimeout(function(){
+        //open the tab for the current hash
+        $("#accordion").accordion({ active: parseInt(currentTab)-1 });
+    }, 100);
+}
+
+
+
+
+	function checkMACAddress() {
+		var macAddress=document.getElementById('macaddress').value;
+		var IpAddress=document.getElementById('deviceip').value;
+		var macAddressRegExp=/^([0-9A-Fa-f]{4}[.]){2}([0-9A-Fa-f]{4})$/;
+		var IpAddressRegExp=/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+		if(macAddress.length!=14) {
+			alert('Mac Address is not the proper length.');
+			return false;
+		}
+		if (IpAddressRegExp.test(IpAddress)==false) { //if match failed
+			alert("Please enter a valid IP ADDRESS. Proper format (xxxx.xxxx.xxxx.xxxx)");
+			return false;
+		}
+		if (macAddressRegExp.test(macAddress)==false) { //if match failed
+			alert("Please enter a valid MAC Address. Proper format (54e1.ad67.720c)");
+			return false;
+		}
+			
+		return true;
+	}
+	
+	
+	
+ $(document).ready(function() {
+   openTab();
+  // initForm();
+   //initForm1();
+   //initForm2();
+   //initForm3();
+   
+
+});
+    </script>
+</head>
+
+<body>
+
+
+
+<img src="static/economical.jpg" alt="Economical Logo" style="width:150px;height:40px;">     <!--pastes the economical logo into the top left hand side of the screen-->
+
+<!-- <img src="static/gears.jpg" alt="gears" style="position:absolute;top:30%;left:30%;width:40%;height:40%;" id="gears"> -->
+
+
+
+<!-- header buttons-->
+<div id="header" class="btn-group">
+	<button id= "homebtn" class="navbtn" onclick="nav(1)"><i class="fa fa-fw fa-home"></i> Home</button><!--
+	--><button id= "vlanbtn" class="navbtn" onclick="nav(2)"><i class="fa fa-fw fa-user"></i> VLAN Move</button><!--
+	--><button  id= "wifibtn" class="navbtn" onclick="nav(3)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-fi</button><!--
+	--><button  id = "contactbtn" class="navbtn" onclick="nav(4)"><i class="fa fa-fw fa-envelope"></i> Contact</button>
+	 
+</div>
+
+<p/>  <!--this puts a space between the header and the welcome-->
+
+<b style="font-size:150%;font-family:verdana;">Welcome to Network's Tools</b>  <!-- this is the welcome that will remail on the screen-->
+
+<hr/>
+
+<div id="alerts">
+  	{% with messages = get_flashed_messages() %}
+  	  {% if messages %}
+  	    {% for message in messages %}
+	  <div id='alert_message' role="alert">
+	  <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>-->
+	    {{message}}
+		</div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
+	
+	{% block body %}{% endblock %}
+</div>
+
+<!--home page-->
+
+<div id="homeForm" class="backgroundForms">
+	<p style="text-align:center; font-size:30px; text-decoration:underline">Network</p>
+	<hr/>
+	<p style="font-size:25px; text-align:center;">Powered by NTW</p>
+</div>
+
+<!-- contact page -->
+
+<div id="contact" class="backgroundForms">
+	<p style="text-align:center; font-size:40px; text-decoration:underline">Contact Informtation</p>
+	<p style="font-size:25px;">Network Group</p>
+	<hr/>
+	<p style="font-size:20px;">EMAIL: networkgroup@economical.com</p>
+	<br/>
+	<img src="static/Bruce Lee.JPG" alt="Bruce" style="width:20%; height:20%;" title="Tho Huynh: Martial Arts Expert">
+	<img src="static/Dumbledore.jpg" alt="Wizard" style="width:20%;height:35%;position:absolute;right:2.5%;" title="Ben Simpson: Web Master">
+</div>
+
+
+
+<!-- guest wifi form-->	
+<div id="WiFi" class="backgroundForms">
+	<p style="text-align:center;font-size:30px;text-decoration:underline;"><b>Guest Wifi</b></p>
+	<p style="text-align:center"><b>Would you like to add a New User or search for a user</b></p>
+		<div style="background-color:rgb(128,0,0);">
+			<button id="guestButtons" class="button" onclick="Navigate(1)">Add New User</button>
+			<button id="guestButtons" class="button" onclick="Navigate(2)">Search for User</button>
+			<button id="guestButtons" class="button" onclick="Navigate(3)">Delete User</button>
+			<button id="guestButtons" class="button" onclick="Navigate(4)">Extend Time</button>
+		</div>
+
+        <!--Add new user form-->
+		<form id="guestWiFi" action="/new" method="post" enctype="multipart/form-data">
+			<p style="font-size:35px;text-align:center;background-color:rgb(128,0,0);color:white; padding:10px;"><b>Sponsor</b></p>    
+			<label>RITM#:</label>
+			<input type="text" name="ritm"required>
+			<label>Sponsor Email:</label>
+			<input type="text" name="sponsoremail" required>
+				<label>Access Time Duration</label>
+			<select name="length" class="selectDuration" required>
+					<option selected value ="31536000">1 year: Requires Networking approval!</option>
+					<option selected value ="15552000">6 months: Requires Networking approval!</option>
+					<option selected value ="11826000">5 months: Requires Networking approval!</option>
+					<option selected value ="10368000">4 months: Requires Networking approval!</option>
+					<option selected value ="7776000">3 months: Requires Networking approval!</option>
+					<option selected value ="5184000">2 months: Requires Networking approval!</option>
+					<option selected value ="2592000">1 months: Requires Networking approval!</option>
+					<option selected value ="1209600">14 Days: Requires Networking approval!</option>
+					<option selected value ="604800">7 Days</option>
+					<option selected value ="259200">3 Days</option>
+					<option selected value ="86400">24 HOURS</option>
+					<option selected value = "28800">8 HOURS</option>
+					<option selected value = "14400">4 HOURS</option>
+			</select>
+			<label>Username:</label>
+			<input type="text" name="login" required>
+			<label>Password:</label>
+			<input type="password" name="password" required>
+			<input value="Submit" type="submit" class="submitButton">
+		</form>
+	
+		<!--Search for user form-->
+		<form id="guestSearch" action="/search.php" method="post" enctype="multipart/form-data">
+			<p></p>
+			<label>Search for user by email address:</label>
+			<input name="search" type="text" placeholder="jondoe@hotmail.com.." > 
+			<button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
+			<p id="userFound"></p>
+			<p id="dataHere">The user information will go here</p>
+		</form>
+		
+		
+		<!--Delete user form-->
+		<form id="guestDelete" action="/delete1.php" method="post" enctype="multipart/form-data">
+			<p></p>
+			<label>Enter the email of the user to be deleted:</label>
+			<input name="account" type="text" placeholder="jondoe@hotmail.com.." style="width:97.5%;" required>
+			<label>Input your 3 Character ID:</label>
+			<input type="text" name="login" style="width:97.5%;" placeholder="abc.." required>
+			<label>Password:</label>
+			<input type="password" name="password" placeholder="Password.." required>			
+			<input value="Submit" type="submit" class="submitButton">
+		</form>
+		
+		<!--Extend time form-->
+		<form id="guestExtend" action="/extend.php" method="post" enctype="multipart/form-data">
+			<p></p>
+			<label>Extended time:</label>
+			<select name="HOURS" class="selectDuration" required>
+				<optgroup label="HOURS">
+					<option selected value ="31536000">1 year: Requires Networking approval!</option>
+					<option selected value ="15552000">6 months: Requires Networking approval!</option>
+					<option selected value ="11826000">5 months: Requires Networking approval!</option>
+					<option selected value ="10368000">4 months: Requires Networking approval!</option>
+					<option selected value ="7776000">3 months: Requires Networking approval!</option>
+					<option selected value ="5184000">2 months: Requires Networking approval!</option>
+					<option selected value ="2592000">1 months: Requires Networking approval!</option>
+					<option selected value ="1209600">14 Days: Requires Networking approval!</option>
+					<option selected value ="604800">7 Days</option>
+					<option selected value ="259200">3 Days</option>
+					<option selected value ="86400">24 HOURS</option>
+					<option selected value = "28800">8 HOURS</option>
+					<option selected value = "14400">4 HOURS</option>
+				</optgroup>
+			</select>
+			<label>Email address of the user to have extended time:</label>
+			<input name="account" type="text" placeholder="jondoe@hotmail.com.." style="width:97.5%;" required> 
+			<label>Input your 3 Character ID:</label>
+			<input name="login" type="text" name="login" style="width:97.5%;" placeholder="abc.." required>
+			<label>Password:</label>
+			<input type="password" name="password" placeholder="Password.." required>
+			<input value="Submit" type="submit" class="submitButton">
+		</form>
+</div>
+
+<!-- vlan move form -->
+
+<form id="vlanMove" class="backgroundForms" action="/index.php" method="post" enctype="multipart/form-data"> 
+	<p style="font-size:35px;text-decoration:underline;text-align:center;background-color:rgb(128,0,0);color:white; padding:10px;">VLAN Move Request</p>
+	<hr/>
+		<label>3 Character ID:<br/>
+			<input type="text" name="3char" placeholder="ABC..." required>
+		</label>
+		<label>Password:<br/>
+			<input type="password" name="password" placeholder="Enter Password.." required>
+		</label>
+		<label> Device Location:</label>
+		<select name="devlocation" required>
+			<option selected="true" disabled="true"><b>WESTMOUNT (10.1.X.X)</b></option>
+			<option value="Westmount:Upper Floor">Westmount:Upper Floor</option>
+			<option value="Westmount:Main Floor">Westmount:Main Floor</option>
+			<option value="Westmount:Lower Floor">Westmount:Lower Floor</option>
+			<option selected="true" disabled="true"><b>RIVERBEND (10.2.X.X)</b></option>
+			<option value="Riverbend: 2nd Floor">Riverbend: Second Floor</option>
+			<option value="Riverbend: 3rd Floor">Riverbend: Third Floor</option>
+			<option value="Riverbend: 4th Floor">Riverbend: Fourth Floor</option>
+			<option value="Riverbend: 5th Floor">Riverbend: Fifth Floor</option>
+			<option selected="true" disabled="true"><b>Deskside Support Labs (10.2.254.X)</b></option>
+			<option value="Riverbend: intellab">Riverbend: intellab</option>
+			<option value="Riverbend: rbs2_level2lab">Riverbend: rbs2_level2lab</option>
+		</select>	
+		<label>VLAN Selection:</label>
+		<select name="vlanselect" required>
+			<option selected="true" disabled="true"><b>Special VLAN</b></option>
+			<option value="Special VLAN 253">Special VLAN 253</option>
+			<option selected="true" disabled="true"><b>Riverbend</b></option>
+			<option value="402">Workstation VLAN (402) Second Floor</option>
+			<option value="403">Workstation VLAN (403) Third Floor</option>
+			<option value="404">Workstation VLAN (404) Fourth Floor</option>
+			<option value="405">Workstation VLAN (405) Fifth Floor</option>
+			<option value="406">Workstation New VLAN (406) Second Floor</option>
+			<option selected="true" disabled="true"><b>Westmount</b></option>
+			<option value="121">Upper Floor VLAN (121)</option>
+			<option value="120">Upper Floor VLAN (120)</option>
+			<option value="117">Main Floor VLAN (117)</option>
+			<option value="119">Lower Floor VLAN (119)</option>
+			<option selected="true" disabled="true"><b>Deskside Support Labs</b></option>
+			<option value="40">E-WLAN VLAN (40)</option>
+			<option value="45">C-WLAN VLAN (45)</option>
+			<option value="70">IP_Phone VLAN (70)</option>
+			<option value="71">IP_Phone VLAN (71)</option>
+			<option value="72">IP_Phone VLAN (72)</option>
+			<option value="73">IP_Phone VLAN (73)</option>
+			<option value="74">IP_Phone VLAN (74)</option>
+			<option value="81">Printers (81)</option>
+			<option value="89">Dev_Voice_GW (89)</option>
+		</select>	
+		<label>MAC Address:<br/>
+			<input type="text" name="MAC" placeholder="Format 54e1.ad0b.7f94" required>
+		</label>
+		<label>Device IP:<br/>
+			<input type="text" name="IP" placeholder="Input Device IP.."required>
+		</label>
+		<label>Change Ticket #:<br/>
+			<input type="text" name="chg" placeholder="Change #.." required>
+		</label>
+		<label>Work Station Number:<br/>
+			<input type="text" name="workstation" placeholder="Workstation.." required>
+		</label>
+	<hr/>
+	<input type="submit" value="Submit" class="submitButton" style="width:100%;">
+</form>
+
+<div id= "footer">
+	<footer>
+		<p id="tag">Powered by NTW</p><p align="right" id="contactfooter">E-Mail: networkgroup@economical.com</p>
+		
+	</footer>
+</div>
+
+<script type="text/javascript" src="static/home.js"></script>   <!-- accesses the javascript file-->
+
+</body>
+
+
+</html>
