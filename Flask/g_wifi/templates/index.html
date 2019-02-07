@@ -306,10 +306,10 @@ if (sel!=null){
 
 <!-- header buttons-->
 <div id="header" class="btn-group">
-	<button id= "homebtn" class="navbtn" onclick="nav(1)"><i class="fa fa-fw fa-home"></i> Home</button><!--
-	--><button id= "vlanbtn" class="navbtn" onclick="nav(2)"><i class="fa fa-fw fa-user"></i> VLAN Move</button><!--
-	--><button  id= "wifibtn" class="navbtn" onclick="nav(3)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-fi</button><!--
-	--><button  id = "contactbtn" class="navbtn" onclick="nav(4)"><i class="fa fa-fw fa-envelope"></i> Contact</button>
+	<!-- <button id= "homebtn" class="navbtn" onclick="nav(1)"><i class="fa fa-fw fa-home"></i> Home</button><!--
+	--><button id= "vlanbtn" class="navbtn" onclick="nav(1)"><i class="fa fa-fw fa-user"></i> VLAN Move</button><!--
+	--><button  id= "wifibtn" class="navbtn" onclick="nav(2)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-fi</button><!--
+	--><button  id = "cwlanbtn" class="navbtn" onclick="nav(3)"><i class="fa fa-fw fa-envelope"></i> C-WLAN</button>
 	 
 </div>
 
@@ -336,14 +336,14 @@ if (sel!=null){
 
 <!--home page-->
 
-<div id="homeForm" class="backgroundForms">
+<!-- <div id="homeForm" class="backgroundForms">
 	<p style="text-align:center; font-size:30px; text-decoration:underline">Network</p>
 	<hr/>
 	<p style="font-size:25px; text-align:center;">Powered by NTW</p>
 </div>
 
 <!-- contact page -->
-
+<!--
 <div id="contact" class="backgroundForms">
 	<p style="text-align:center; font-size:40px; text-decoration:underline">Contact Informtation</p>
 	<p style="font-size:25px;">Network Group</p>
@@ -353,23 +353,23 @@ if (sel!=null){
 	<img src="static/Bruce Lee.JPG" alt="Bruce" style="width:20%; height:20%;" title="Tho Huynh: Martial Arts Expert">
 	<img src="static/Dumbledore.jpg" alt="Wizard" style="width:20%;height:35%;position:absolute;right:2.5%;" title="Ben Simpson: Web Master">
 </div>
-
+ -->
 
 
 <!-- guest wifi form-->	
 <div id="WiFi" class="backgroundForms">
-	<p style="text-align:center;font-size:30px;text-decoration:underline;"><b>Guest Wifi</b></p>
-	<p style="text-align:center"><b>Would you like to add a New User or search for a user</b></p>
+	<p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;"><b>Guest Wifi</b></p>
+	<p style="text-align:center"><b>Would you like to add a New User or edit an existing user?</b></p>
 		<div style="background-color:rgb(128,0,0);">
-			<button id="guestButtons" class="button" onclick="Navigate(1)">Add New User</button>
-			<button id="guestButtons" class="button" onclick="Navigate(2)">Search for User</button>
-			<button id="guestButtons" class="button" onclick="Navigate(3)">Delete User</button>
-			<button id="guestButtons" class="button" onclick="Navigate(4)">Extend Time</button>
+			<button id="addbtn" class="wifibtn" onclick="Navigate(1)">Add New User</button>
+			<button id="searchbtn" class="wifibtn" onclick="Navigate(2)">Search for User</button>
+			<button id="deletebtn" class="wifibtn" onclick="Navigate(3)">Delete User</button>
+			<button id="extendbtn" class="wifibtn" onclick="Navigate(4)">Extend Time</button>
 		</div>
 
         <!--Add new user form-->
 		<form id="guestWiFi" action="/new" method="post" enctype="multipart/form-data">
-			<p style="font-size:35px;text-align:center;background-color:rgb(128,0,0);color:white; padding:10px;"><b>Sponsor</b></p>    
+			<p style="font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;"><b>Sponsor</b></p>    
 			<label>RITM#:</label>
 			<input type="text" name="ritm"required>
 			<label>Sponsor Email:</label>
@@ -390,10 +390,10 @@ if (sel!=null){
 					<option selected value = "28800">8 HOURS</option>
 					<option selected value = "14400">4 HOURS</option>
 			</select>
-			<label>Username:</label>
+<!-- 		<label>Username:</label>
 			<input type="text" name="login" required>
 			<label>Password:</label>
-			<input type="password" name="password" required>
+			<input type="password" name="password" required> -->
 			<input value="Submit" type="submit" class="submitButton">
 		</form>
 	
@@ -401,8 +401,8 @@ if (sel!=null){
 		<form id="guestSearch" action="/search.php" method="post" enctype="multipart/form-data">
 			<p></p>
 			<label>Search for user by email address:</label>
-			<input name="search" type="text" placeholder="jondoe@hotmail.com.." > 
-			<button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
+			<input name="search" type="text" placeholder="jondoe@hotmail.com.." ><!--
+			--><button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
 			<p id="userFound"></p>
 			<p id="dataHere">The user information will go here</p>
 		</form>
@@ -413,10 +413,10 @@ if (sel!=null){
 			<p></p>
 			<label>Enter the email of the user to be deleted:</label>
 			<input name="account" type="text" placeholder="jondoe@hotmail.com.." style="width:97.5%;" required>
-			<label>Input your 3 Character ID:</label>
+<!-- 		<label>Input your 3 Character ID:</label>
 			<input type="text" name="login" style="width:97.5%;" placeholder="abc.." required>
 			<label>Password:</label>
-			<input type="password" name="password" placeholder="Password.." required>			
+			<input type="password" name="password" placeholder="Password.." required> -->			
 			<input value="Submit" type="submit" class="submitButton">
 		</form>
 		
@@ -443,10 +443,10 @@ if (sel!=null){
 			</select>
 			<label>Email address of the user to have extended time:</label>
 			<input name="account" type="text" placeholder="jondoe@hotmail.com.." style="width:97.5%;" required> 
-			<label>Input your 3 Character ID:</label>
+<!-- 		<label>Input your 3 Character ID:</label>
 			<input name="login" type="text" name="login" style="width:97.5%;" placeholder="abc.." required>
 			<label>Password:</label>
-			<input type="password" name="password" placeholder="Password.." required>
+			<input type="password" name="password" placeholder="Password.." required> -->
 			<input value="Submit" type="submit" class="submitButton">
 		</form>
 </div>
@@ -454,13 +454,13 @@ if (sel!=null){
 <!-- vlan move form -->
 
 <form id="vlanMove" class="backgroundForms" action="/index.php" method="post" enctype="multipart/form-data"> 
-	<p style="font-size:35px;text-decoration:underline;text-align:center;background-color:rgb(128,0,0);color:white; padding:10px;">VLAN Move Request</p>
+	<p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;">VLAN Move Request</p>
 	<hr/>
-		<label>3 Character ID:<br/>
+<!-- 	<label>3 Character ID:<br/>
 			<input type="text" name="3char" placeholder="ABC..." required>
 		</label>
 		<label>Password:<br/>
-			<input type="password" name="password" placeholder="Enter Password.." required>
+			<input type="password" name="password" placeholder="Enter Password.." required> -->
 		</label>
 		<label> Device Location:</label>
 		<select name="devlocation" required>
@@ -515,13 +515,12 @@ if (sel!=null){
 		<label>Work Station Number:<br/>
 			<input type="text" name="workstation" placeholder="Workstation.." required>
 		</label>
-	<hr/>
 	<input type="submit" value="Submit" class="submitButton" style="width:100%;">
 </form>
 
 <div id= "footer">
 	<footer>
-		<p id="tag">Powered by NTW</p><p align="right" id="contactfooter">E-Mail: networkgroup@economical.com</p>
+		<p id="tag">Powered by NTW</p><p align="right" id="contactfooter">E-mail: networkgroup@economical.com</p>
 		
 	</footer>
 </div>
