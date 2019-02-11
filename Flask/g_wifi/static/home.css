@@ -27,7 +27,7 @@
 	padding: 15px 32px;
 	text-align: center;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 20px;
 	margin: 0px 0px;
 	cursor: pointer;
 	transition:0.3s;
@@ -53,7 +53,7 @@
 }
 
 /*Changes the color of the buttons when hovering over them*/
-.btn-group .navbtn:hover, .btn-group .navbtn:focus{
+.btn-group .navbtn:hover, .btn-group .navbtn:focus, .loginbtn:hover{
 	background-color: #60c2e9 ;
 }
 
@@ -84,8 +84,8 @@
 /*the border around all of the forms*/
 .backgroundForms {
 	position:absolute;
-	right:20vh;
-	left: 20vh;
+	right:0vw;
+	left: 0vw;
 	width:60vh;
 	min-width:1000px;
 	border:2px solid black;
@@ -98,7 +98,7 @@
 	margin-bottom: 3em;
 }
 
-#vlanMove input[type=text], #guestWiFi input[type=text], input[type=password], #guestDelete input[type=text], #guestExtend input[type=text]{
+#vlanMove input[type=text], #guestWiFi input[type=text], #guestDelete input[type=text], #guestExtend input[type=text]{
 	border:1px solid black;
 	border-radius:5px;
 	width:97.5%;
@@ -155,7 +155,7 @@ p{
 	top:385px;
 }
 
-.searchButton:hover{
+.searchButton:hover {
 	background-color:rgb(100,100,100);
 	
 }
@@ -189,6 +189,18 @@ select{
 	background-color: white;
 }
 	
+.loginbtn{
+	width: 100%;
+	background-color:#003359;
+	color:white;
+	padding:15px;
+	cursor:pointer;
+	font-size:25px;
+	margin: 20px 0px;
+	border: none;
+	transition: 0.3s;
+
+}
 .labelformat{
 	text-align:center;
 }
@@ -218,6 +230,9 @@ footer{
 	padding-right: 1em;
 	float: right;
 
+}
+#form{
+	margin: auto;
 }
 body{
 	position: relative;

@@ -1,3 +1,5 @@
+$('.alert').alert()
+
 function nav(x){
 	$('.pressed').toggleClass('pressed');
 	if (x===1){

@@ -13,12 +13,24 @@ app.secret_key = '▒R+▒4w▒▒Y}4*ҟ▒'        #use command to generate pyt
 #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #socketio = SocketIO(app)
 
+#login page for authentication 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('login.html')
     
-#########Jan 25th##########
-#TODO - add back dropdown for date, replace date logic (7 Days -> Friday next week iff Wednesday or after )
+#checks user input and gives entrace to main site (will be using a database to check or servicenow)
+@app.route('/landing', methods=['POST'])
+def permission():
+    username = request.form['login']
+    password = request.form['password']
+    
+    if(username == "admin" and password == "pass"):
+        return render_template('index.html')
+    else:
+        flash("Authentication failed!")
+        return redirect('/', code = 302) 
+
+    #########Feb 8th##########
 #TODO - lock site and authenticate (low prio)
 #TODO - general error testing (bug hunt)
 
@@ -28,7 +40,7 @@ def data():
     s_username = request.form['login']
     s_password = request.form['password']
     s_email = request.form['sponsoremail'].lower()
-    #TODO - is an economical check required for sponser_email
+    #TODO - is an economical check required for sponser_email(possibly)
     ritm_num = request.form['ritm']
     duration = int(request.form['length'])
     print (duration)
@@ -77,5 +89,6 @@ def data():
                 main.update_records(ritm_num)
     return redirect('/', code = 302)      
  
+#run the app on specified ip and port 
 if __name__ == '__main__':
    app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
