@@ -13,7 +13,7 @@
 <script src="static/jquery-ui/jquery-ui.js"></script>
 <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
  --> <script>
-function initForm(){
+function initForm(){	//not sure if needed anymore, might be able to remove all js code 
  	var form = $('#guestWiFi');
         form.on('submit', function (e) {
           var tho ="starting";
@@ -298,28 +298,24 @@ if (sel!=null){
 <body>
 
 
-
-<img src="static/economical.jpg" alt="Economical Logo" style="width:150px;height:40px;">     <!--pastes the economical logo into the top left hand side of the screen-->
-
-<!-- <img src="static/gears.jpg" alt="gears" style="position:absolute;top:30%;left:30%;width:40%;height:40%;" id="gears"> -->
-
-
+<!-- this is the welcome that will remail on the screen-->
+<div style="justify-content: space-between; display: flex"><b style="font-size:150%;font-family:verdana;">Welcome!</b>
+<img src="static/economical.jpg" alt="Economical Logo" style="width:150px;height:40px;"></div>     <!--pastes the economical logo into the top left hand side of the screen-->
 
 <!-- header buttons-->
 <div id="header" class="btn-group">
 	<!-- <button id= "homebtn" class="navbtn" onclick="nav(1)"><i class="fa fa-fw fa-home"></i> Home</button><!--
 	--><button id= "vlanbtn" class="navbtn" onclick="nav(1)"><i class="fa fa-fw fa-user"></i> VLAN Move</button><!--
-	--><button  id= "wifibtn" class="navbtn" onclick="nav(2)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-fi</button><!--
+	--><button  id= "wifibtn" class="navbtn" onclick="nav(2)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-Fi</button><!--
 	--><button  id = "cwlanbtn" class="navbtn" onclick="nav(3)"><i class="fa fa-fw fa-signal"></i> C-WLAN</button>
 	 
 </div>
 
 <p/>  <!--this puts a space between the header and the welcome-->
 
-<b style="font-size:150%;font-family:verdana;">Welcome to Network's Tools</b>  <!-- this is the welcome that will remail on the screen-->
 
 <hr/>
-
+<!-- this is the block that allows python message flashes to work  -->
 <div id="alerts">
   	{% with messages = get_flashed_messages() %}
   	  {% if messages %}
@@ -359,13 +355,13 @@ if (sel!=null){
 
 <!-- guest wifi form-->	
 <div id="WiFi" class="backgroundForms">
-	<p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;"><b>Guest Wifi</b></p>
+	<p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;">Guest Wi-Fi</p>
 	<p style="text-align:center"><b>Would you like to add a New User or edit an existing user?</b></p>
 		<div style="background-color:rgb(128,0,0);">
 			<button id="addbtn" class="wifibtn" onclick="Navigate(1)">Add New User</button>
 			<button id="searchbtn" class="wifibtn" onclick="Navigate(2)">Search for User</button>
-			<button id="deletebtn" class="wifibtn" onclick="Navigate(3)">Delete User</button>
-			<button id="extendbtn" class="wifibtn" onclick="Navigate(4)">Extend Time</button>
+			<!-- <button id="deletebtn" class="wifibtn" onclick="Navigate(3)">Delete User</button>
+			<button id="extendbtn" class="wifibtn" onclick="Navigate(4)">Extend Time</button> -->
 		</div>
 
         <!--Add new user form-->
@@ -384,12 +380,12 @@ if (sel!=null){
 					<option selected value ="7776000">3 months: Requires Networking approval!</option>
 					<option selected value ="5184000">2 months: Requires Networking approval!</option>
 					<option selected value ="2592000">1 months: Requires Networking approval!</option>
-					<option selected value ="1209600">14 Days: Requires Networking approval!</option>
-					<option selected value ="604800">7 Days</option>
-					<option selected value ="259200">3 Days</option>
-					<option selected value ="86400">24 HOURS</option>
-					<option selected value = "28800">8 HOURS</option>
-					<option selected value = "14400">4 HOURS</option>
+					<option selected value ="1209600">14 days: Requires Networking approval!</option>
+					<option selected value ="604800">7 days</option>
+					<option selected value ="259200">3 days</option>
+					<option selected value ="86400">24 hours</option>
+					<option selected value = "28800">8 hours</option>
+					<option selected value = "14400">4 hours</option>
 			</select>
 <!-- 		<label>Username:</label>
 			<input type="text" name="login" required>
@@ -434,20 +430,16 @@ if (sel!=null){
 					<option selected value ="7776000">3 months: Requires Networking approval!</option>
 					<option selected value ="5184000">2 months: Requires Networking approval!</option>
 					<option selected value ="2592000">1 months: Requires Networking approval!</option>
-					<option selected value ="1209600">14 Days: Requires Networking approval!</option>
-					<option selected value ="604800">7 Days</option>
-					<option selected value ="259200">3 Days</option>
-					<option selected value ="86400">24 HOURS</option>
-					<option selected value = "28800">8 HOURS</option>
-					<option selected value = "14400">4 HOURS</option>
+					<option selected value ="1209600">14 days: Requires Networking approval!</option>
+					<option selected value ="604800">7 days</option>
+					<option selected value ="259200">3 days</option>
+					<option selected value ="86400">24 hours</option>
+					<option selected value = "28800">8 hours</option>
+					<option selected value = "14400">4 hours</option>
 				</optgroup>
 			</select>
 			<label>Email address of the user to have extended time:</label>
 			<input name="account" type="text" placeholder="jondoe@hotmail.com.." style="width:97.5%;" required> 
-<!-- 		<label>Input your 3 Character ID:</label>
-			<input name="login" type="text" name="login" style="width:97.5%;" placeholder="abc.." required>
-			<label>Password:</label>
-			<input type="password" name="password" placeholder="Password.." required> -->
 			<input value="Submit" type="submit" class="submitButton">
 		</form>
 </div>
@@ -457,12 +449,6 @@ if (sel!=null){
 <form id="vlanMove" class="backgroundForms" action="/index.php" method="post" enctype="multipart/form-data"> 
 	<p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;">VLAN Move Request</p>
 	<hr/>
-<!-- 	<label>3 Character ID:<br/>
-			<input type="text" name="3char" placeholder="ABC..." required>
-		</label>
-		<label>Password:<br/>
-			<input type="password" name="password" placeholder="Enter Password.." required> -->
-		</label>
 		<label> Device Location:</label>
 		<select name="devlocation" required>
 			<option selected="true" disabled="true"><b>WESTMOUNT (10.1.X.X)</b></option>
@@ -519,14 +505,55 @@ if (sel!=null){
 	<input type="submit" value="Submit" class="submitButton" style="width:100%;">
 </form>
 
+
+<!-- c-wlan form -->
+
+<div id="cwlan" class="backgroundForms"> 
+	<p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;">C-WLAN</p>
+	<p style="text-align:center"><b>Would you like to add a New User or edit an existing user?</b></p>
+		<div style="background-color:rgb(128,0,0);">
+			<button id="cwlanaddbtn" class="wifibtn" onclick="cwlan(1)">Add New User</button>
+			<button id="cwlansearchbtn" class="wifibtn" onclick="cwlan(2)">Search for User</button>
+		</div>
+	
+	 <!--Add new user form-->
+	<form id="addcwlan" action="/cwlan" method="post" enctype="multipart/form-data">
+		<p style="font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;"><b>Add User</b></p>    
+		<label>Wireless MAC address:</label>
+			<input type="text" name="MAC" placeholder="Format 54e1.ad0b.7f94" required>		
+		<label>Sponser E-mail:</label>
+			<input type="text" name="s_email"  required>
+		<label>User E-mail:<br/>
+			<input type="text" name="user_email" required>
+		</label>
+		<label>Start Date:<br/>
+			<input type="date" name="startdate" required>
+		</label>
+		<label>End Date:<br/>
+			<input type="date" name="enddate"  required>
+		</label>
+		<label>Approver:<br/>
+			<input type="text" name="approver" required>
+		</label>
+	<input type="submit" value="Submit" class="submitButton" style="width:100%;">
+	</form>
+	
+	<!--Implement new search functionality -->
+	<form id="searchcwlan" action="/cwlan" method="post" enctype="multipart/form-data">
+		<p style="font-size:35px;text-align:center;background-color:#AA272F;color:white; padding:10px;"><b>Work In Progress...</b></p> 
+	</form>
+</div>
+
+<!-- footer element  -->
 <div id= "footer">
 	<footer>
-		<p id="tag">Powered by NTW</p><p align="right" id="contactfooter">E-mail: networkgroup@economical.com</p>
+		<p id="tag">Powered by NTW</p><p align="right" id="contactfooter">Questions? E-mail <a href="mailto:networkgroup@economical.com?Subject=Webpage%20Support" target="_top">networkgroup@economical.com</a></p>
 		
 	</footer>
 </div>
 
 <script type="text/javascript" src="static/home.js"></script>   <!-- accesses the javascript file-->
+<!-- bootstrap link in case of use  -->
 <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
  -->
 

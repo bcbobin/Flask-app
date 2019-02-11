@@ -20,6 +20,7 @@
 	cursor: pointer;
 	transition:0.3s;
 } 
+/* used for the navigation buttons at the top of the screen */
 .navbtn {
 	background-color: #003359; 
 	border: none;
@@ -32,10 +33,11 @@
 	cursor: pointer;
 	transition:0.3s;
 }
+/* class to change the color of the navbtn if they are pressed for user feedback */
 .pressed{
 	background-color: #60c2e9;
 }
-
+/* for the guest wifi btns */
 .wifibtn{
 	background-color:#AA272F;
 	border:none;
@@ -43,11 +45,17 @@
 	font-size:20px;
 	cursor:pointer;
 	color:white;
-	width:24.525%;
+	width:49.68923%;
 	transition:0.3s;
 }
 /*must be declared after in order for it to take priority over the other button class for the colors to change*/
 .wifipressed{
+	background-color:white;
+	color:#AA272F;
+	border: 0.5em;
+	border-color: #AA272F;
+}
+.cwlanpressed{
 	background-color:white;
 	color:#AA272F;
 }
@@ -57,28 +65,20 @@
 	background-color: #60c2e9 ;
 }
 
-/*styles the button on the guest wifi page*/
-/* #guestButtons{
-	background-color:#AA272F;
-	border:none;
-	padding:16.5px 32px;
-	font-size:20px;
-	cursor:pointer;
-	color:white;
-	width:24.525%;
-	transition:0.3s;
-} */
-
-
 .wifibtn:hover{
-	/* background-color:rgb(180,0,0); */
 	color: #AA272F;
 	background-color: white;
 }
 
 /*sets all the pages to not visible when you start the page up*/
-#homeForm, #vlanMove,#WiFi,#contact,#about, #guestWiFi, #guestSearch, #guestDelete, #guestExtend{
+#cwlan, #vlanMove,#WiFi,#contact,#about, #guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan{
 	display:none;
+}
+a:link{
+	color: white;
+}
+a:hover{
+	color: #AA272F;
 }
 
 /*the border around all of the forms*/
@@ -98,7 +98,7 @@
 	margin-bottom: 3em;
 }
 
-#vlanMove input[type=text], #guestWiFi input[type=text], #guestDelete input[type=text], #guestExtend input[type=text]{
+#vlanMove input[type=text], #guestWiFi input[type=text], #guestDelete input[type=text], #guestExtend input[type=text], #cwlan input[type=text], #cwlan input[type=date]{
 	border:1px solid black;
 	border-radius:5px;
 	width:97.5%;
@@ -120,6 +120,7 @@ p{
 	padding:10px;
 	margin-top:0.5em;
 }
+/* for the flashed alerts that come from python */
 #alerts{
 	position: relative;
     text-align: center;
@@ -184,11 +185,10 @@ select{
 }
 
 .submitButton:hover{
-	/* background-color:rgb(180,0,0); */
 	color: #AA272F;
 	background-color: white;
 }
-	
+/* formats the login pages button */
 .loginbtn{
 	width: 100%;
 	background-color:#003359;
@@ -204,6 +204,7 @@ select{
 .labelformat{
 	text-align:center;
 }
+/* styles the footer at the bottom of the page  */
 footer{
 	background-color: #003359;
 	color: white;
@@ -218,6 +219,7 @@ footer{
 	left: 0.5em;
 	right: 0.5em;
 }
+/* rest of id tags are used for styling text inside the footer  */
 #tag{
 	padding-left: 1em;
 	display: inline-block;

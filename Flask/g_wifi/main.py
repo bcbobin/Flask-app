@@ -22,7 +22,7 @@ import random
 import smtplib 
 from email.mime.text import MIMEText 
 
-    #TODO- Tho - web html bug, looks weird on a 17 inch monitor 
+
 def authorize(username, password):
     unauthorized = True
 
@@ -122,7 +122,7 @@ def pass_gen(size = 8, chars='abcdefghjkmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ'
 
 
 def update_records(ritm):
-    #possibly call auth from here with other credientials 
+
     idurl = "https://economical.service-now.com/sc_req_item.do?JSONv2&sysparm_action=getKeys&sysparm_query=active=true^GOTOnumberLIKE"+ str(ritm) +"^ORDERBYnumber&displayvariables=true&displayvalue=true"
     req = urllib.request.Request(idurl)
     req = urllib.request.urlopen(idurl)
