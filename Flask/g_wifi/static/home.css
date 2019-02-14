@@ -2,7 +2,7 @@
 #header{
 	width:100%;
 	max-width:110%;
-	background-color:#003359;
+	background-color:#60c2e9;
 	margin:0;
 	padding: 0;
 }
@@ -22,7 +22,7 @@
 } 
 /* used for the navigation buttons at the top of the screen */
 .navbtn {
-	background-color: #003359; 
+	background-color: inherit; 
 	border: none;
 	color: white;
 	padding: 15px 32px;
@@ -32,6 +32,7 @@
 	margin: 0px 0px;
 	cursor: pointer;
 	transition:0.3s;
+	width: 11em;
 }
 /* class to change the color of the navbtn if they are pressed for user feedback */
 .pressed{
@@ -39,25 +40,25 @@
 }
 /* for the guest wifi btns */
 .wifibtn{
-	background-color:#AA272F;
+	background-color:#60c2e9;
 	border:none;
 	padding:16.5px 32px;
 	font-size:20px;
 	cursor:pointer;
 	color:white;
-	width:49.68923%;
+	width:49.62%;
 	transition:0.3s;
 }
 /*must be declared after in order for it to take priority over the other button class for the colors to change*/
 .wifipressed{
 	background-color:white;
-	color:#AA272F;
+	color:#60c2e9;
 	border: 0.5em;
-	border-color: #AA272F;
+	border-color: #60c2e9;
 }
 .cwlanpressed{
 	background-color:white;
-	color:#AA272F;
+	color:#60c2e9;
 }
 
 /*Changes the color of the buttons when hovering over them*/
@@ -66,20 +67,18 @@
 }
 
 .wifibtn:hover{
-	color: #AA272F;
+	color: #60c2e9;
 	background-color: white;
 }
 
 /*sets all the pages to not visible when you start the page up*/
-#cwlan, #vlanMove,#WiFi,#contact,#about, #guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan{
+#cwlan, #vlanMove,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan{
 	display:none;
 }
 a:link{
 	color: white;
 }
-a:hover{
-	color: #AA272F;
-}
+
 
 /*the border around all of the forms*/
 .backgroundForms {
@@ -98,10 +97,10 @@ a:hover{
 	margin-bottom: 3em;
 }
 
-#vlanMove input[type=text], #guestWiFi input[type=text], #guestDelete input[type=text], #guestExtend input[type=text], #cwlan input[type=text], #cwlan input[type=date]{
+#vlanMove input[type=text], #WiFi input[type=email], #guestWiFi input[type=text], #guestWiFi input[type=email], #guestDelete input[type=text], #guestExtend input[type=text], #cwlan input[type=text], #cwlan input[type=date],#cwlan input[type=email]{
 	border:1px solid black;
 	border-radius:5px;
-	width:97.5%;
+	width:100%;
 	font-size:20px;
 	padding:10px;
 	margin-top:10px;
@@ -110,6 +109,10 @@ a:hover{
 p{
 	font-family: "ProximaNovaW01-Bold", sans-serif;
 	font-weight: normal;
+}
+#title{
+	margin-bottom: auto;
+	margin-top: 0.25em;
 }
 
 #guestSearch input[type=text]{
@@ -133,14 +136,18 @@ p{
 /*the search button on the search for user and delete user page*/
 .searchButton{
 	background-color:white;
-	width:5%;
-	height:45px;
+	width:15%;
+	height: 52px;
 	border: 1px solid black;
 	border-radius:5px;
 	display:inline-block;
 	cursor:pointer;
 	position:absolute;
-	margin-top: 0.78em;
+	bottom:10px;
+	margin-left: 0.5em;
+}
+#approval{
+	color: orange;
 }
 
 /*the search button on the extended time page*/
@@ -161,7 +168,7 @@ p{
 	
 }
 
-select{
+#vlanMove select, #guestWiFi select, #cwlan select{
 	border:1px solid black;
 	border-radius:5px;
 	width:100%;
@@ -173,7 +180,7 @@ select{
 
 /*formats the submit button on the VLAN Move page*/
 .submitButton{
-	background-color:#AA272F;
+	background-color:#60c2e9;
 	width:100%;
 	color:white;
 	padding:15px;
@@ -185,7 +192,7 @@ select{
 }
 
 .submitButton:hover{
-	color: #AA272F;
+	color: #60c2e9;
 	background-color: white;
 }
 /* formats the login pages button */
@@ -216,14 +223,15 @@ footer{
 	bottom: 0;
 	max-width: 100%;
 	overflow: hidden;
-	left: 0.5em;
-	right: 0.5em;
+	left: 0;
+	right: 0;
 }
 /* rest of id tags are used for styling text inside the footer  */
 #tag{
 	padding-left: 1em;
 	display: inline-block;
 	float: left;
+	margin-top: 1em;
 }
 
 #contactfooter{
@@ -231,6 +239,7 @@ footer{
 	text-align: right;
 	padding-right: 1em;
 	float: right;
+	margin-top: 1em;
 
 }
 #form{
@@ -245,5 +254,8 @@ body{
 #footer{
 	position: fixed;
 	display: block;
+}
+#contactemail:hover {
+	color: #60c2e9;
 }
 

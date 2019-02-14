@@ -32,18 +32,19 @@ function Navigate(x){
     if (x===1){
         document.getElementById("guestWiFi").style.display="block";
         document.getElementById("guestSearch").style.display="none";
-        document.getElementById("guestDelete").style.display="none";
-        document.getElementById("guestExtend").style.display="none";
+        /* document.getElementById("guestDelete").style.display="none";
+        document.getElementById("guestExtend").style.display="none"; */
         document.getElementById("alerts").style.display="none";
         $('#addbtn').toggleClass('wifipressed');
     } else if (x===2){
         document.getElementById("guestWiFi").style.display="none";
         document.getElementById("guestSearch").style.display="block";
-        document.getElementById("guestDelete").style.display="none";
-        document.getElementById("guestExtend").style.display="none";
+       /*  document.getElementById("guestDelete").style.display="none";
+        document.getElementById("guestExtend").style.display="none"; */
         document.getElementById("alerts").style.display="none";
         $('#searchbtn').toggleClass('wifipressed');
-    } else if (x===3){
+     } 
+		/*else if (x===3){
         document.getElementById("guestWiFi").style.display="none";
         document.getElementById("guestSearch").style.display="none";
         document.getElementById("guestDelete").style.display="block";
@@ -57,7 +58,7 @@ function Navigate(x){
         document.getElementById("guestExtend").style.display="block";
         document.getElementById("alerts").style.display="none";
         $('#extendbtn').toggleClass('wifipressed');
-    }
+    } */
 }
 
 function cwlan(x){
