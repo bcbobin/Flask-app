@@ -5,6 +5,7 @@
 <head>
 
 <title>Search</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <link href="static/home.css" rel="stylesheet" type="text/css">    <!-- acesses the css file-->
 <!-- Load an icon library -->
@@ -312,7 +313,7 @@ if (sel!=null){
     <div class="col">
 		<img src="static/economical.jpg" alt="Economical Logo" style="width:11.25em;height:3em;">
     </div>
-    <div class="col-6" style="text-align: -webkit-center;">
+    <div class="col-6" style="text-align: center;">
 		<p id="title" style="font-size:150%;font-family:verdana;font-weight:bold">Network Tool Portal</p>
     </div>
     <div class="col">
@@ -380,8 +381,10 @@ if (sel!=null){
 	<p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;">Guest Wi-Fi</p>
 	<p style="text-align:center"><b>Would you like to add a New User or edit an existing user?</b></p>
 		<div style="background-color:#003359;">
+			
 			<button id="addbtn" class="wifibtn" onclick="Navigate(1)">Add New User</button>
 			<button id="searchbtn" class="wifibtn" onclick="Navigate(2)">Search for User</button>
+		
 			<!-- <button id="deletebtn" class="wifibtn" onclick="Navigate(3)">Delete User</button>
 			<button id="extendbtn" class="wifibtn" onclick="Navigate(4)">Extend Time</button> -->
 		</div>
@@ -421,7 +424,7 @@ if (sel!=null){
 		<form id="guestSearch" action="/search.php" method="post" enctype="multipart/form-data">
 			<p></p>
 			<div class="row">
-				<div class="col-9">
+				<div class="col-11">
 					<label>Search for user by email address:</label>
 					<input name="search" type="email" placeholder="jondoe@hotmail.com.." ><!--
 					--><button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
@@ -561,7 +564,7 @@ if (sel!=null){
 		<label>Wireless MAC address:</label>
 			<input type="text" name="MAC" placeholder="Format 54e1.ad0b.7f94" required>		
 		<div class="row">
-			<label style="padding-left:15px">Sponsor Information</label>
+			<label style="padding-left:15px">Sponsor Information:</label>
 		</div>
 		<div class="row">
 			<div class="col">
@@ -584,7 +587,7 @@ if (sel!=null){
 			</div>
 		</div>
 		<div class="row">
-			<label style="padding-left:15px">User Information</label>
+			<label style="padding-left:15px">User Information:</label>
 		</div>
 		<div class="row">
 			<div class="col">

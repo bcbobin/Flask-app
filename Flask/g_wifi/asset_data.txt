@@ -1,1 +1,92 @@
-{'parent': '', 'made_sla': 'true', 'watch_list': '', 'sc_catalog': '', 'upon_reject': 'Cancel all future Tasks', 'sys_updated_on': '2019-01-17 09:51:23', 'u_imported_list_id': '', 'u_jira_ticket_url': '', 'approval_history': '', 'skills': '', 'number': 'RITM0072297', 'sys_updated_by': 'DCI', 'u_sprint_included': None, 'opened_by': 'Tho Huynh', 'u_communication_required': 'false', 'user_input': '', 'price': '$0.00', 'sys_created_on': '2019-01-16 15:29:29', 'recurring_frequency': None, 'sys_domain': 'global', 'state': 'Pending', 'sys_created_by': 'THH', 'knowledge': 'false', 'order': '', '__status': 'success', 'u_rank': '', 'closed_at': '', 'cmdb_ci': '', 'backordered': 'false', 'impact': 'Low', 'active': 'true', 'u_bulk_import_id': '', 'work_notes_list': '', 'business_service': '', 'u_received': '2019-01-16 15:29:29', 'priority': '4 - Low', 'time_worked': '', 'expected_start': '', 'opened_at': '2019-01-16 15:29:29', 'business_duration': '', 'group_list': '', 'configuration_item': '', 'work_end': '', 'u_t_shirt_size': None, 'approval_set': '', 'work_notes': '', 'order_guide': '', 'request': 'REQ0072276', 'short_description': 'Guest Wi-Fi - Tho Huynh', 'correlation_display': '', 'work_start': '', 'assignment_group': 'I&O - Data Network Services', 'u_jira_url': '', 'additional_assignee_list': '', 'description': None, 'calendar_duration': '', 'u_cmdb_ci_application': '', 'u_emailfrom': '', 'close_notes': '', 'sys_class_name': 'Requested Item', 'closed_by': '', 'follow_up': '', 'u_regulatory': None, 'sys_id': 'f5ce5daddb432740ffb35878dc96197d', 'contact_type': None, 'urgency': 'Low', 'u_channel': None, 'company': '', 'reassignment_count': '2', 'activity_due': 'UNKNOWN', 'assigned_to': 'Bogdan Bobin', 'comments': '', 'quantity': '1', 'approval': 'Requested', 'sla_due': 'UNKNOWN', 'comments_and_work_notes': '', 'due_date': '2019-01-17 15:28:23', 'sys_mod_count': '3', 'recurring_price': '$0.00', 'sys_tags': '', 'billable': 'false', 'u_category': 'Network', 'cat_item': 'Guest Wi-Fi Access Request', 'stage': 'Fulfillment', 'escalation': 'Normal', 'upon_approval': 'Proceed to Next Task', 'u_tp_date': '', 'u_additional_services_required': 'false', 'correlation_id': '', 'location': '', 'estimated_delivery': ''}
+{'parent': '', 'made_sla': 'true', 'watch_list': '', 'sc_catalog': '', 'upon_reject': 'Cancel all future Tasks', 'sys_updated_on': '2019-01-17 09:51:23', 'u_imported_list_id': '', 
+'u_jira_ticket_url': '', 'approval_history': '', 'skills': '', 'number': 'RITM0072297', 'sys_updated_by': 'DCI', 'u_sprint_included': None, 'opened_by': 'Tho Huynh', 'u_communication_required': 
+'false', 'user_input': '', 'price': '$0.00', 'sys_created_on': '2019-01-16 15:29:29', 'recurring_frequency': None, 'sys_domain': 'global', 'state': 'Pending', 'sys_created_by': 'THH', 'knowledge': 
+'false', 'order': '', '__status': 'success', 'u_rank': '', 'closed_at': '', 'cmdb_ci': '', 'backordered': 'false', 'impact': 'Low', 'active': 'true', 'u_bulk_import_id': '', 'work_notes_list': '', 
+'business_service': '', 'u_received': '2019-01-16 15:29:29', 'priority': '4 - Low', 'time_worked': '', 'expected_start': '', 'opened_at': '2019-01-16 15:29:29', 'business_duration': '', 'group_list': 
+'', 'configuration_item': '', 'work_end': '', 'u_t_shirt_size': None, 'approval_set': '', 'work_notes': '', 'order_guide': '', 'request': 'REQ0072276', 'short_description': 'Guest Wi-Fi - Tho Huynh', 
+'correlation_display': '', 'work_start': '', 'assignment_group': 'I&O - Data Network Services', 'u_jira_url': '', 'additional_assignee_list': '', 'description': None, 'calendar_duration': '', 
+'u_cmdb_ci_application': '', 'u_emailfrom': '', 'close_notes': '', 'sys_class_name': 'Requested Item', 'closed_by': '', 'follow_up': '', 'u_regulatory': None, 'sys_id': 
+'f5ce5daddb432740ffb35878dc96197d', 'contact_type': None, 'urgency': 'Low', 'u_channel': None, 'company': '', 'reassignment_count': '2', 'activity_due': 'UNKNOWN', 'assigned_to': 'Bogdan Bobin', 
+'comments': '', 'quantity': '1', 'approval': 'Requested', 'sla_due': 'UNKNOWN', 'comments_and_work_notes': '', 'due_date': '2019-01-17 15:28:23', 'sys_mod_count': '3', 'recurring_price': '$0.00',
+ 'sys_tags': '', 'billable': 'false', 'u_category': 'Network', 'cat_item': 'Guest Wi-Fi Access Request', 'stage': 'Fulfillment', 'escalation': 'Normal', 'upon_approval': 'Proceed to Next Task', 
+ 'u_tp_date': '', 'u_additional_services_required': 'false', 'correlation_id': '', 'location': '', 'estimated_delivery': ''}
+ 
+ ((done)email, (done)full name, (done)company, (done)phone, (done)duration, (done)department and sponsors ) 
+ 
+child0:  {'question_text': 'sr_opened_by_and_department', 'children': 
+[{'question_text': 'Opened By', 'children': None, 'name': 'opened_by', 'type': 8, 'value': 'Tho Huynh', 'order': -1}, 
+{'question_text': 'Open on behalf of this user', 'children': None, 'name': 'on_behalf_of_user', 'type': 8, 'value': 'Tho Huynh', 'order': -1}, 
+{'question_text': 'Department', 'children': None, 'name': 'department', 'type': 8, 'value': 'Technology Solutions', 'order': -1}],
+'name': 'sr_opened_by_and_department', 'type': 0, 'value': None, 'order': -1}
+
+
+child1:  {'question_text': 'sr_category', 'children': 
+[{'question_text': 'Category', 'children': None, 'name': 'sr_var_category', 'type': 5, 'value': 'Network', 'order': -1}],
+ 'name': 'sr_category', 'type': 0, 'value': None, 'order': -1}
+
+
+child2:  {'question_text': 'Guest Information', 'children': None, 'name': 'sr_guest_info', 'type': 11, 'value': '', 'order': 200}
+
+
+child3:  {'question_text': 'sr_name', 'children': 
+[{'question_text': 'First Name', 'children': None, 'name': 'sr_first_name', 'type': 6, 'value': 'Tho', 'order': 10}, 
+{'question_text': 'Name Split', 'children': None, 'name': 'sr_name_split', 'type': 24, 'value': None, 'order': 20}, 
+{'question_text': 'Last Name', 'children': None, 'name': 'sr_last_name', 'type': 6, 'value': 'Huynh', 'order': 30}], 
+'name': 'sr_name', 'type': 0, 'value': None, 'order': -1}
+
+
+child4:  {'question_text': None, 'children': 
+[{'question_text': 'sr_phone', 'children': 
+[{'question_text': 'Phone Number', 'children': None, 'name': 'sr_phone_number', 'type': 6, 'value': '43646', 'order': -1}], 
+'name': 'sr_phone', 'type': 0, 'value': None, 'order': -1}, 
+{'question_text': 'phone / email split', 'children': None, 'name': 'sr_phone_email_split', 'type': 24, 'value': None, 'order': 225}, 
+{'question_text': 'sr_email', 'children': 
+[{'question_text': 'Email Address', 'children': None, 'name': 'sr_email_address', 'type': 6, 'value': 'tho.huynh@economical.com', 'order': -1}], 
+'name': 'sr_email', 'type': 0, 'value': None, 'order': -1}, 
+{'question_text': None, 'children': None, 'name': 'sr_phone_split_end', 'type': 20, 'value': None, 'order': 235}],
+'name': 'sr_phone_split_start', 'type': 0, 'value': None, 'order': 215}
+
+
+child5:  {'question_text': 'sr_start_and_end_dates', 'children':
+ [{'question_text': 'Start Date/Time (Eastern)', 'children': None, 'name': 'start_date_time', 'type': 10, 'value': '2019-01-17 15:28:23', 'order': 1001}, 
+ {'question_text': 'Split', 'children': None, 'name': 'Split', 'type': 24, 'value': None, 'order': 1002}, 
+ {'question_text': 'End Date/Time (Eastern)', 'children': None, 'name': 'end_date_time', 'type': 10, 'value': '2019-01-19 15:28:30', 'order': 1003}], 
+ 'name': 'sr_start_and_end_dates', 'type': 0, 'value': None, 'order': -1}
+
+
+child6:  {'question_text': 'sr_additional_comments', 'children': 
+[{'question_text': 'Request Details', 'children': None, 'name': 'add_comments', 'type': 2, 'value': 'This is a request for Bogdan to setup GWLAN.', 'order': 999}], 
+'name': 'sr_additional_comments', 'type': 0, 'value': None, 'order': -1}
+
+
+
+
+{'parent': '', 'made_sla': 'true', 'watch_list': '', 'sc_catalog': '', 'upon_reject': 'Cancel all future Tasks', 'sys_updated_on': '2019-01-17 09:51:23', 'u_imported_list_id': '', 
+'u_jira_ticket_url': '', 'approval_history': '', 'skills': '', 'number': 'RITM0072297', 'sys_updated_by': 'DCI', 'u_sprint_included': None, 'opened_by': 'Tho Huynh', 'u_communication_required': '
+false', 'user_input': '', 'price': '$0.00', 'sys_created_on': '2019-01-16 15:29:29', 'recurring_frequency': None, 'sys_domain': 'global', 'state': 'Pending', 'sys_created_by': 'THH', 'knowledge': 
+'false', 'order': '', '__status': 'success', 'u_rank': '', 'closed_at': '', 'cmdb_ci': '', 'backordered': 'false', 'impact': 'Low', 'active': 'true', 'u_bulk_import_id': '', 'work_notes_list': '', 
+'business_service': '', 'u_received': '2019-01-16 15:29:29', 'priority': '4 - Low', 'time_worked': '', 'expected_start': '', 'opened_at': '2019-01-16 15:29:29', 'business_duration': '', 'group_list': 
+'', 'configuration_item': '', 'work_end': '', 'u_t_shirt_size': None, 'approval_set': '', 'work_notes': '', 'order_guide': '', 'request': 'REQ0072276', 'short_description': 'Guest Wi-Fi - Tho Huynh', 
+'correlation_display': '', 'work_start': '', 'assignment_group': 'I&O - Data Network Services', 'u_jira_url': '', 'additional_assignee_list': '', 'description': None, 'calendar_duration': '', 
+'u_cmdb_ci_application': '', 'u_emailfrom': '', 'close_notes': '', 'sys_class_name': 'Requested Item', 'closed_by': '', 'follow_up': '', 'u_regulatory': None, 'sys_id': 
+'f5ce5daddb432740ffb35878dc96197d', 'contact_type': None, 'urgency': 'Low', 'u_channel': None, 'company': '', 'reassignment_count': '2', 'activity_due': 'UNKNOWN', 'assigned_to': 'Bogdan Bobin', 
+'variables': [{'question_text': 'sr_opened_by_and_department', 'children': [{'question_text': 'Opened By', 'children': None, 'name': 'opened_by', 'type': 8, 'value': 'Tho Huynh', 'order': -1},
+ {'question_text': 'Open on behalf of this user', 'children': None, 'name': 'on_behalf_of_user', 'type': 8, 'value': 'Tho Huynh', 'order': -1}, {'question_text': 'Department', 'children': None,
+ 'name': 'department', 'type': 8, 'value': 'Technology Solutions', 'order': -1}], 'name': 'sr_opened_by_and_department', 'type': 0, 'value': None, 'order': -1}, {'question_text': 'sr_category', 
+ 'children': [{'question_text': 'Category', 'children': None, 'name': 'sr_var_category', 'type': 5, 'value': 'Network', 'order': -1}], 'name': 'sr_category', 'type': 0, 'value': None, 'order': -1}, 
+ {'question_text': 'Guest Information', 'children': None, 'name': 'sr_guest_info', 'type': 11, 'value': '', 'order': 200}, {'question_text': 'sr_name', 'children': [{'question_text': 'First Name',
+ 'children': None, 'name': 'sr_first_name', 'type': 6, 'value': 'Tho', 'order': 10}, {'question_text': 'Name Split', 'children': None, 'name': 'sr_name_split', 'type': 24, 'value': None, 'order': 20},
+ {'question_text': 'Last Name', 'children': None, 'name': 'sr_last_name', 'type': 6, 'value': 'Huynh', 'order': 30}], 'name': 'sr_name', 'type': 0, 'value': None, 'order': -1}, {'question_text': 
+ None, 'children': [{'question_text': 'sr_phone', 'children': [{'question_text': 'Phone Number', 'children': None, 'name': 'sr_phone_number', 'type': 6, 'value': '43646', 'order': -1}], 'name': 
+ 'sr_phone', 'type': 0, 'value': None, 'order': -1}, {'question_text': 'phone / email split', 'children': None, 'name': 'sr_phone_email_split', 'type': 24, 'value': None, 'order': 225}, 
+ {'question_text': 'sr_email', 'children': [{'question_text': 'Email Address', 'children': None, 'name': 'sr_email_address', 'type': 6, 'value': 'tho.huynh@economical.com', 'order': -1}], 
+ 'name': 'sr_email', 'type': 0, 'value': None, 'order': -1}, {'question_text': None, 'children': None, 'name': 'sr_phone_split_end', 'type': 20, 'value': None, 'order': 235}], 'name':
+ 'sr_phone_split_start', 'type': 0, 'value': None, 'order': 215}, {'question_text': 'sr_start_and_end_dates', 'children': [{'question_text': 'Start Date/Time (Eastern)', 'children': None, 'name': 
+ 'start_date_time', 'type': 10, 'value': '2019-01-17 15:28:23', 'order': 1001}, {'question_text': 'Split', 'children': None, 'name': 'Split', 'type': 24, 'value': None, 'order': 1002}, 
+ {'question_text': 'End Date/Time (Eastern)', 'children': None, 'name': 'end_date_time', 'type': 10, 'value': '2019-01-19 15:28:30', 'order': 1003}], 'name': 'sr_start_and_end_dates', 'type': 0, 
+ 'value': None, 'order': -1}, {'question_text': 'sr_additional_comments', 'children': [{'question_text': 'Request Details', 'children': None, 'name': 'add_comments', 'type': 2, 'value': 
+ 'This is a request for Bogdan to setup GWLAN.', 'order': 999}], 'name': 'sr_additional_comments', 'type': 0, 'value': None, 'order': -1}], 'comments': '', 'quantity': '1', 'approval':
+ 'Requested', 'sla_due': 'UNKNOWN', 'comments_and_work_notes': '', 'due_date': '2019-01-17 15:28:23', 'sys_mod_count': '3', 'recurring_price': '$0.00', 'sys_tags': '', 'billable': 'false',
+ 'u_category': 'Network', 'cat_item': 'Guest Wi-Fi Access Request', 'stage': 'Fulfillment', 'escalation': 'Normal', 'upon_approval': 'Proceed to Next Task', 'u_tp_date': '', 
+ 'u_additional_services_required': 'false', 'correlation_id': '', 'location': '', 'estimated_delivery': ''}
+

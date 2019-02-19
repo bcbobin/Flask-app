@@ -22,7 +22,7 @@
 } 
 /* used for the navigation buttons at the top of the screen */
 .navbtn {
-	background-color: inherit; 
+	background-color: #003359; 
 	border: none;
 	color: white;
 	padding: 15px 32px;
@@ -46,7 +46,7 @@
 	font-size:20px;
 	cursor:pointer;
 	color:white;
-	width:49.62%;
+	width:49.619%;
 	transition:0.3s;
 }
 /*must be declared after in order for it to take priority over the other button class for the colors to change*/
@@ -59,6 +59,10 @@
 .cwlanpressed{
 	background-color:white;
 	color:#60c2e9;
+}
+#searchbtn, #cwlansearchbtn{
+	margin-left: 0;
+
 }
 
 /*Changes the color of the buttons when hovering over them*/
@@ -136,7 +140,7 @@ p{
 /*the search button on the search for user and delete user page*/
 .searchButton{
 	background-color:white;
-	width:15%;
+	width:8%;
 	height: 52px;
 	border: 1px solid black;
 	border-radius:5px;
@@ -144,7 +148,6 @@ p{
 	cursor:pointer;
 	position:absolute;
 	bottom:10px;
-	margin-left: 0.5em;
 }
 #approval{
 	color: orange;

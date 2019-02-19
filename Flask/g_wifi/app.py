@@ -9,6 +9,8 @@ from passlib.hash import sha256_crypt #to be used for password encryption
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = '▒R+▒4w▒▒Y}4*ҟ▒'        #use command to generate python -c 'import os; print(os.urandom(16))'
+# s_username= ""
+# s_password= ""
 #UPLOAD_FOLDER = '/tmp'
 #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #socketio = SocketIO(app)
@@ -19,13 +21,15 @@ def home():
     return render_template('login.html')
     
 #checks user input and gives entrace to main site (will be using a database to check or servicenow)
-@app.route('/landing', methods=['POST'])
+@app.route('/landing', methods=['GET','POST'])
 def permission():
-    username = request.form['login']
-    password = request.form['password']
+    if request.method == 'GET':
+        return redirect('/', code= 302)
+    s_username = request.form['login']
+    s_password = request.form['password']
     
-    if(username == "admin" and password == "pass"):
-        return render_template('index.html')
+    if(s_username == "admin" and s_password == "pass"):
+        return render_template('indexboot.html')
     else:
         flash("Authentication failed!")
         return redirect('/', code = 302) 
@@ -38,9 +42,9 @@ def permission():
 @app.route('/new', methods=['POST'])
 def data():
     #pull specific info from the html form by element name in html
-    s_username = request.form['login']
-    s_password = request.form['password']
     s_email = request.form['sponsoremail'].lower()
+    global s_username
+    global s_password
     #TODO - is an economical check required for sponser_email(possibly)
     ritm_num = request.form['ritm']
     duration = int(request.form['length'])
