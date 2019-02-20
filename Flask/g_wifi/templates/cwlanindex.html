@@ -47,9 +47,9 @@
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="navbarSupportedContent" style="background-color: #003359">
-	   <button id= "vlanbtn" class="navbtn nav-item" onclick="nav(1)"><i class="fa fa-fw fa-user"></i> VLAN Move</button><!--
-	--><button  id= "wifibtn" class="navbtn nav-item pressed" onclick="nav(2)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-Fi</button><!--
-	--><button  id = "cwlanbtn" class="navbtn nav-item" onclick="nav(3)"><i class="fa fa-fw fa-signal"></i> C-WLAN</button>
+	   <button id= "vlanbtn" class="navbtn nav-item " onclick="nav(1)" hidden><i class="fa fa-fw fa-user" ></i> VLAN Move</button><!--
+	--><button  id= "wifibtn" class="navbtn nav-item  " onclick="nav(2)" hidden><i class="fa fa-fw fa-wifi" ></i> Guest Wi-Fi</button><!--
+	--><button  id = "cwlanbtn" class="navbtn nav-item pressed" onclick="nav(3)"><i class="fa fa-fw fa-signal"></i> C-WLAN</button>
 	</div>
 </nav>
 
@@ -283,7 +283,7 @@
 	<form id="addcwlan" action="/cwlan" method="post" enctype="multipart/form-data">
 		<p style="font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;"><b>Add User</b></p>    
 		<label>Wireless MAC address:</label>
-			<input id="macAddress" type="text" name="MAC" placeholder="XX:XX:XX:XX:XX:XX" maxlength='17' required>		
+			<input type="text" name="MAC" placeholder="Format 54e1.ad0b.7f94" required>		
 		<div class="row">
 			<label style="padding-left:15px">Sponsor Information:</label>
 		</div>

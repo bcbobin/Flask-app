@@ -26,6 +26,21 @@ function nav(x){
     } 
 }
 
+var macAddress = $("#macAddress");
+
+function formatMAC(e) {
+    var r = /([a-f0-9]{2})([a-f0-9]{2})/i,
+        str = e.target.value.replace(/[^a-f0-9]/ig, "");
+
+    while (r.test(str)) {
+        str = str.replace(r, '$1' + ':' + '$2');
+    }
+
+    e.target.value = str.slice(0, 17);
+};
+
+macAddress.on("keyup", formatMAC);
+
 //used for the guest wifi tabs to change which subform is active 
 function Navigate(x){
     $('.wifipressed').toggleClass('wifipressed');
@@ -60,6 +75,31 @@ function Navigate(x){
         $('#extendbtn').toggleClass('wifipressed');
     } */
 }
+$('#WiFi').submit(function()
+ {
+    $("input[type='submit']", this)
+      .val("Please Wait...")
+      .attr('disabled', 'disabled');
+ 
+    return true;
+  });
+  $('#vlanMove').submit(function()
+ {
+    $("input[type='submit']", this)
+      .val("Please Wait...")
+      .attr('disabled', 'disabled');
+ 
+    return true;
+  });
+ $('#cwlan').submit(function()
+ {
+    $("input[type='submit']", this)
+      .val("Please Wait...")
+      .attr('disabled', 'disabled');
+ 
+    return true;
+  });
+
 
 function cwlan(x){
     $('.cwlanpressed').toggleClass('cwlanpressed');

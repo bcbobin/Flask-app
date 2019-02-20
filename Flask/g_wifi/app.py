@@ -1,41 +1,62 @@
 
 import os, tempfile, datetime
-import main
-import execute, util
-import subprocess  #TODO(if importing other functions and not converting to python fully) - use to run php possibly 
+import execute, util, main                                              #custom python files import
 from flask import Flask, jsonify, request, render_template, flash, redirect, send_file, send_from_directory
-from passlib.hash import sha256_crypt #to be used for password encryption 
-#from flask_socketio import SocketIO
+import hashlib, netmiko
+
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
-app.secret_key = '▒R+▒4w▒▒Y}4*ҟ▒'        #use command to generate python -c 'import os; print(os.urandom(16))'
-# s_username= ""
-# s_password= ""
-#UPLOAD_FOLDER = '/tmp'
-#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-#socketio = SocketIO(app)
+
 
 #login page for authentication 
 @app.route('/')
 def home():
     return render_template('login.html')
-    
+       
 #checks user input and gives entrace to main site (will be using a database to check or servicenow)
 @app.route('/landing', methods=['GET','POST'])
 def permission():
+###############################################
+#for controller auth
+#device = {
+#   'device_type': 'cisco_wlc', 
+#   'ip': '10.200.254.250',
+#   'username': '',                                         # use the provided password and user
+#   'password': '',
+#}
+#try: 
+#   connect = netmiko.ConnectHandler(**device)
+#except (ValueError):
+#   flash("User does not have controller access")
+################################################
+
+    #deny access if method is GET, should be attempting a post with credentials only
     if request.method == 'GET':
         return redirect('/', code= 302)
+    
+    global s_username
     s_username = request.form['login']
+    global s_password
     s_password = request.form['password']
     
-    if(s_username == "admin" and s_password == "pass"):
+    #will move service now authentication here, password and username will not leave this method for security
+    if(s_username == "gwifi" and s_password == "pass"):
+        return render_template("gwifiindex.html")
+    elif(s_username == "cwlan" and s_password == "pass"):
+        return render_template("cwlanindex.html")
+    elif(s_username == "admin" and s_password == "pass"):
         return render_template('indexboot.html')
     else:
-        flash("Authentication failed!")
-        return redirect('/', code = 302) 
+        auth = main.authorize(s_username, s_password) 
+        if auth == -1:
+            flash("Authorization Failed, try again")
+            return redirect('/', code = 302)
+        else:
+            return render_template('indexboot.html')
 
-    #########Feb 8th##########
-#TODO - lock site and authenticate (low prio)
+    #########Feb 19th##########
+#TODO - intergrate database into site
+#TODO - convert all tabs/forms to work without php
 #TODO - general error testing (bug hunt)
 
 #comunicate with other script and pull post values 
@@ -43,8 +64,8 @@ def permission():
 def data():
     #pull specific info from the html form by element name in html
     s_email = request.form['sponsoremail'].lower()
-    global s_username
-    global s_password
+    print(s_username)
+    print(s_password)
     #TODO - is an economical check required for sponser_email(possibly)
     ritm_num = request.form['ritm']
     duration = int(request.form['length'])
@@ -59,7 +80,7 @@ def data():
     else:
         data = main.record_retrieve(ritm_num, duration)
        #if failed to retrieve record, specifiy why using the returned values as error flags
-        if data['ritm_not_found'] == "true":
+        if data['ritm_not_found'] == "true": 
             flash('Record could not be retrieved')
         elif data['fail'] == "true":
             flash("RITM record returned unexpected value. Check RITM number!")
@@ -104,14 +125,44 @@ def data():
  
 @app.route('/cwlan', methods=['POST'])
 def cwlan():
-
+    mac_addr = request.form['MAC']
+    spon_name = request.form['spon_name']
+    spon_email = request.form['spon_email']
+    start_date = request.form['startdate']
+    end_date = request.form['enddate']
+    user_name = request.form['users_name']
+    user_email = request.form['user_email']
+    user_company = request.form['user_company']
+    
+    
 
     return redirect('/', code = 302)      #return back to main page after completion 
 
+@app.route('/add', methods=['POST'])
+def add():
+    mac_addr = request.form['MAC']
+    spon_name = request.form['spon_name']
+    spon_email = request.form['spon_email']
+    start_date = request.form['startdate']
+    end_date = request.form['enddate']
+    user_name = request.form['users_name']
+    user_email = request.form['user_email']
+    user_company = request.form['user_company'] 
+    return redirect('/', code = 302)      #return back to main page after completion 
+    
+
+@app.route('/delete', methods=['POST'])
+def delete():
+    return
+
+@app.route('/search', methods=['POST'])
+def search():
+    return
 
 
 
 
 #run the app on specified ip and port 
 if __name__ == '__main__':
-   app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
+    app.secret_key = os.urandom(16)
+    app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))

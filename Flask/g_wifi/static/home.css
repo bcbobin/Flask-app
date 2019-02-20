@@ -46,7 +46,7 @@
 	font-size:20px;
 	cursor:pointer;
 	color:white;
-	width:49.619%;
+	width:49.5%;
 	transition:0.3s;
 }
 /*must be declared after in order for it to take priority over the other button class for the colors to change*/
@@ -252,6 +252,14 @@ body{
 	position: relative;
 	min-height: 100%;
 	
+}
+html{
+	overflow-y: scroll;
+}
+.divider{
+	width:1.001%;
+	height: auto;
+	display: inline-block;
 }
 
 #footer{
