@@ -1,12 +1,18 @@
 
 import os, tempfile, datetime
-import execute, util, main                                              #custom python files import
+import execute, util, main, cwlan                                              #custom python files import
 from flask import Flask, jsonify, request, render_template, flash, redirect, send_file, send_from_directory
 import hashlib, netmiko
 
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
+    #########Feb 21th##########
+#TODO - have different types of flash message colors to indicate success or failiure  
+#TODO - restructure authentication
+#TODO - intergrate database into site
+#TODO - convert all tabs/forms to work without php
+#TODO - general error testing (bug hunt)
 
 #login page for authentication 
 @app.route('/')
@@ -17,26 +23,35 @@ def home():
 @app.route('/landing', methods=['GET','POST'])
 def permission():
 ###############################################
-#for controller auth
-#device = {
+#for controller auth -  note, two controllers that need to be pinged when updates are made IPs: 10.200.254.250 and 10.208.254.250
+#device1 = {
 #   'device_type': 'cisco_wlc', 
 #   'ip': '10.200.254.250',
 #   'username': '',                                         # use the provided password and user
 #   'password': '',
 #}
+
+#device2 = {
+#   'device_type': 'cisco_wlc', 
+#   'ip': '10.208.254.250',
+#   'username': '',                                         
+#   'password': '',
+#}
 #try: 
-#   connect = netmiko.ConnectHandler(**device)
+#   connect = netmiko.ConnectHandler(**device1)
 #except (ValueError):
-#   flash("User does not have controller access")
+#   try: 
+#       connect = netmiko.ConnectHandler(**device2)
+#   except (ValueError):
+#       flash("User does not have controller access")
+#       return
 ################################################
 
     #deny access if method is GET, should be attempting a post with credentials only
     if request.method == 'GET':
         return redirect('/', code= 302)
-    
-    global s_username
+  
     s_username = request.form['login']
-    global s_password
     s_password = request.form['password']
     
     #will move service now authentication here, password and username will not leave this method for security
@@ -54,10 +69,7 @@ def permission():
         else:
             return render_template('indexboot.html')
 
-    #########Feb 19th##########
-#TODO - intergrate database into site
-#TODO - convert all tabs/forms to work without php
-#TODO - general error testing (bug hunt)
+
 
 #comunicate with other script and pull post values 
 @app.route('/new', methods=['POST'])
@@ -121,22 +133,6 @@ def data():
                 main.update_records(ritm_num)
     return redirect('/', code = 302)      #return back to main page after completion 
  
- 
- 
-@app.route('/cwlan', methods=['POST'])
-def cwlan():
-    mac_addr = request.form['MAC']
-    spon_name = request.form['spon_name']
-    spon_email = request.form['spon_email']
-    start_date = request.form['startdate']
-    end_date = request.form['enddate']
-    user_name = request.form['users_name']
-    user_email = request.form['user_email']
-    user_company = request.form['user_company']
-    
-    
-
-    return redirect('/', code = 302)      #return back to main page after completion 
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -148,7 +144,17 @@ def add():
     user_name = request.form['users_name']
     user_email = request.form['user_email']
     user_company = request.form['user_company'] 
-    return redirect('/', code = 302)      #return back to main page after completion 
+	
+	add = cwlan.add_user(cont1, cont2, mac, startdate, enddate)
+	
+	if add == -1:
+		flash('User could not be added, incorrect MAC address')
+	elif add = 1:
+		flash('User already exists!')
+	else:
+		flash('User has been successfully added!')
+		
+    return redirect('/landing', code = 302)      #return back to main page after completion 
     
 
 @app.route('/delete', methods=['POST'])
