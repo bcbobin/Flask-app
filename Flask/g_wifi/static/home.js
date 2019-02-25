@@ -1,4 +1,24 @@
 //used to switch which form is visable on navbtn putton press
+
+
+var macAddress = $("#macAddress");
+var cwlanmacAddress = $("#cwlanmacAddress");
+
+function formatMAC(e) {
+    var r = /([a-f0-9]{2})([a-f0-9]{2})/i,
+        str = e.target.value.replace(/[^a-f0-9]/ig, "");
+
+    while (r.test(str)) {
+        str = str.replace(r, '$1' + ':' + '$2');
+    }
+
+    e.target.value = str.slice(0, 17);
+};
+
+macAddress.on("keyup", formatMAC);
+cwlanmacAddress.on("keyup", formatMAC);
+
+
 function nav(x){
     $('.pressed').toggleClass('pressed');
     if (x===1){
@@ -26,20 +46,7 @@ function nav(x){
     } 
 }
 
-var macAddress = $("#macAddress");
 
-function formatMAC(e) {
-    var r = /([a-f0-9]{2})([a-f0-9]{2})/i,
-        str = e.target.value.replace(/[^a-f0-9]/ig, "");
-
-    while (r.test(str)) {
-        str = str.replace(r, '$1' + ':' + '$2');
-    }
-
-    e.target.value = str.slice(0, 17);
-};
-
-macAddress.on("keyup", formatMAC);
 
 //used for the guest wifi tabs to change which subform is active 
 function Navigate(x){

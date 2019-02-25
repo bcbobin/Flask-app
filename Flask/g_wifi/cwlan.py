@@ -5,7 +5,6 @@
 
 import cgi, cgitb 
 import sys , traceback
-sys.path.insert(0, "/usr/local/lib/python3.4/site-packages/")
 #for system interaction 
 import sys
 #for http interaction 
@@ -30,10 +29,11 @@ def add_user(cont1, cont2, mac, start, end):
     #error - '\nIncorrect input! <IP addr> must be a valid IP Address\n'
     
     connect1 = netmiko.ConnectHandler(**cont1)
-    connect2 = netmiko.ConnectHandler(**cont2)
-    output1 = connect1.send_command("config macfilter add "+ mac +" 3 cwlan-int " + start + ":" + end)
-    output2 = connect2.send_command("config macfilter add "+ mac +" 3 cwlan-int " + start + ":" + end)
+    output1 = connect1.send_command("config macfilter add "+ str(mac) +" 3 cwlan-int " + str(start) + ":" + str(end))
     connect1.disconnect()
+    
+    connect2 = netmiko.ConnectHandler(**cont2)
+    output2 = connect2.send_command("config macfilter add "+ str(mac) +" 3 cwlan-int " + str(start) + ":" + str(end))
     connect2.disconnect()
     
     if "Incorrect input" in output1 or output2:         #mac adresss is wrong
