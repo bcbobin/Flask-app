@@ -1,0 +1,272 @@
+/*this styles the blue bare header on the screen*/
+#header{
+	width:100%;
+	max-width:110%;
+	background-color:#60c2e9;
+	margin:0;
+	padding: 0;
+}
+
+/*this class is for the home, VLAN move, guest wifi, and contact buttons*/
+.button {            
+	background-color: #003359; 
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	display: inline-block;
+	font-size: 16px;
+	margin: 0px 0px;
+	cursor: pointer;
+	transition:0.3s;
+} 
+/* used for the navigation buttons at the top of the screen */
+.navbtn {
+	background-color: #003359; 
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	display: inline-block;
+	font-size: 20px;
+	margin: 0px 0px;
+	cursor: pointer;
+	transition:0.3s;
+	width: 11em;
+}
+/* class to change the color of the navbtn if they are pressed for user feedback */
+.pressed{
+	background-color: #60c2e9;
+}
+/* for the guest wifi btns */
+.wifibtn{
+	background-color:#60c2e9;
+	border:none;
+	padding:16.5px 32px;
+	font-size:20px;
+	cursor:pointer;
+	color:white;
+	width:49.5%;
+	transition:0.3s;
+}
+/*must be declared after in order for it to take priority over the other button class for the colors to change*/
+.wifipressed{
+	background-color:white;
+	color:#60c2e9;
+	border: 0.5em;
+	border-color: #60c2e9;
+}
+.cwlanpressed{
+	background-color:white;
+	color:#60c2e9;
+}
+#searchbtn, #cwlansearchbtn{
+	margin-left: 0;
+
+}
+
+/*Changes the color of the buttons when hovering over them*/
+.btn-group .navbtn:hover, .btn-group .navbtn:focus, .loginbtn:hover{
+	background-color: #60c2e9 ;
+}
+
+.wifibtn:hover{
+	color: #60c2e9;
+	background-color: white;
+}
+
+/*sets all the pages to not visible when you start the page up*/
+#cwlan, #vlanMove,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan{
+	display:none;
+}
+a:link{
+	color: white;
+}
+
+
+/*the border around all of the forms*/
+.backgroundForms {
+	position:absolute;
+	right:0vw;
+	left: 0vw;
+	width:60vh;
+	min-width:1000px;
+	border:2px solid black;
+	padding-bottom: 1em;
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-top: 1em;
+	font-size:25px;
+	margin: 0 auto;
+	margin-bottom: 3em;
+}
+
+#vlanMove input[type=text], #WiFi input[type=email], #guestWiFi input[type=text], #guestWiFi input[type=email], #guestDelete input[type=text], #guestExtend input[type=text], #cwlan input[type=text], #cwlan input[type=date],#cwlan input[type=email]{
+	border:1px solid black;
+	border-radius:5px;
+	width:100%;
+	font-size:20px;
+	padding:10px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+p{
+	font-family: "ProximaNovaW01-Bold", sans-serif;
+	font-weight: normal;
+}
+#title{
+	margin-bottom: auto;
+	margin-top: 0.25em;
+}
+
+#guestSearch input[type=text]{
+	border:1px solid black;
+	border-radius:5px;
+	width:90%;
+	font-size:20px;
+	padding:10px;
+	margin-top:0.5em;
+}
+/* for the flashed alerts that come from python */
+#alerts{
+	position: relative;
+    text-align: center;
+    margin: 0 auto;
+    min-width: 35em;
+    font-weight: 600;
+	font-size: 1.5em;
+}
+
+/*the search button on the search for user and delete user page*/
+.searchButton{
+	background-color:white;
+	width:8%;
+	height: 52px;
+	border: 1px solid black;
+	border-radius:5px;
+	display:inline-block;
+	cursor:pointer;
+	position:absolute;
+	bottom:10px;
+}
+#approval{
+	color: orange;
+}
+
+/*the search button on the extended time page*/
+.searchButton1{
+	background-color:white;
+	width:5%;
+	height:45px;
+	border: 1px solid black;
+	border-radius:5px;
+	display:inline-block;
+	cursor:pointer;
+	position:absolute;
+	top:385px;
+}
+
+.searchButton:hover {
+	background-color:rgb(100,100,100);
+	
+}
+
+#vlanMove select, #guestWiFi select, #cwlan select{
+	border:1px solid black;
+	border-radius:5px;
+	width:100%;
+	font-size:20px;
+	padding:10px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+/*formats the submit button on the VLAN Move page*/
+.submitButton{
+	background-color:#60c2e9;
+	width:100%;
+	color:white;
+	padding:15px;
+	cursor:pointer;
+	font-size:25px;
+	margin: 20px 0px;
+	border: none;
+	transition: 0.3s;
+}
+
+.submitButton:hover{
+	color: #60c2e9;
+	background-color: white;
+}
+/* formats the login pages button */
+.loginbtn{
+	width: 100%;
+	background-color:#003359;
+	color:white;
+	padding:15px;
+	cursor:pointer;
+	font-size:25px;
+	margin: 20px 0px;
+	border: none;
+	transition: 0.3s;
+
+}
+.labelformat{
+	text-align:center;
+}
+/* styles the footer at the bottom of the page  */
+footer{
+	background-color: #003359;
+	color: white;
+	width: auto;
+	height: 3em;
+	max-height: 5em;
+	font-size: 1em;
+	position: fixed;
+	bottom: 0;
+	max-width: 100%;
+	overflow: hidden;
+	left: 0;
+	right: 0;
+}
+/* rest of id tags are used for styling text inside the footer  */
+#tag{
+	padding-left: 1em;
+	display: inline-block;
+	float: left;
+	margin-top: 1em;
+}
+
+#contactfooter{
+	display: inline-block;
+	text-align: right;
+	padding-right: 1em;
+	float: right;
+	margin-top: 1em;
+
+}
+#form{
+	margin: auto;
+}
+body{
+	position: relative;
+	min-height: 100%;
+	
+}
+html{
+	overflow-y: scroll;
+}
+.divider{
+	width:1.001%;
+	height: auto;
+	display: inline-block;
+}
+
+#footer{
+	position: fixed;
+	display: block;
+}
+#contactemail:hover {
+	color: #60c2e9;
+}
+

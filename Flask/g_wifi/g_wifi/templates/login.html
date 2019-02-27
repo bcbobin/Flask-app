@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Login</title>
+
+<link href="static/home.css" rel="stylesheet" type="text/css">    <!-- acesses the css file-->
+<!-- Load an icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="static/jquery-ui/jquery.js"></script>
+<script src="static/jquery-ui/jquery-ui.js"></script>
+<!-- using bootstrap for some effects and ease of contruction -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+<body>
+<div>  
+	<img src="static/economical.jpg" alt="Economical Logo" style="width:150px;height:40px;">     <!--pastes the economical logo into the top left hand side of the screen-->
+</div>
+
+	<div class="container" id="form">
+	<p style="margin-top: .5em;margin-bottom: 0.5em;font-size:35px;text-align:center;background-color:#003359;color:white; padding:10px;"><b>Network Tools Portal</b></p>
+	<p style="text-align:center; font-size: 15px; font-weight: bold">Please sign in using your company credentials</p>
+
+        <!--Login form for users-->	
+		<form id="login" action="/landing" method="post" enctype="multipart/form-data">
+			<div class ="form-row">
+				<div class="form-group col-md-6">
+					<input type="text" class="form-control" name="login" placeholder="Username" required>
+				</div>
+				<div class="form-group col-md-6">
+					<input type="password" class="form-control" name="password" placeholder="Password" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<input value="Submit" type="submit" class="loginbtn">
+			</div>
+		</form>
+	
+
+</div>
+<!-- for the authentication message flashes  -->
+<div class="container" >
+  	{% with messages = get_flashed_messages() %}
+  	  {% if messages %}
+  	    {% for message in messages %}
+		<div class='alert alert-danger alert-dismissible' role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    {{message}}
+		</div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
+	
+	{% block body %}{% endblock %}
+</div>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
