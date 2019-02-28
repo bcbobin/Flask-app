@@ -1,7 +1,7 @@
 
 import os, tempfile, datetime
 from execute import execute
-import util, main, cwlan                                              #custom python files import
+import util, main, cwlan, search                                              #custom python files import
 from flask import Flask, jsonify, request, render_template, flash, redirect, send_file, send_from_directory
 import hashlib, netmiko
 
@@ -63,7 +63,7 @@ def permission():
     
 
     if(device1['username'] == "gwifi" and device1['password'] == "pass"):
-        return render_template("gwifiindex.html")
+        return render_template("gwifiindex.html", value="disabled")
     elif( device1['username'] == "cwlan" and device1['password'] == "pass"):
         return render_template("cwlanindex.html")
     elif( device1['username'] == "admin" and device1['password'] == "pass"):
@@ -74,7 +74,14 @@ def permission():
             flash("Authorization Failed, try again", 'danger')
             return redirect('/', code = 302)
         else:
-            return render_template('indexboot.html')
+            try:                                                            #check if user exits on the controllers, slows down login
+               connect = netmiko.ConnectHandler(**device1)                  #to speed up, only check one controller or have it converted to database check
+            except (ValueError):
+               try: 
+                   connect = netmiko.ConnectHandler(**device2)
+               except (ValueError):
+                   return render_template('indexboot.html', value="disabled")
+            return render_template('indexboot.html', value="")
 
 
 
@@ -168,13 +175,12 @@ def delete():
 
 @app.route('/search', methods=['POST'])
 def search():
-    return
+    username = request.form['search']
+    output = search.search(username)
+    return json.dumps(output)
 
 
 #run the app on specified ip and port 
 if __name__ == '__main__':
     app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
     app.secret_key = "127067bbafca69f8603c507968adaa8729d4841da83a3ed1"
-# elif ifmod_wsgi:
-    # app.secret_key = "127067bbafca69f8603c507968adaa8729d4841da83a3ed1"
-    # application = app.wsgifunc()
