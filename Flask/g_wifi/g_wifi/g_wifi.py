@@ -23,12 +23,21 @@ device2 = {
    'password': '',
 }
 
-    #########Feb 22nd##########
+    #########March 1st##########
+#TODO - Search Table:
+#TODO - add delete and search buttons to the table as well as sort options for the columns 
+#TODO - shrink size of table text  
+
+#TODO - Form:
+#TODO - add option for no RITM and have for to fill out in that case
+#TODO - add start date to the forms for ease of calculating time 
+#TODO - change time selection to have custom instead of months and be able to specifiy an end date if custom is selected/ and change to requires Security Approval
+
+#TODO - Functionality:
 #TODO - investigate logout button and fuctionality
-#TODO - restructure authentication
 #TODO - intergrate database into site
 #TODO - convert all tabs/forms to work without php
-#TODO - general error testing (bug hunt)
+
 
 #login page for authentication 
 @app.route('/')

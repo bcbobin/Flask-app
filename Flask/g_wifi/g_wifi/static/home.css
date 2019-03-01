@@ -76,7 +76,7 @@
 }
 
 /*sets all the pages to not visible when you start the page up*/
-#cwlan, #vlanMove,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan, #test2{
+#cwlan, #vlanMove,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan, #test2, #four, #five{
 	display:none;
 }
 a:link{
@@ -185,7 +185,7 @@ p{
 
 /*formats the submit button on the VLAN Move page*/
 .submitButton{
-	background-color:#60c2e9;
+	background-color:#aa272f;
 	width:100%;
 	color:white;
 	padding:15px;
@@ -197,7 +197,7 @@ p{
 }
 
 .submitButton:hover{
-	color: #60c2e9;
+	color: #aa272f;
 	background-color: white;
 }
 /* formats the login pages button */
