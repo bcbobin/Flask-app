@@ -76,13 +76,15 @@
 }
 
 /*sets all the pages to not visible when you start the page up*/
-#cwlan, #vlanMove,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan{
+#cwlan, #vlanMove,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan, #test2{
 	display:none;
 }
 a:link{
 	color: white;
 }
-
+#four{
+	width:100%;
+}
 
 /*the border around all of the forms*/
 .backgroundForms {
@@ -140,7 +142,7 @@ p{
 /*the search button on the search for user and delete user page*/
 .searchButton{
 	background-color:white;
-	width:8%;
+	width:9%;
 	height: 52px;
 	border: 1px solid black;
 	border-radius:5px;
@@ -171,7 +173,7 @@ p{
 	
 }
 
-#vlanMove select, #guestWiFi select, #cwlan select{
+#vlanMove select, #guestWiFi select, #cwlan select,#extendSelect{
 	border:1px solid black;
 	border-radius:5px;
 	width:100%;

@@ -1,9 +1,9 @@
 
 import os, tempfile, datetime
 from execute import execute
-import util, main, cwlan, search                                              #custom python files import
+import util, main, cwlan, editNetmiko                                              #custom python files import
 from flask import Flask, jsonify, request, render_template, flash, redirect, send_file, send_from_directory
-import hashlib, netmiko
+import hashlib, netmiko, json
 
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
@@ -53,8 +53,8 @@ def permission():
 ################################################
 
     #deny access if method is GET, should be attempting a post with credentials only
-    if request.method == 'GET':
-        return redirect('/', code= 302)
+    # if request.method == 'GET':
+        # return redirect('/', code= 302)
   
     device1['username'] = request.form['login']
     device2['username'] = request.form['login']
@@ -77,10 +77,10 @@ def permission():
             try:                                                            #check if user exits on the controllers, slows down login
                connect = netmiko.ConnectHandler(**device1)                  #to speed up, only check one controller or have it converted to database check
             except (ValueError):
-               try: 
-                   connect = netmiko.ConnectHandler(**device2)
-               except (ValueError):
-                   return render_template('indexboot.html', value="disabled")
+               # try: 
+                   # connect = netmiko.ConnectHandler(**device2)
+               # except (ValueError):
+                return render_template('indexboot.html', value="disabled")
             return render_template('indexboot.html', value="")
 
 
@@ -143,7 +143,7 @@ def data():
                 flash("Controller is busy, try again in 5 minutes", 'warning')
             else:
                 main.update_records(ritm_num)
-    return redirect('/', code = 302)      #return back to main page after completion 
+    return redirect('/landing', code = 302)      #return back to main page after completion 
  
 
 @app.route('/add', methods=['POST'])
@@ -173,11 +173,13 @@ def add():
 def delete():
     return
 
-@app.route('/search', methods=['POST'])
-def search():
+@app.route('/searchdata', methods=['GET', 'POST'])
+def searchdata():
     username = request.form['search']
-    output = search.search(username)
-    return json.dumps(output)
+    output = json.dumps(editNetmiko.usersearch(username))
+    if output == -1:
+        flash("User could not be found", "danger")
+    return render_template('indexboot.html', output = output)
 
 
 #run the app on specified ip and port 

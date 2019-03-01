@@ -17,16 +17,6 @@
 
 <body>
 
-
-<!-- this is the welcome that will remail on the screen-->
-<!-- <div class="row" style="display: flex">
-    <div class= "span3">
-        <img src="static/economical.jpg" alt="Economical Logo" style="width:150px;height:40px;">
-    </div>
-    <div class="span3">
-        <b style="font-size:150%;font-family:verdana;">Network Tool Portal</b>
-    </div>
-</div>   <!--pastes the economical logo into the top left hand side of the screen-->
 <div class="container-fluid">
   <div class="row">
     <div class="col">
@@ -40,9 +30,7 @@
   </div>
 </div>
 <!-- header buttons-->
-<nav id="header" class="btn-group navbar navbar-expand-lg navbar-dark">
-    <!-- <button id= "homebtn" class="navbtn" onclick="nav(1)"><i class="fa fa-fw fa-home"></i> Home</button><!--
-    --><!-- <a href="#" class="navbar-left"><img src="static/economical.jpg" alt="Economical Logo" style="width:15em;height:4em;"></a> --> 
+<nav id="header" class="btn-group navbar navbar-expand-lg navbar-dark"> 
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -73,28 +61,6 @@
     {% block body %}{% endblock %}
 </div>
 
-<!--home page-->
-
-<!-- <div id="homeForm" class="backgroundForms">
-    <p style="text-align:center; font-size:30px; text-decoration:underline">Network</p>
-    <hr/>
-    <p style="font-size:25px; text-align:center;">Powered by NTW</p>
-</div>
-
-<!-- contact page -->
-<!--
-<div id="contact" class="backgroundForms">
-    <p style="text-align:center; font-size:40px; text-decoration:underline">Contact Informtation</p>
-    <p style="font-size:25px;">Network Group</p>
-    <hr/>
-    <p style="font-size:20px;">EMAIL: networkgroup@economical.com</p>
-    <br/>
-    <img src="static/Bruce Lee.JPG" alt="Bruce" style="width:20%; height:20%;" title="Tho Huynh: Martial Arts Expert">
-    <img src="static/Dumbledore.jpg" alt="Wizard" style="width:20%;height:35%;position:absolute;right:2.5%;" title="Ben Simpson: Web Master">
-</div>
- -->
-
-
 <!-- guest wifi form--> 
 <div id="WiFi" class="backgroundForms">
     <p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;">Guest Wi-Fi</p>
@@ -103,10 +69,7 @@
             
             <button id="addbtn" class="wifibtn" onclick="Navigate(1)">Add New User</button><!--
             --><div class="divider"></div><!--
-            --><button id="searchbtn" class="wifibtn" onclick="Navigate(2)">Search for User</button>
-        
-            <!-- <button id="deletebtn" class="wifibtn" onclick="Navigate(3)">Delete User</button>
-            <button id="extendbtn" class="wifibtn" onclick="Navigate(4)">Extend Time</button> -->
+            --><button id="searchbtn" class="wifibtn" onclick="Navigate(2); searchData('{{output}}')">Search for User</button>
         </div>
         <hr>
         <!--Add new user form-->
@@ -118,20 +81,20 @@
             <input type="email" name="sponsoremail" required>
                 <label>Access Time Duration</label>
             <select name="length" class="selectDuration" required>
-                    <option  value = "14400">4 hours</option>
-                    <option  value = "28800">8 hours</option>
-                    <option  value ="86400">24 hours</option>
-                    <option  value ="259200">3 days</option>
-                    <option  value ="604800">7 days</option>
-                    
-                    <option id="approval" value ="1209600" {{value}}>14 days: Requires Networking approval!</option>
-                    <option id="approval" value ="2592000" {{value}}>1 months: Requires Networking approval!</option>
-                    <option id="approval" value ="5184000" {{value}}>2 months: Requires Networking approval!</option>
-                    <option id="approval" value ="7776000" {{value}}>3 months: Requires Networking approval!</option>
-                    <option id="approval" value ="10368000" {{value}}>4 months: Requires Networking approval!</option>
-                    <option id="approval" value ="11826000" {{value}}>5 months: Requires Networking approval!</option>
-                    <option id="approval" value ="15552000" {{value}}>6 months: Requires Networking approval!</option>                
-                    <option id="approval" value ="31536000" {{value}}>1 year: Requires Networking approval!</option>
+				<option  value = "14400">4 hours</option>
+				<option  value = "28800">8 hours</option>
+				<option  value ="86400">24 hours</option>
+				<option  value ="259200">3 days</option>
+				<option  value ="604800">7 days</option>
+				<option id="approval" disabled="true"><b>Requires Networking Approval!</b></option>
+				<option id="approval" value ="1209600" {{value}}>14 days</option>
+				<option id="approval" value ="2592000" {{value}}>1 months</option>
+				<option id="approval" value ="5184000" {{value}}>2 months</option>
+				<option id="approval" value ="7776000" {{value}}>3 months</option>
+				<option id="approval" value ="10368000" {{value}}>4 months</option>
+				<option id="approval" value ="11826000" {{value}}>5 months</option>
+				<option id="approval" value ="15552000" {{value}}>6 months</option>                
+				<option id="approval" value ="31536000" {{value}}>1 year</option>
             </select>
 <!--        <label>Username:</label>
             <input type="text" name="login" required>
@@ -141,60 +104,65 @@
         </form>
     
         <!--Search for user form-->
-        <form id="guestSearch" action="/search.php" method="post" enctype="multipart/form-data">
+        <form id="guestSearch" action="/searchdata" method="post" enctype="multipart/form-data">
             <p></p>
             <div class="row">
                 <div class="col-11">
                     <label>Search for user by email address:</label>
                     <input name="search" type="email" placeholder="jondoe@hotmail.com.." ><!--
-                    --><button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
+                 --><button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
                 </div>
             </div>
             <p id="userFound"></p>
-            <p id="dataHere">The user information will go here</p>
         </form>
         
         
-        <!--Delete user form-->
-<!--        <form id="guestDelete" action="/delete1.php" method="post" enctype="multipart/form-data">
-            <p></p>
-            <label>Enter the email of the user to be deleted:</label>
-            <input name="account" type="text" placeholder="jondoe@hotmail.com.." style="width:97.5%;" required>
-        <label>Input your 3 Character ID:</label>
-            <input type="text" name="login" style="width:97.5%;" placeholder="abc.." required>
-            <label>Password:</label>
-            <input type="password" name="password" placeholder="Password.." required>           
-            <input value="Submit" type="submit" class="submitButton">
-        </form>
-        
-        <!--Extend time form-->
-<!--        <form id="guestExtend" action="/extend.php" method="post" enctype="multipart/form-data">
-            <p></p>
-            <label>Extended time:</label>
-            <select name="HOURS" class="selectDuration" required>
-                <optgroup label="HOURS">
-                    <option  value = "14400">4 hours</option>
-                    <option  value = "28800">8 hours</option>
-                    <option  value ="86400">24 hours</option>
-                    <option  value ="259200">3 days</option>
-                    <option  value ="604800">7 days</option>
-                    
-                    <option id="approval" value ="1209600">14 days: Requires Networking approval!</option>
-                    <option id="approval" value ="2592000" >1 months: Requires Networking approval!</option>
-                    <option id="approval"value ="5184000" >2 months: Requires Networking approval!</option>
-                    <option id="approval" value ="7776000" >3 months: Requires Networking approval!</option>
-                    <option id="approval" value ="10368000" >4 months: Requires Networking approval!</option>
-                    <option id="approval" value ="11826000" >5 months: Requires Networking approval!</option>
-                    <option id="approval" value ="15552000" >6 months: Requires Networking approval!</option>               
-                    <option id="approval" value ="31536000" >1 year: Requires Networking approval!</option>                 
-                    
-                    
-                </optgroup>
-            </select>
-            <label>Email address of the user to have extended time:</label>
-            <input name="account" type="email" placeholder="jondoe@hotmail.com.." style="width:97.5%;" required> 
-            <input value="Submit" type="submit" class="submitButton">
-        </form> -->
+		<form id="test2" action="">
+			<table id="table1" style="border-spacing:0; width: 100%; text-align:center;" onclick="checker()">
+				<tr>
+					<td style="color:rgb(96, 194, 233); width:55%"><b>User </b></td>
+					<td style="color:rgb(96, 194, 233); width: 40%"><b>Time Remaining </b></td>
+					<td style="color:rgb(96, 194, 233);"><b>Select</b></td>
+				</tr>
+			</table>
+			<p style="text-align:center;font-size:20px;">You have selected:</p>
+			<p id="testing" style="text-align:center;font-size:20px;">Please select a user from the list above</p>
+			<p style="text-align:center;font-size:20px;" id="one">Would you like to delete the user or extend their time?</p>
+			<div class="row" id="two">
+				<div class="col">
+					<input type="button" style="width:100%;" value="Delete User" class="DelOrExt wifibtn" onclick="navigate(1)" id="delete">
+				</div>
+				<div class="col">
+					<input type="button" style="width:100%;" value="Extend Time" class="DelOrExt wifibtn" onclick="navigate(2)" id="extend">
+				</div>
+			</div>
+			<p id="three" style="margin-top: 16px; text-align:center;font-size:20px;"></p>
+			<div class="row">
+				<div class="col">
+					<select name="extendSelect" id="four" class="selectDuration">
+						<option  value = "14400">4 hours</option>
+						<option  value = "28800">8 hours</option>
+						<option  value ="86400">24 hours</option>
+						<option  value ="259200">3 days</option>
+						<option  value ="604800">7 days</option>
+						<option id="approval" disabled="true"><b>Requires Networking Approval!</b></option>
+						<option id="approval" value ="1209600" {{value}}>14 days</option>
+						<option id="approval" value ="2592000" {{value}}>1 months</option>
+						<option id="approval" value ="5184000" {{value}}>2 months</option>
+						<option id="approval" value ="7776000" {{value}}>3 months</option>
+						<option id="approval" value ="10368000" {{value}}>4 months</option>
+						<option id="approval" value ="11826000" {{value}}>5 months</option>
+						<option id="approval" value ="15552000" {{value}}>6 months</option>                
+						<option id="approval" value ="31536000" {{value}}>1 year</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<input class="submitButton" type="button" value="Submit" id="five"> 
+				</div>
+			</div>
+		</form>
 </div>
 
 <!-- vlan move form -->
@@ -345,7 +313,101 @@
 <script type="text/javascript" src="static/home.js"></script>   <!-- accesses the javascript file-->
 <!-- bootstrap link in case of use  -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function(){
+	data = "{{output}}";
+	if (data != ""){
+		document.getElementById("guestWiFi").style.display="none";
+        document.getElementById("guestSearch").style.display="block";
+        document.getElementById("alerts").style.display="none";
+        $('#searchbtn').toggleClass('wifipressed');
+		document.getElementById("test2").style.display="block";
+		searchData(data);
+	}
+	data="";
+});
 
+var people=[]
+function searchData(data){
+//data="config paging disable (ptor2nww01) >show netuser summary Maximum logins allowed for a given user name..... Unlimited User Name WLAN Id User Type Lifetime Description ------------------------ -------- --------- ------------------------------ -------------------------------- amy.a.butler@ca.ey.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec TASK0078709 angelina_tan@mckinsey.com WLAN 2 Guest 120 days 0 hrs 0 mins 0 sec REQ0072570 bobby.j.thompson@ca.ey.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec TASK0082431 carol.gibbs@economical.com WLAN 2 Guest 180 days 0 hrs 0 mins 0 sec RIT001422 carson.brett@ca.ey.com WLAN 2 Guest 120 days 0 hrs 0 mins 0 sec TASK0088056 dalton.roth@ca.ey.com WLAN 2 Guest 90 days 0 hrs 0 mins 0 secs TASK0088059 edwin.marquez@seb-admin.com WLAN 2 Guest 0 days 8 hrs 0 mins 0 secs RITM0073177 eigbmember@economical.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec RITM0072341 frank.morassut@adastragrp.com WLAN 2 Guest 180 days 0 hrs 0 mins 0 sec Task0084621 gorda@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0073163 greg.demacio@ca.ey.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec TASK0082432 hans.reidl@economical.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec Cut-overto-CISCO jacque.friedland@gmail.com WLAN 2 Guest 180 days 0 hrs 0 mins 0 sec TASK0085371 jacque.friendland@gmail.com WLAN 2 Guest 180 days 0 hrs 0 mins 0 sec TASK0085371 jacqueline.tse@fsco.gov.on.ca WLAN 2 Guest 14 days 0 hrs 0 mins 0 secs TASK0089174 janice.c.deganis@ca.ey.com WLAN 2 Guest 90 days 0 hrs 0 mins 0 secs TASK0088054 kamal@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0062123 karen.vacciana@fsco.gov.on.ca WLAN 2 Guest 14 days 0 hrs 0 mins 0 secs TASK0089183 kristen.nolan@ca.ey.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec TASK0078711 kristypryma@gmail.com WLAN 2 Guest 136 days 21 hrs 0 mins 0 sec RITM0066847 larry.penn@seb-admin.com WLAN 2 Guest 0 days 8 hrs 0 mins 0 secs N/A lbawtinh@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec foronsiteworking-RITM0062132 lucy.shao@ca.ey.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0067032 madelaine.fielding@ca.ey.com WLAN 2 Guest 120 days 0 hrs 0 mins 0 sec TASK0088317 mariam.merchant@ca.ey.com WLAN 2 Guest 120 days 0 hrs 0 mins 0 sec TASK0088312 markin@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0062123 marymcna@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0062123 michael.tin@fsco.gov.on.ca WLAN 2 Guest 14 days 0 hrs 0 mins 0 secs TASK0089177 michelle.forster@seb-admin.com WLAN 2 Guest 1 days 0 hrs 0 mins 0 secs REQ0073177 miki.amakawa@fsco.gov.on.ca WLAN 2 Guest 14 days 0 hrs 0 mins 0 secs TASK0089171 nick.magyar@ca.ey.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec TASK0082433 peniel.efechaobor@ca.ey.com WLAN 2 Guest 120 days 0 hrs 0 mins 0 sec TASK0088060 philip.henville@hubio.ca WLAN 2 Guest 90 days 0 hrs 0 mins 0 secs REQ0070802 robpicc@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0062123 ruby.leung@fsco.gov.on.ca WLAN 2 Guest 14 days 0 hrs 0 mins 0 secs REQ0072281 sarah.mukhtiyar@ca.ey.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec TASK0078712 sergepok@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0062123 spanchal@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0062123 tanya.k.kaushal@pwc.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec REQ0071973 tho.huynh@economical.com WLAN 2 Guest 120 days 0 hrs 0 mins 0 sec REQ0071973 wpgguest WLAN 2 Guest Infinity Winnipeg wsteele@ca.ibm.com WLAN 2 Guest 365 days 0 hrs 0 mins 0 sec TASK0084208 zach.ramsay@ca.ey.com WLAN 2 Guest 120 days 0 hrs 0 mins 0 sec TASK0088309 (ptor2nww01) >";
+	data = data;
+	if (data == ""){
+		return
+	}
+	; //this array will store the names of all the people
+	lines=data.split(" "); //this separates the data word by word
+
+	for(i=0;i<lines.length;i++){   //this for loop will cycle through the lines array 
+		var rowCount=1;  //this will be where the new row is added in the table, the first row will start at 1
+		var table=document.getElementById("table1");   //this finds the table element in the html
+		
+		for(i=0;i<lines.length;i++){   //goes through the lines array
+			if(lines[i].indexOf(".com")!=-1 || lines[i].indexOf(".ca")!=-1){   //this checks for .com and .ca since every email address in the system will end in one of the 2
+				people.push(lines[i]);  //pushes the name into the people array
+				start=data.indexOf(lines[i]);  //this is where to start searching					
+				if (rowCount%2==1){//this will change the background colour in the table
+					var coloring = "rgb(96, 194, 233)";  
+					var fontColor="white";
+					var bording="none";
+				} else {
+					var coloring = "white";
+					var fontColor="rgb(96, 194, 233)";
+					var bording="1px solid rgb(96, 194, 233)";
+				}
+				var date=data.slice(data.indexOf("Guest",start)+6, data.indexOf("sec",start)+3); //slices the date out
+				var row=table.insertRow(rowCount);  //inserts a row at the position of rowCount
+				var cell1=row.insertCell(0);   //left hand column 
+				var cell2=row.insertCell(1);   //middle column
+				var cell3=row.insertCell(2);   //right hand column
+				
+				var column1=document.createElement("p");  //creates a p element
+				column1.style.backgroundColor=coloring;   //sets the background colour of the p element
+				column1.style.color=fontColor;            //sets the font color of the p element
+				column1.style.border=bording;             //sets the border of the p element
+				var names=document.createTextNode(lines[i]);  //creates a text node with the value of the persons name
+				column1.appendChild(names);    //appends the text node into the p element
+				cell1.appendChild(column1);    //appends the p element to the left hand cell in the table
+				
+				var column2=document.createElement("p");  //creates a p element
+				column2.style.backgroundColor=coloring;   //sets the background color of the p element
+				column2.style.color=fontColor;            //sets the font color of the p element
+				column2.style.border=bording;             //sets the border of the p element
+				var date=document.createTextNode(date);   //creates a text node with a value of the date
+				column2.appendChild(date);                //appends the date to the p elememt 
+				cell2.appendChild(column2);               //appends the p element to the middle cell of the table
+				
+				var column3=document.createElement("p");  //creates a p element
+				column3.style.backgroundColor=coloring;    //sets the background colour of the p element
+				column3.style.color=fontColor;             //sets the font color of the p element
+				column3.style.border=bording;              //sets the border of the p element
+				var selects=document.createElement("input");  //creates an input element
+				selects.type="radio";           //sets the type of the input to radio
+				selects.name="radioButtons"    //the radio buttons all need to have the same name in a table or else they act like check boxes and users would be able to select multiple people at one time
+				selects.id=lines[i];           //sets the id of the radio button to the persons name --> this will be used in the function "checker"
+				selects.className="radioButtons"
+				column3.appendChild(selects);   //appends the radio button to the p element
+				cell3.appendChild(column3);     //appends the p element to the right hand cell of the table
+				
+				rowCount++;  //increases the row count by one so the next name will be added into the next row
+			}
+		}
+	}
+}
+
+function checker(){ //this function finds which radio button was selected
+	for (i=0;i<people.length;i++){  //loops through all of the people on the list to see if they are checked
+		x=document.getElementById(people[i]);   // this finds the checkbox
+		if (x.checked==true){  //checks if the checkbox is checked
+			document.getElementById("testing").innerHTML=people[i];
+			//the following three lines are used to reset the page if the user decides to select another person from the list
+			document.getElementById("three").style.display="none";
+			document.getElementById("four").style.display="none";
+			document.getElementById("five").style.display="none";
+			//document.getElementById("two").style.marginBottom="200px";
+		} 
+	}
+}
+</script>
 
 </body>
 
