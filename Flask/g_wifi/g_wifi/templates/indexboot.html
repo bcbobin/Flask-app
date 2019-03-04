@@ -86,7 +86,7 @@
 				<option  value ="86400">24 hours</option>
 				<option  value ="259200">3 days</option>
 				<option  value ="604800">7 days</option>
-				<option id="approval" disabled="true"><b>Requires Networking Approval!</b></option>
+				<option id="approval" disabled="true" {{value}}><b>Requires Security Approval!</b></option>
 				<option id="approval" value ="1209600" {{value}}>14 days</option>
 				<option id="approval" value ="2592000" {{value}}>1 months</option>
 				<option id="approval" value ="5184000" {{value}}>2 months</option>
@@ -117,7 +117,7 @@
         </form>
         
         
-		<form id="test2" action="">
+		<form id="test2" action="/edit">
 			<table id="table1" style="border-spacing:0; width: 100%; text-align:center;" onclick="checker()">
 				<tr>
 					<td style="color:rgb(96, 194, 233); width:55%"><b>User </b></td>
@@ -140,12 +140,13 @@
 			<div class="row">
 				<div class="col">
 					<select name="extendSelect" id="four" class="selectDuration">
-						<option  value = "14400">4 hours</option>
-						<option  value = "28800">8 hours</option>
+						<option selected value="0"> Please Select a Time </option>
+						<option  value ="14400">4 hours</option>
+						<option  value ="28800">8 hours</option>
 						<option  value ="86400">24 hours</option>
 						<option  value ="259200">3 days</option>
 						<option  value ="604800">7 days</option>
-						<option id="approval" disabled="true"><b>Requires Networking Approval!</b></option>
+						<option id="approval" disabled="true" {{value}}><b>Requires Security Approval!</b></option>
 						<option id="approval" value ="1209600" {{value}}>14 days</option>
 						<option id="approval" value ="2592000" {{value}}>1 months</option>
 						<option id="approval" value ="5184000" {{value}}>2 months</option>
@@ -343,8 +344,10 @@ function searchData(data){
 		
 		for(i=0;i<lines.length;i++){   //goes through the lines array
 			if(lines[i].indexOf(".com")!=-1 || lines[i].indexOf(".ca")!=-1){   //this checks for .com and .ca since every email address in the system will end in one of the 2
-				people.push(lines[i]);  //pushes the name into the people array
-				start=data.indexOf(lines[i]);  //this is where to start searching					
+				placeholder=lines[i].slice(lines[i].indexOf("\n"),lines[i].length);
+				
+				people.push(placeholder);  //pushes the name into the people array
+				start=data.indexOf(placeholder);  //this is where to start searching					
 				if (rowCount%2==1){//this will change the background colour in the table
 					var coloring = "rgb(96, 194, 233)";  
 					var fontColor="white";
@@ -364,7 +367,7 @@ function searchData(data){
 				column1.style.backgroundColor=coloring;   //sets the background colour of the p element
 				column1.style.color=fontColor;            //sets the font color of the p element
 				column1.style.border=bording;             //sets the border of the p element
-				var names=document.createTextNode(lines[i]);  //creates a text node with the value of the persons name
+				var names=document.createTextNode(placeholder);  //creates a text node with the value of the persons name
 				column1.appendChild(names);    //appends the text node into the p element
 				cell1.appendChild(column1);    //appends the p element to the left hand cell in the table
 				
@@ -383,8 +386,9 @@ function searchData(data){
 				var selects=document.createElement("input");  //creates an input element
 				selects.type="radio";           //sets the type of the input to radio
 				selects.name="radioButtons"    //the radio buttons all need to have the same name in a table or else they act like check boxes and users would be able to select multiple people at one time
-				selects.id=lines[i];           //sets the id of the radio button to the persons name --> this will be used in the function "checker"
+				selects.id=placeholder;           //sets the id of the radio button to the persons name --> this will be used in the function "checker"
 				selects.className="radioButtons"
+				selects.value=placeholder;
 				column3.appendChild(selects);   //appends the radio button to the p element
 				cell3.appendChild(column3);     //appends the p element to the right hand cell of the table
 				

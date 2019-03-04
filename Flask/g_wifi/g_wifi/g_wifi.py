@@ -9,6 +9,10 @@ import hashlib, netmiko, json
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = "b'401b1fe929eda84ffba795ea55bc1a37c9ad103c4b6a95a01ba71d565497beec2d4848df47f07f0ca7ba37c93b49279561ab171df109255f4c5f376228a4d243'"
 
+###############################################
+# note, two controllers that need to be pinged when updates are made IPs: 10.200.254.250 and 10.208.254.250
+###############################################
+
 device1 = {
    'device_type': 'cisco_wlc', 
    'ip': '10.200.254.250',
@@ -25,18 +29,18 @@ device2 = {
 
     #########March 1st##########
 #TODO - Search Table:
-#TODO - add delete and search buttons to the table as well as sort options for the columns 
-#TODO - shrink size of table text  
+#TODO - add delete and search buttons to the table as well as sort options for the columns (Ben)
+#TODO - shrink size of table text (Ben)
 
 #TODO - Form:
-#TODO - add option for no RITM and have for to fill out in that case
-#TODO - add start date to the forms for ease of calculating time 
-#TODO - change time selection to have custom instead of months and be able to specifiy an end date if custom is selected/ and change to requires Security Approval
+#TODO - add option for no RITM and have for to fill out in that case (BB) - figure out process for creating a ticket and closing it (ask about procedure and if RITM should be made first for safety)
+#TODO - add start date to the forms for ease of calculating time (BB) - do not like, people can cheat the system with the start date.
+#TODO - change time selection to have custom instead of months and be able to specifiy an end date if custom is selected (BB)
 
 #TODO - Functionality:
-#TODO - investigate logout button and fuctionality
-#TODO - intergrate database into site
-#TODO - convert all tabs/forms to work without php
+#TODO - investigate logout button and fuctionality (BB)
+#TODO - intergrate database into site (BB/Tho)
+#TODO - convert all tabs/forms to work without php (BB)
 
 
 #login page for authentication 
@@ -49,19 +53,8 @@ def home():
 
 @app.route('/landing', methods=['GET','POST'])
 def permission():
-###############################################
-#for controller auth -  note, two controllers that need to be pinged when updates are made IPs: 10.200.254.250 and 10.208.254.250
-#try: 
-#   connect = netmiko.ConnectHandler(**device1)
-#except (ValueError):
-#   try: 
-#       connect = netmiko.ConnectHandler(**device2)
-#   except (ValueError):
-#       flash("User does not have controller access")
-#       return
-################################################
 
-    #deny access if method is GET, should be attempting a post with credentials only
+    #block get requests, might be needed for security reasons
     # if request.method == 'GET':
         # return redirect('/', code= 302)
   
@@ -71,8 +64,10 @@ def permission():
     device2['password'] = request.form['password']
     
 
+    if(( device1['username'] == "wifiadmin" and device1['password'] == "4Wifi_Aut@mate") or ( device1['username'] == "servicedesk" and device1['password'] == "SDesk_Aut@mate")):
+        return render_template("gwifiindex.html", value="hidden")
     if(device1['username'] == "gwifi" and device1['password'] == "pass"):
-        return render_template("gwifiindex.html", value="disabled")
+        return render_template("gwifiindex.html", value="hidden")
     elif( device1['username'] == "cwlan" and device1['password'] == "pass"):
         return render_template("cwlanindex.html")
     elif( device1['username'] == "admin" and device1['password'] == "pass"):
@@ -89,7 +84,7 @@ def permission():
                # try: 
                    # connect = netmiko.ConnectHandler(**device2)
                # except (ValueError):
-                return render_template('indexboot.html', value="disabled")
+                return render_template('indexboot.html', value="hidden")
             return render_template('indexboot.html', value="")
 
 
@@ -178,9 +173,27 @@ def add():
     return redirect('/landing', code = 302)      #return back to main page after completion 
     
 
-@app.route('/delete', methods=['POST'])
+@app.route('/edit', methods=['POST'])
 def delete():
-    return
+    extend = request.form['extendSelect']
+    user = request.form['radioButtons']
+    if extend == 0:
+        #delete function
+        result = editNetmiko.deleteuser(user)
+        if result == -1:
+            flash("Something went wrong, please try again. If it persists, contact the Network Team", "danger")
+        if result == 1:
+            flash("User already did not exist!", "warning")
+        else:
+            flash("User was successfully deleted!", "success")
+    else: 
+        #extend function
+        result = editNetmiko.extenduser(user, extend)
+        if result == -1:
+            flash("Could not find the user to extend!", "danger")
+        else:
+            flash("User was successfully extended", "success")
+    return render_templete('indexboot.html')
 
 @app.route('/searchdata', methods=['GET', 'POST'])
 def searchdata():
