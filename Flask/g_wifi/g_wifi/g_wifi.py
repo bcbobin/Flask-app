@@ -2,7 +2,7 @@
 import os, tempfile, datetime
 from execute import execute
 import util, main, cwlan, editNetmiko                                              #custom python files import
-from flask import Flask, jsonify, request, render_template, flash, redirect, send_file, send_from_directory
+from flask import Flask, session, jsonify, request, render_template, flash, redirect, send_file, send_from_directory
 import hashlib, netmiko, json
 
 
@@ -26,15 +26,44 @@ device2 = {
    'username': '',                                         
    'password': '',
 }
+#access levels
+guestwifi ={
+    'value': "hidden",
+    'cwlandisplay': "none",
+    'wifidisplay': "",
+    'vlandisplay': "none",
+    'showvlan': "none",
+    'showwifi': "block",
+    'showcwlan': "none",
+}
 
-    #########March 1st##########
+cwlan = {
+    'value': "hidden",
+    'cwlandisplay': "",
+    'wifidisplay': "none",
+    'vlandisplay': "none",
+    'showvlan': "none",
+    'showwifi': "none",
+    'showcwlan': "block",
+}
+
+full = {
+    'value': "",
+    'cwlandisplay': "",
+    'wifidisplay': "",
+    'vlandisplay': "",
+    'showvlan': "none",
+    'showwifi': "block",
+    'showcwlan': "none",
+}
+
+    #########March 4th##########
 #TODO - Search Table:
 #TODO - add delete and search buttons to the table as well as sort options for the columns (Ben)
 #TODO - shrink size of table text (Ben)
 
 #TODO - Form:
-#TODO - add option for no RITM and have for to fill out in that case (BB) - figure out process for creating a ticket and closing it (ask about procedure and if RITM should be made first for safety)
-#TODO - add start date to the forms for ease of calculating time (BB) - do not like, people can cheat the system with the start date.
+#TODO - add option for no RITM and have for to fill out in that case (BB) - figure out process for creating a ticket and closing it (ask about procedure and if RITM should be made first for safety) can redirect to request create page if not RITM number
 #TODO - change time selection to have custom instead of months and be able to specifiy an end date if custom is selected (BB)
 
 #TODO - Functionality:
@@ -47,10 +76,7 @@ device2 = {
 @app.route('/')
 def home():
     return render_template('login.html')
-       
 #checks user input and gives entrace to main site (will be using a database to check or servicenow)
-
-
 @app.route('/landing', methods=['GET','POST'])
 def permission():
 
@@ -63,15 +89,19 @@ def permission():
     device1['password'] = request.form['password']
     device2['password'] = request.form['password']
     
-
+#display vars control which buttons are visable to user, value hides select values when access is not full 
     if(( device1['username'] == "wifiadmin" and device1['password'] == "4Wifi_Aut@mate") or ( device1['username'] == "servicedesk" and device1['password'] == "SDesk_Aut@mate")):
-        return render_template("gwifiindex.html", value="hidden")
+        session['level'] = guestwifi
+        return render_template("indexboot.html", vars = session['level'])
     if(device1['username'] == "gwifi" and device1['password'] == "pass"):
-        return render_template("gwifiindex.html", value="hidden")
+        session['level'] = guestwifi
+        return render_template("indexboot.html", vars = session['level'])
     elif( device1['username'] == "cwlan" and device1['password'] == "pass"):
-        return render_template("cwlanindex.html")
+        session['level'] = cwlan
+        return render_template("indexboot.html", vars = session['level'])
     elif( device1['username'] == "admin" and device1['password'] == "pass"):
-        return render_template('indexboot.html')
+        session['level'] = full
+        return render_template("indexboot.html", vars = session['level'])
     else:
         auth = main.authorize( device1['username'], device1['password']) 
         if auth == -1:
@@ -84,8 +114,10 @@ def permission():
                # try: 
                    # connect = netmiko.ConnectHandler(**device2)
                # except (ValueError):
-                return render_template('indexboot.html', value="hidden")
-            return render_template('indexboot.html', value="")
+                session['level'] = guestwifi
+                return render_template("indexboot.html", vars = session['level'])
+            session['level'] = full
+            return render_template("indexboot.html", vars = session['level'])
 
 
 
@@ -98,6 +130,9 @@ def data():
     ritm_num = request.form['ritm']
     duration = int(request.form['length'])
     print (duration)
+    #when custom is selected, fetch the end date
+    if (duration == "Custom"):               
+        duration = request.form['enddate']
     #check username and password for any specific bypasses and servicenow/controller authentication
     if(( device1['username'] == "wifiadmin" and device1['password'] == "4Wifi_Aut@mate") or ( device1['username'] == "servicedesk" and device1['password'] == "SDesk_Aut@mate")):
         auth = main.authorize(util.admin(), util.adminp())
@@ -117,7 +152,7 @@ def data():
         elif data['approval'] == "needed" and ( device1['username'] == "wifiadmin" or  device1['username'] == "servicedesk"):
             flash("time requested needs Networking Approval(7+ days)!", 'warning' )
         else:
-            #if not errors continue to settiung up user
+            #if no errors continue to settiung up user
             guest_pass = main.pass_gen()
             counter = 0
             #use password that has contorller access if user does not 
@@ -193,7 +228,7 @@ def delete():
             flash("Could not find the user to extend!", "danger")
         else:
             flash("User was successfully extended", "success")
-    return render_templete('indexboot.html')
+    return render_templete('indexboot.html', vars = session['level'])
 
 @app.route('/searchdata', methods=['GET', 'POST'])
 def searchdata():
@@ -201,7 +236,7 @@ def searchdata():
     output = json.dumps(editNetmiko.usersearch(username))
     if output == -1:
         flash("User could not be found", "danger")
-    return render_template('indexboot.html', output = output)
+    return render_template('indexboot.html', vars = session['level'], output = output)
 
 
 #run the app on specified ip and port 

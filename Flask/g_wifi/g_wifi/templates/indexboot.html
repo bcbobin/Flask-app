@@ -10,6 +10,8 @@
 <link href="static/home.css" rel="stylesheet" type="text/css">    <!-- acesses the css file-->
 <!-- Load an icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="static/jquery-ui/jquery-ui.theme.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="static/jquery-ui/jquery.js"></script>
 <script src="static/jquery-ui/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -35,9 +37,9 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background-color: #003359">
-       <button id= "vlanbtn" class="navbtn nav-item" onclick="nav(1)"><i class="fa fa-fw fa-user"></i> VLAN Move</button><!--
-    --><button  id= "wifibtn" class="navbtn nav-item pressed" onclick="nav(2)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-Fi</button><!--
-    --><button  id = "cwlanbtn" class="navbtn nav-item" onclick="nav(3)"><i class="fa fa-fw fa-signal"></i> C-WLAN</button>
+       <button id= "vlanbtn" style="display: {{vars['vlandisplay']}}" class="navbtn nav-item" onclick="nav(1)"><i class="fa fa-fw fa-user"></i> VLAN Move</button><!--
+    --><button  id= "wifibtn" style="display: {{vars['wifidisplay']}}" class="navbtn nav-item pressed" onclick="nav(2)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-Fi</button><!--
+    --><button  id = "cwlanbtn" style="display: {{vars['cwlandisplay']}}" class="navbtn nav-item" onclick="nav(3)"><i class="fa fa-fw fa-signal"></i> C-WLAN</button>
     </div>
 </nav>
 
@@ -62,7 +64,7 @@
 </div>
 
 <!-- guest wifi form--> 
-<div id="WiFi" class="backgroundForms">
+<div style="display: {{vars['showwifi']}}" id="WiFi" class="backgroundForms">
     <p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;">Guest Wi-Fi</p>
     <p style="text-align:center"><b>Would you like to add a New User or edit an existing user?</b></p>
         <div style="background-color:#003359;">
@@ -75,31 +77,78 @@
         <!--Add new user form-->
         <form id="guestWiFi" action="/new" method="post" enctype="multipart/form-data">
             <p style="font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;"><b>Sponsor</b></p>    
-            <label>RITM#:</label>
-            <input type="text" name="ritm"required>
-            <label>Sponsor Email:</label>
-            <input type="email" name="sponsoremail" required>
-                <label>Access Time Duration</label>
-            <select name="length" class="selectDuration" required>
-				<option  value = "14400">4 hours</option>
-				<option  value = "28800">8 hours</option>
-				<option  value ="86400">24 hours</option>
-				<option  value ="259200">3 days</option>
-				<option  value ="604800">7 days</option>
-				<option id="approval" disabled="true" {{value}}><b>Requires Security Approval!</b></option>
-				<option id="approval" value ="1209600" {{value}}>14 days</option>
-				<option id="approval" value ="2592000" {{value}}>1 months</option>
-				<option id="approval" value ="5184000" {{value}}>2 months</option>
-				<option id="approval" value ="7776000" {{value}}>3 months</option>
-				<option id="approval" value ="10368000" {{value}}>4 months</option>
-				<option id="approval" value ="11826000" {{value}}>5 months</option>
-				<option id="approval" value ="15552000" {{value}}>6 months</option>                
-				<option id="approval" value ="31536000" {{value}}>1 year</option>
-            </select>
-<!--        <label>Username:</label>
-            <input type="text" name="login" required>
-            <label>Password:</label>
-            <input type="password" name="password" required> -->
+            <div class="row">
+				<div class="col">
+					<label>Do you have an RITM number? <label>
+					<label style="padding-left: 6em; padding-right: 3em;" class="radio-inline">
+						<input type="radio" name="ritmcheck" value="Yes" checked> Yes
+					</label>
+					<label style="padding-left: 3em; padding-right: 3em;" class="radio-inline">
+						<input type="radio" name="ritmcheck" value="No"> No
+					</label>
+				</div>
+			</div>
+			<div id= "noritm" style="display: none;">
+				<div class="row">
+					<div class = "col">
+						<label>Guest name:</label>
+						<input type="text" name="guestname"required>
+					</div>
+					<div class ="col">
+						<label>Guest e-mail:</label>
+						<input type="email" name="guestemail" required>
+					</div>
+				</div>
+				<div class="row">
+					<div class = "col">
+						<label>Company:</label>
+						<input type="text" name="guestcompany" >
+					</div>
+					<div class ="col">
+						<label>Guest Phone:</label>
+						<input type="text" name="guestphone" >
+					</div>
+				</div>
+			</div>
+					
+					
+			<div id="ritminput" class="row" >
+				<div class="col">
+					<label>RITM: (Don't have? Click <a id=ritmlink" href="https://economical.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D683658ed1868710097bb8c7099cc7d96%26sysparm_link_parent%3Dd65ddead18a8710097bb8c7099cc7dcb%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default" target="_blank">here</a>)</label>
+					<input type="text" name="ritm" required>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Sponsor Email:</label>
+					<input type="email" name="sponsoremail" required>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Access Time Duration (Time Begins on Submit!)</label>
+					<select onchange="customcheck(this)" name="length" class="selectDuration" required>
+						<option selected value="0"> Please Select a Time </option>
+						<option  value = "14400">4 hours</option>
+						<option  value = "28800">8 hours</option>
+						<option  value ="86400">24 hours</option>
+						<option  value ="259200">3 days</option>
+						<option  value ="604800">7 days</option>           
+						<option value ="31536000" {{vars['value']}}>1 year</option>		
+						<option value ="Custom" {{vars['value']}}>Custom</option> 
+					</select>
+				</div>
+			</div>
+			<div style="display:none;" id="customlabel" class="row">
+				<div class = "col">
+					<label>End Date: </label>
+				</div>
+			</div>
+			<div style="display:none;" id="custominput" class="row">
+				<div class = "col">
+					<input id= "addtime" type="text" name="enddate">
+				</div>
+			</div>
             <input value="Submit" type="submit" class="submitButton">
         </form>
     
@@ -141,20 +190,13 @@
 				<div class="col">
 					<select name="extendSelect" id="four" class="selectDuration">
 						<option selected value="0"> Please Select a Time </option>
-						<option  value ="14400">4 hours</option>
-						<option  value ="28800">8 hours</option>
+						<option  value = "14400">4 hours</option>
+						<option  value = "28800">8 hours</option>
 						<option  value ="86400">24 hours</option>
 						<option  value ="259200">3 days</option>
-						<option  value ="604800">7 days</option>
-						<option id="approval" disabled="true" {{value}}><b>Requires Security Approval!</b></option>
-						<option id="approval" value ="1209600" {{value}}>14 days</option>
-						<option id="approval" value ="2592000" {{value}}>1 months</option>
-						<option id="approval" value ="5184000" {{value}}>2 months</option>
-						<option id="approval" value ="7776000" {{value}}>3 months</option>
-						<option id="approval" value ="10368000" {{value}}>4 months</option>
-						<option id="approval" value ="11826000" {{value}}>5 months</option>
-						<option id="approval" value ="15552000" {{value}}>6 months</option>                
-						<option id="approval" value ="31536000" {{value}}>1 year</option>
+						<option  value ="604800">7 days</option>           
+						<option value ="31536000" {{vars['value']}}>1 year</option>	
+						<option value ="Custom" {{vars['value']}}>Custom</option> <!-- not sure if we need a custom entry here or if we can leave it as a select-->
 					</select>
 				</div>
 			</div>
@@ -168,7 +210,7 @@
 
 <!-- vlan move form -->
 
-<form id="vlanMove" class="backgroundForms" action="/index.php" method="post" enctype="multipart/form-data"> 
+<form id="vlanMove" style="display: {{vars['showvlan']}}" class="backgroundForms" action="/index.php" method="post" enctype="multipart/form-data"> 
     <p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;">VLAN Move Request</p>
     <hr/>
         <label> Device Location:</label>
@@ -239,7 +281,7 @@
 
 <!-- c-wlan form -->
 
-<div id="cwlan" class="backgroundForms"> 
+<div id="cwlan" style="display: {{vars['showcwlan']}}" class="backgroundForms"> 
     <p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;">C-WLAN</p>
     <p style="text-align:center"><b>Would you like to add a New User or edit an existing user?</b></p>
         <div style="background-color:#003359;">
@@ -327,6 +369,32 @@ $(document).ready(function(){
 	}
 	data="";
 });
+$(function(){
+	$('#addtime').datepicker({
+		format: 'yyyy-mm-dd'
+	});
+});
+$('input[type=radio][name=ritmcheck]').change(function(){
+	if (this.value == "Yes"){
+		document.getElementById("noritm").style.display="none";
+		document.getElementById("ritminput").style.display="block";
+	}
+	if (this.value == "No"){
+		document.getElementById("noritm").style.display="block";
+		document.getElementById("ritminput").style.display="none";
+	}
+});
+
+function customcheck(selected){
+	if(selected.value == "Custom"){
+		document.getElementById('customlabel').style.display = "block";
+		document.getElementById('custominput').style.display = "block";
+	}
+	else{
+		document.getElementById('customlabel').style.display = "none";
+		document.getElementById('custominput').style.display = "none";
+	}
+}
 
 var people=[]
 function searchData(data){

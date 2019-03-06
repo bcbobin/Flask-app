@@ -77,13 +77,13 @@ def record_retrieve(req_number, duration):
         email = child[4]['children'][2]['children'][0]['value']  
         phone = child[4]['children'][0]['children'][0]['value']
         details = child[6]['children'][0]['value']
-    except(KeyError, IndexError):
+    except(KeyError, IndexError):						#error when attempting to retrieve information
         info['fail'] = "true"
         return info
     try:
         company = email.rsplit('@', 1)[1]
         company = company.rsplit('.', 1)[0]
-    except(IndexError):
+    except(IndexError):									#if guest email is not there, assumed format is blahblah@company.blah
         info['email_invalid'] = "true"
         return info
         
