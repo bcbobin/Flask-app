@@ -48,7 +48,7 @@
 
 <hr/>
 <!-- this is the block that allows python message flashes to work  -->
-<div id="alerts">
+<div class="container" id="alerts">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -77,7 +77,7 @@
         <!--Add new user form-->
         <form id="guestWiFi" action="/new" method="post" enctype="multipart/form-data">
             <p style="font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;"><b>Sponsor</b></p>    
-            <div class="row">
+            <div class="row" style="display: {{vars['ritm']}};">
 				<div class="col">
 					<label>Do you have an RITM number? <label>
 					<label style="padding-left: 6em; padding-right: 3em;" class="radio-inline">
@@ -92,11 +92,11 @@
 				<div class="row">
 					<div class = "col">
 						<label>Guest name:</label>
-						<input type="text" name="guestname"required>
+						<input type="text" name="guestname">
 					</div>
 					<div class ="col">
 						<label>Guest e-mail:</label>
-						<input type="email" name="guestemail" required>
+						<input type="email" name="guestemail">
 					</div>
 				</div>
 				<div class="row">
@@ -190,12 +190,13 @@
 				<div class="col">
 					<select name="extendSelect" id="four" class="selectDuration">
 						<option selected value="0"> Please Select a Time </option>
-						<option  value = "14400">4 hours</option>
-						<option  value = "28800">8 hours</option>
-						<option  value ="86400">24 hours</option>
-						<option  value ="259200">3 days</option>
-						<option  value ="604800">7 days</option>           
-						<option value ="31536000" {{vars['value']}}>1 year</option>	
+						<option  value = "4hours">4 hours</option>
+						<option  value = "today">Today (7am - 7pm)</option>
+						<option  value ="tomorrow">Tomorrow (7am - 7pm)</option>
+						<option  value ="3days">3 days</option>
+						<option  value ="endofweek">This week (Mon. - Fri. 7pm)</option> 
+						<option  value ="nextweek">Next week (Mon. - Fri. 7pm)</option>     						
+						<option value ="1year" {{vars['value']}}>1 year</option>	
 						<option value ="Custom" {{vars['value']}}>Custom</option> <!-- not sure if we need a custom entry here or if we can leave it as a select-->
 					</select>
 				</div>
@@ -364,24 +365,28 @@ $(document).ready(function(){
         document.getElementById("guestSearch").style.display="block";
         document.getElementById("alerts").style.display="none";
         $('#searchbtn').toggleClass('wifipressed');
-		document.getElementById("test2").style.display="block";
+		//document.getElementById("test2").style.display="block";
 		searchData(data);
 	}
 	data="";
 });
 $(function(){
 	$('#addtime').datepicker({
-		format: 'yyyy-mm-dd'
+		dateFormat: 'yy-mm-dd'
 	});
 });
 $('input[type=radio][name=ritmcheck]').change(function(){
 	if (this.value == "Yes"){
 		document.getElementById("noritm").style.display="none";
 		document.getElementById("ritminput").style.display="block";
+		$('input[type=text][name=guestname]').prop('required',false);
+		$('input[type=text][name=guestemail]').prop('required',false);
 	}
 	if (this.value == "No"){
 		document.getElementById("noritm").style.display="block";
 		document.getElementById("ritminput").style.display="none";
+		$('input[type=text][name=guestname]').prop('required',true);
+		$('input[type=text][name=guestemail]').prop('required',true);
 	}
 });
 

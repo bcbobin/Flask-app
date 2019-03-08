@@ -91,7 +91,14 @@ $('#WiFi').submit(function()
  
     return true;
   });
-
+ $('#login').submit(function()
+ {
+    $("input[type='submit']", this)
+      .val("Please Wait...")
+      .attr('disabled', 'disabled');
+ 
+    return true;
+  });
 
 function cwlan(x){
     $('.cwlanpressed').toggleClass('cwlanpressed');

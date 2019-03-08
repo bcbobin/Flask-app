@@ -1,9 +1,8 @@
 # Created by Bogdan Bobin
-# Last Updated January 22/19 
-# Version 0.7.9
+# Last Updated March 8/19
+# Version 0.9.1
 ################################################################
 
-#print("conntect")
 import cgi, cgitb 
 import sys , traceback
 sys.path.insert(0, "/usr/local/lib/python3.4/site-packages/")
@@ -11,11 +10,7 @@ sys.path.insert(0, "/usr/local/lib/python3.4/site-packages/")
 import sys
 #for http interaction 
 import json
-import urllib
-#for reading excel data, pandas requires xlrd
-#import pandas as pd
-#import xlrd
-#for date and time 
+import urllib 
 import datetime
 import string
 import random 
@@ -77,21 +72,15 @@ def record_retrieve(req_number, duration):
         email = child[4]['children'][2]['children'][0]['value']  
         phone = child[4]['children'][0]['children'][0]['value']
         details = child[6]['children'][0]['value']
-    except(KeyError, IndexError):						#error when attempting to retrieve information
+    except(KeyError, IndexError):                       #error when attempting to retrieve information
         info['fail'] = "true"
         return info
     try:
         company = email.rsplit('@', 1)[1]
         company = company.rsplit('.', 1)[0]
-    except(IndexError):									#if guest email is not there, assumed format is blahblah@company.blah
+    except(IndexError):                                 #if guest email is not there, assumed format is blahblah@company.blah
         info['email_invalid'] = "true"
         return info
-        
-    if(int(duration) > 604800):
-        info['approval'] = "needed"
-    today = datetime.datetime.today().weekday()
-    if(duration == 604800 and (today == 2 or today == 3 or today == 4)):  # 0=Monday 7=Sunday
-        duration = duration + ((7-today)*86400)  #give time until next friday when run midweek or later 
     
     #print all pulled info
     print ("Opened by : ", sponsor_name)    
@@ -111,8 +100,8 @@ def record_retrieve(req_number, duration):
     info['company'] = company 
     info['details'] = details 
     info['duration_seconds'] = duration
-    info['time_active'] = datetime.timedelta(seconds=duration)
-    info['end_date'] = curr_date + info['time_active']
+    info['time_active'] = datetime.timedelta(seconds=duration)              #to show time given in the email
+    info['end_date'] = curr_date + info['time_active']                      # to show end date in the email     
    
     return info
 
@@ -122,7 +111,7 @@ def pass_gen(size = 8, chars='abcdefghjkmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ'
 
 
 def update_records(ritm):
-	#will only find active RITMs, if it is closed it will not find anything
+    #will only find active RITMs, if it is closed it will not find anything
     idurl = "https://economical.service-now.com/sc_req_item.do?JSONv2&sysparm_action=getKeys&sysparm_query=active=true^GOTOnumberLIKE"+ str(ritm) +"^ORDERBYnumber&displayvariables=true&displayvalue=true"
     req = urllib.request.Request(idurl)
     req = urllib.request.urlopen(idurl)
@@ -140,7 +129,42 @@ def update_records(ritm):
     update.add_header('Accept', 'application/json')
     urllib.request.urlopen(update)
 
-
+def timeset(duration):
+    curr_date = datetime.datetime.today()           #full date of today
+    today = datetime.datetime.today().weekday()         #weekday 0=Monday 7=Sunday
+    if(duration == "4hours"):
+        duration = 14400                                #4 hours in seconds
+        return duration
+    if(duration == "today"):
+        duration = 19 - curr_date.hours                 #19 hours minus current hour then convert hours to seconds 
+        duration = duration *60*60
+        return duration
+    if(duration == "tomorrow"):
+        duration = 19 - curr_date.hours                 #hours left until 7 pm
+        duration = duration + 24                        # add 24 hours
+        duration = duration*60*60                       #convert to seconds
+        return duration
+    if(duration == "3days"):
+        duration = 259200
+        return duration
+    if(duration == "endofweek"):
+        duration = 19 - curr_date.hours                 #hours till 7pm
+        days = 5 - today                                #days till Friday
+        duration = ((days*24) + duration)*60*60         # conver to seconds 
+        return duration
+    if(duration == "nextweek"):
+        duration = 19 - curr_date.hours                 #hours till 7pm
+        days = 7 - today + 5                            #place in the curent week plus 5 days to get to next friday
+        duration = ((days*24) + duration)*60*60         # conver to seconds 
+        return duration
+    if(duration == "1year"):
+        duration = 31536000         #1 year in seconds
+        return duration
+    else:               #custom input- date format "2019-03-35" - "yyyy-mm-dd"
+        custom = datetime.strptime(duration, "%Y-%m-%d")
+        days = (custom - curr_date).days
+        time = (days*60*60*24) + (19*60*60)                #convert days into seconds + 19 hours to make sure it ends at 7pm on the day
+        return duration
 
 
 

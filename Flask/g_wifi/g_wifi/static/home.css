@@ -76,7 +76,7 @@
 }
 
 /*sets all the pages to not visible when you start the page up*/
-#cwlan, #vlanMove,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan, #test2, #four, #five{
+#cwlan, #vlanMove,#WiFi,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan, #test2, #four, #five{
 	display:none;
 }
 a:link{
@@ -103,7 +103,7 @@ a:link{
 	margin-bottom: 3em;
 }
 
-#vlanMove input[type=text], #WiFi input[type=email], #guestWiFi input[type=text], #guestWiFi input[type=email], #guestDelete input[type=text], #guestExtend input[type=text], #cwlan input[type=text], #cwlan input[type=date],#cwlan input[type=email]{
+#vlanMove input[type=text], #WiFi input[type=email], #guestWiFi input[type=text],#guestWiFi input[type=date], #guestWiFi input[type=email], #guestDelete input[type=text], #guestExtend input[type=text], #cwlan input[type=text], #cwlan input[type=date],#cwlan input[type=email]{
 	border:1px solid black;
 	border-radius:5px;
 	width:100%;

@@ -1,7 +1,10 @@
+# Created by Bogdan Bobin
+# Last Updated March 8/19
+# Version 0.9.1
+################################################################
 
 import os, tempfile, datetime
-from execute import execute
-import util, main, cwlan, editNetmiko                                              #custom python files import
+import util, main, cwlan, editNetmiko, execute                                           #custom python files import
 from flask import Flask, session, jsonify, request, render_template, flash, redirect, send_file, send_from_directory
 import hashlib, netmiko, json
 
@@ -26,6 +29,7 @@ device2 = {
    'username': '',                                         
    'password': '',
 }
+
 #access levels
 guestwifi ={
     'value': "hidden",
@@ -35,6 +39,7 @@ guestwifi ={
     'showvlan': "none",
     'showwifi': "block",
     'showcwlan': "none",
+    'ritm': 'none',
 }
 
 cwlan = {
@@ -45,6 +50,7 @@ cwlan = {
     'showvlan': "none",
     'showwifi': "none",
     'showcwlan': "block",
+    'ritm': 'none',
 }
 
 full = {
@@ -55,18 +61,18 @@ full = {
     'showvlan': "none",
     'showwifi': "block",
     'showcwlan': "none",
+    'ritm': 'block',
 }
 
-    #########March 4th##########
+    #########March 8th##########
 #TODO - Search Table:
 #TODO - add delete and search buttons to the table as well as sort options for the columns (Ben)
 #TODO - shrink size of table text (Ben)
 
 #TODO - Form:
-#TODO - add option for no RITM and have for to fill out in that case (BB) - figure out process for creating a ticket and closing it (ask about procedure and if RITM should be made first for safety) can redirect to request create page if not RITM number
-#TODO - change time selection to have custom instead of months and be able to specifiy an end date if custom is selected (BB)
 
 #TODO - Functionality:
+#TODO - make and test all button submits and test functionality of scripts 
 #TODO - investigate logout button and fuctionality (BB)
 #TODO - intergrate database into site (BB/Tho)
 #TODO - convert all tabs/forms to work without php (BB)
@@ -128,11 +134,12 @@ def data():
     s_email = request.form['sponsoremail'].lower()
     #TODO - is an economical check required for sponser_email(possibly)
     ritm_num = request.form['ritm']
-    duration = int(request.form['length'])
-    print (duration)
+    duration = request.form['length']
+    #print (duration)
     #when custom is selected, fetch the end date
     if (duration == "Custom"):               
         duration = request.form['enddate']
+        
     #check username and password for any specific bypasses and servicenow/controller authentication
     if(( device1['username'] == "wifiadmin" and device1['password'] == "4Wifi_Aut@mate") or ( device1['username'] == "servicedesk" and device1['password'] == "SDesk_Aut@mate")):
         auth = main.authorize(util.admin(), util.adminp())
@@ -172,17 +179,13 @@ def data():
                     break
                 if (status == 0):
                     #flash inforamtion to the user to see the returned results of the script 
-                    flash("Successful addition, guest user information: ", 'success')
-                    flash("Username: " +data['guest_email']+ ' \n\n     Password: '+ guest_pass , 'success') 
-                    flash(' \n\n Guest Company: '+data['company']+'     \n\n Guest Email: '+data['guest_email'] , 'success')
-                    flash(' \n\n Guest Phone: '+data['guest_phone']+'    \n\n Sponsor Email: '+s_email , 'success')
-                    flash(' \n\n Time Given: '+ data['time_active'] + '    \n\n Expires on: '+  data['end_date'] , 'success')
+                    flash[:passinfo] = passinfo.join("<br/>").html_safe
                     break
             if(counter == 3):
                 flash("Controller is busy, try again in 5 minutes", 'warning')
             else:
                 main.update_records(ritm_num)
-    return redirect('/landing', code = 302)      #return back to main page after completion 
+    return render_template("indexboot.html", vars = session['level'])      #return back to main page after completion 
  
 
 @app.route('/add', methods=['POST'])
