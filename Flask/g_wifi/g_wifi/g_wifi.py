@@ -4,7 +4,7 @@
 ################################################################
 
 import os, tempfile, datetime
-import util, main, cwlan, editNetmiko, execute                                           #custom python files import
+import util, main, cwlan, editNetmiko, execute, adduser                                          #custom python files import
 from flask import Flask, session, jsonify, request, render_template, flash, redirect, send_file, send_from_directory
 import hashlib, netmiko, json
 
@@ -131,60 +131,55 @@ def permission():
 @app.route('/new', methods=['POST'])
 def data():
     #pull specific info from the html form by element name in html
-    s_email = request.form['sponsoremail'].lower()
-    #TODO - is an economical check required for sponser_email(possibly)
+    s_email = request.form['sponsoremail'].lower()  #TODO - is an economical check required for sponser_email(possibly)
     ritm_num = request.form['ritm']
     duration = request.form['length']
-    #print (duration)
+
     #when custom is selected, fetch the end date
     if (duration == "Custom"):               
-        duration = request.form['enddate']
-        
+        duration = request.form['enddate']   
     #check username and password for any specific bypasses and servicenow/controller authentication
-    if(( device1['username'] == "wifiadmin" and device1['password'] == "4Wifi_Aut@mate") or ( device1['username'] == "servicedesk" and device1['password'] == "SDesk_Aut@mate")):
-        auth = main.authorize(util.admin(), util.adminp())
-    else:
-        auth = main.authorize( device1['username'], device1['password'])   
-    if auth == -1:
-        flash("Authorization Failed, try again", 'danger')
-    else:
-        data = main.record_retrieve(ritm_num, duration)
-       #if failed to retrieve record, specifiy why using the returned values as error flags
-        if data['ritm_not_found'] == "true": 
-            flash('Record could not be retrieved', 'danger')
-        elif data['fail'] == "true":
-            flash("RITM record returned unexpected value. Check RITM number!", 'danger')
-        elif data['email_invalid'] == "true":
-            flash("guest user email format incorrect, check RITM form!", 'danger')
-        elif data['approval'] == "needed" and ( device1['username'] == "wifiadmin" or  device1['username'] == "servicedesk"):
-            flash("time requested needs Networking Approval(7+ days)!", 'warning' )
+    if session['level'] == full:
+        hasritm = request.form['ritmcheck']
+        if hasritm == "No":
+            forminfo = {}
+            forminfo['guestname'] = request.form['guestname']
+            forminfo['guestemail'] = request.form['guestemail']
+            forminfo['guestcompany'] = request.form['guestcompany']
+            forminfo['guestphone'] = request.form['guestphone']
+            forminfo = adduser.missing(forminfo)                        #pull all the form info and check for blanks
+            duration = main.timeset(duration)                           #convert time inputted to seconds 
+            g_pass = main.pass_gen()                                    #gen guest pass
+            #send data directly to controller as there are no records to pull or update 
+            adduser.controller(forminfo['guestemail'], forminfo['guestname'], forminfo['guestcompany'], forminfo['guestphone'], str(duration), "Network", s_email, device1['username'], device1['password'], g_pass, "N/A")
         else:
-            #if no errors continue to settiung up user
-            guest_pass = main.pass_gen()
-            counter = 0
-            #use password that has contorller access if user does not 
-            if(( device1['username'] == "wifiadmin" and device1['password'] == "4Wifi_Aut@mate") or ( device1['username'] == "servicedesk" and device1['password'] == "SDesk_Aut@mate")):
-                device1['username'] = util.admin()
-                device1['password'] = util.adminp()
-            #try three times in case controller is busy (could take a while if needs all three tries (10 seconds))
-            while(counter < 3):
-                status = execute.execute(data['guest_email'], data['guest_name'], data['company'], data['guest_phone'], str(data['duration_seconds']), data['s_dept'], s_email, device1['username'],device1['password'],guest_pass,data['details'])
-                if (status == -2):
-                    counter = 1 + counter
-                if (status == -1):                                          #checks for controller auth, kept in for safety 
-                    flash("Invalid Username or Password", 'danger')   
-                    break
-                if (status == -3):
-                    flash("Account already exists, search for " + data['guest_email'] + "to see account information", 'warning' )
-                    break
-                if (status == 0):
-                    #flash inforamtion to the user to see the returned results of the script 
-                    flash[:passinfo] = passinfo.join("<br/>").html_safe
-                    break
-            if(counter == 3):
-                flash("Controller is busy, try again in 5 minutes", 'warning')
-            else:
-                main.update_records(ritm_num)
+            result = adduser.reg_add(ritm_num, s_email, device1['username'], device1['password'], duration)
+    else:
+        if(device1['username'] == "wifiadmin" or device1['username'] == "servicedesk"):
+            device1['username'] = util.admin()
+            device1['password'] = util.adminp()
+            device2['username'] = util.admin()
+            device2['password'] = util.adminp()
+            
+        result = adduser.reg_add(ritm_num, s_email, device1['username'], device1['password'], duration)
+    if (result == -10):                                     #could not match an active record to the RITM provided 
+        flash("Record could not be found!" , "danger")
+    elif (result == -11):                                   #this is bad, means format has changed 
+        flash("Information could not be pulled from the RITM", "danger")
+    elif (result == -12):
+        flash("The email entered on the RITM is invalid, please give a valid email on the RITM form", "danger")     #email given on RITM is not an acutal email
+    elif (result == -1):                                          #checks for controller auth, kept in for safety 
+        flash("Invalid Username or Password", 'danger')      
+    elif(result == -2):                                         #probably not need but added for safety  
+        flash("Request Timeout, Please try again", 'warning')          
+    elif (result == -3):
+        flash("Account already exists, search for " + data['guest_email'] + "to see account information", 'warning' )
+    elif(result == -4):                                     #timeout, controller is busy or other issue
+        flash("Controller is busy, try again in 5 minutes", 'warning')
+    else:
+        #flash inforamtion to the user to see the returned results of the script 
+        flash[:result] = passinfo.join("<br/>").html_safe
+            
     return render_template("indexboot.html", vars = session['level'])      #return back to main page after completion 
  
 
@@ -207,6 +202,7 @@ def add():
         flash('User already exists!', 'warning')
     else:
         flash('User has been successfully added!', 'success')
+        
         
     return redirect('/landing', code = 302)      #return back to main page after completion 
     

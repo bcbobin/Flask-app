@@ -11,7 +11,8 @@ import sys
 #for http interaction 
 import json
 import urllib 
-import datetime
+from datetime import datetime
+from datetime import timedelta
 import string
 import random 
 import smtplib 
@@ -43,11 +44,10 @@ def authorize(username, password):
     return 0
 
 def record_retrieve(req_number, duration):
-    curr_date = datetime.datetime.now()                             
+    curr_date = datetime.now()                             
     info = {}
     info['ritm_not_found'] = "false"
     info['fail'] = "false"
-    info['approval'] = "false"
     info['email_invalid'] = "false"
     
     #retreive item sysid by sending a query
@@ -83,13 +83,13 @@ def record_retrieve(req_number, duration):
         return info
     
     #print all pulled info
-    print ("Opened by : ", sponsor_name)    
-    print ("On behalf of: ", recipient) 
-    print ("Department: ", department)  
-    print("email: " ,email)
-    print ("phone: ",phone)
-    print ("company: ", company)
-    print("Details: ", details)
+    # print ("Opened by : ", sponsor_name)    
+    # print ("On behalf of: ", recipient) 
+    # print ("Department: ", department)  
+    # print("email: " ,email)
+    # print ("phone: ",phone)
+    # print ("company: ", company)
+    # print("Details: ", details)
     
     #set all info to dict for transfering data
     info['guest_email'] = email.lower() 
@@ -100,7 +100,7 @@ def record_retrieve(req_number, duration):
     info['company'] = company 
     info['details'] = details 
     info['duration_seconds'] = duration
-    info['time_active'] = datetime.timedelta(seconds=duration)              #to show time given in the email
+    info['time_active'] = timedelta(seconds=duration)              #to show time given in the email
     info['end_date'] = curr_date + info['time_active']                      # to show end date in the email     
    
     return info
@@ -130,17 +130,17 @@ def update_records(ritm):
     urllib.request.urlopen(update)
 
 def timeset(duration):
-    curr_date = datetime.datetime.today()           #full date of today
-    today = datetime.datetime.today().weekday()         #weekday 0=Monday 7=Sunday
+    curr_date = datetime.today()           #full date of today
+    today = datetime.today().weekday()         #weekday 0=Monday 7=Sunday
     if(duration == "4hours"):
         duration = 14400                                #4 hours in seconds
         return duration
     if(duration == "today"):
-        duration = 19 - curr_date.hours                 #19 hours minus current hour then convert hours to seconds 
+        duration = 19 - curr_date.hour                 #19 hours minus current hour then convert hours to seconds 
         duration = duration *60*60
         return duration
     if(duration == "tomorrow"):
-        duration = 19 - curr_date.hours                 #hours left until 7 pm
+        duration = 19 - curr_date.hour                  #hours left until 7 pm
         duration = duration + 24                        # add 24 hours
         duration = duration*60*60                       #convert to seconds
         return duration
@@ -148,12 +148,12 @@ def timeset(duration):
         duration = 259200
         return duration
     if(duration == "endofweek"):
-        duration = 19 - curr_date.hours                 #hours till 7pm
+        duration = 19 - curr_date.hour                 #hours till 7pm
         days = 5 - today                                #days till Friday
         duration = ((days*24) + duration)*60*60         # conver to seconds 
         return duration
     if(duration == "nextweek"):
-        duration = 19 - curr_date.hours                 #hours till 7pm
+        duration = 19 - curr_date.hour                 #hours till 7pm
         days = 7 - today + 5                            #place in the curent week plus 5 days to get to next friday
         duration = ((days*24) + duration)*60*60         # conver to seconds 
         return duration
@@ -162,7 +162,7 @@ def timeset(duration):
         return duration
     else:               #custom input- date format "2019-03-35" - "yyyy-mm-dd"
         custom = datetime.strptime(duration, "%Y-%m-%d")
-        days = (custom - curr_date).days
+        days = (custom - curr_date).day
         time = (days*60*60*24) + (19*60*60)                #convert days into seconds + 19 hours to make sure it ends at 7pm on the day
         return duration
 
