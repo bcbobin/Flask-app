@@ -173,7 +173,7 @@ def data():
     elif(result == -2):                                         #probably not need but added for safety  
         flash("Request Timeout, Please try again", 'warning')          
     elif (result == -3):
-        flash("Account already exists, search for " + data['guest_email'] + "to see account information", 'warning' )
+        flash("Account already exists, search for user to see account information", 'warning' )
     elif(result == -4):                                     #timeout, controller is busy or other issue
         flash("Controller is busy, try again in 5 minutes", 'warning')
     else:
@@ -232,10 +232,11 @@ def delete():
 @app.route('/searchdata', methods=['GET', 'POST'])
 def searchdata():
     username = request.form['search']
+    username.replace(" ", "")
     output = json.dumps(editNetmiko.usersearch(username))
     if output == -1:
         flash("User could not be found", "danger")
-    return render_template('indexboot.html', vars = session['level'], output = output)
+    return render_template('indexboot.html', vars = session['level'], output = output, input = username)
 
 
 #run the app on specified ip and port 

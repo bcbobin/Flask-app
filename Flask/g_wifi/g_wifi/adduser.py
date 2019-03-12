@@ -21,6 +21,7 @@ def reg_add(ritm, s_email, username, password, duration):
     
     
 def controller(gemail, gname, gcompany, gphone, duration, sdept, s_email, username, password, gpass, comments, time_active, end_date):
+    #print(gemail, gname, gcompany, gphone, duration, sdept, s_email, username, password, gpass, comments, time_active, end_date)
     counter = 0
     while(counter < 3):
         status = execute.execute(gemail, gname, gcompany, gphone, duration, sdept, s_email, username, password, gpass , comments)
@@ -32,7 +33,7 @@ def controller(gemail, gname, gcompany, gphone, duration, sdept, s_email, userna
                     "Username:      " + gemail +    '        Password: '+ gpass,
                     'Guest Company: '+ gcompany +    '     Guest Email: '+ gemail ,
                     'Guest Phone:   '+ gphone +  '       Sponsor Email: '+ s_email ,
-                    'Time Given:    '+ time_active + '      Expires on: '+  end_date ,
+                    'Time Given:    '+ time_active + '      Expires on: '+  str(end_date) ,
                     ]
             break
         else:
@@ -45,9 +46,9 @@ def controller(gemail, gname, gcompany, gphone, duration, sdept, s_email, userna
 def missing(dict):
     for key, value in dict.items():
         try:
-            value.strip()         #remove all whitespace at start or behind, so that a space isn't considered as not empty
-        except (AttributeError):				#skip the int of duration since it does not have strip()
+            dict[key]= value.replace(" ", "")          #remove all whitespace for execute to function
+        except (AttributeError, TypeError):                #skip the int of duration since it does not have strip()
             pass
-        if value == "":
+        if dict[key] == "":                     #if variable is empty, fill it with n/a
             dict[key] = "N/A"
     return dict

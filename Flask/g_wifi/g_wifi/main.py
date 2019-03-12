@@ -141,7 +141,7 @@ def timeset(duration):
         return duration
     if(duration == "tomorrow"):
         duration = 19 - curr_date.hour                  #hours left until 7 pm
-        duration = duration + 24                        # add 24 hours
+        duration = duration + 24                        #add 24 hours
         duration = duration*60*60                       #convert to seconds
         return duration
     if(duration == "3days"):

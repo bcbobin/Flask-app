@@ -30,7 +30,7 @@
     </div>
   </div>
 </div>
-<!-- header buttons-->
+<!-- header buttons -->
 <nav id="header" class="btn-group navbar navbar-expand-lg navbar-dark"> 
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -74,7 +74,7 @@
         </div>
         <hr>
         <!--Add new user form-->
-        <form id="guestWiFi" action="/new" method="post" enctype="multipart/form-data">
+       <form id="guestWiFi" action="/new" method="post" enctype="multipart/form-data">
             <p style="font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;"><b>Sponsor</b></p>    
             <div class="row" style="display: {{vars['ritm']}};">
 				<div class="col">
@@ -113,7 +113,7 @@
 					
 			<div id="ritminput" class="row" >
 				<div class="col">
-					<label>RITM: (Don't have? Click <a id=ritmlink" href="https://economical.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D683658ed1868710097bb8c7099cc7d96%26sysparm_link_parent%3Dd65ddead18a8710097bb8c7099cc7dcb%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default" target="_blank">here</a>)</label>
+					<label>ServiceNow RITM: (Don't have? Click <a id="ritmlink" href="https://economical.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D683658ed1868710097bb8c7099cc7d96%26sysparm_link_parent%3Dd65ddead18a8710097bb8c7099cc7dcb%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default" target="_blank">here</a>)</label>
 					<input type="text" name="ritm" required>
 				</div>
 			</div>
@@ -128,13 +128,14 @@
 					<label>Access Time Duration (Time Begins on Submit!)</label>
 					<select onchange="customcheck(this)" name="length" class="selectDuration" required>
 						<option selected value="0"> Please Select a Time </option>
-						<option  value = "14400">4 hours</option>
-						<option  value = "28800">8 hours</option>
-						<option  value ="86400">24 hours</option>
-						<option  value ="259200">3 days</option>
-						<option  value ="604800">7 days</option>           
-						<option value ="31536000" {{vars['value']}}>1 year</option>		
-						<option value ="Custom" {{vars['value']}}>Custom</option> 
+						<option  value = "4hours">4 hours</option>
+						<option  value = "today">Today (7am - 7pm)</option>
+						<option  value ="tomorrow">Tomorrow (7am - 7pm)</option>
+						<option  value ="3days">3 days</option>
+						<option  value ="endofweek">This week (Mon. - Fri. 7pm)</option> 
+						<option  value ="nextweek">Next week (Mon. - Fri. 7pm)</option>     						
+						<option value ="1year" {{vars['value']}}>1 year</option>	
+						<option value ="Custom" {{vars['value']}}>Custom</option>
 					</select>
 				</div>
 			</div>
@@ -157,8 +158,8 @@
             <div class="row">
                 <div class="col-11">
                     <label>Search for user by email address:</label>
-                    <input name="search" type="email" placeholder="jondoe@hotmail.com.." ><!--
-                 --><button type="submit" class="searchButton"><i class="fa fa-search"></i></button>
+                    <input name="search" type="email" placeholder="jondoe@hotmail.com.." id="searchField"><!--
+                 --><button type="submit" class="searchButton" ><i class="fa fa-search"></i></button>
                 </div>
             </div>
             <p id="userFound"></p>
@@ -174,7 +175,48 @@
 				</tr>
 			</table>
 			<p style="text-align:center;font-size:20px;">You have selected:</p>
-			<p id="testing" style="text-align:center;font-size:20px;">Please select a user from the list above</p>
+			<p id="testing" style="text-align:center;font-size:20px;"><b>Please select a user from the list above</b></p>
+			<p style="text-align:center;font-size:20px;" id="one">Would you like to delete the user or extend their time?</p>
+			<div class="row" id="two">
+				<div class="col">
+					<input type="button" style="width:100%;" value="Delete User" class="DelOrExt wifibtn" onclick="navigate(1)" id="delete">
+				</div>
+				<div class="col">
+					<input type="button" style="width:100%;" value="Extend Time" class="DelOrExt wifibtn" onclick="navigate(2)" id="extend">
+				</div>
+			</div>
+			<p id="three" style="margin-top: 16px; text-align:center;font-size:20px;"></p>
+			<div class="row">
+				<div class="col">
+					<select name="extendSelect" id="four" class="selectDuration">
+						<option selected value="0"> Please Select a Time </option>
+						<option  value = "4hours">4 hours</option>
+						<option  value = "today">Today (7am - 7pm)</option>
+						<option  value ="tomorrow">Tomorrow (7am - 7pm)</option>
+						<option  value ="3days">3 days</option>
+						<option  value ="endofweek">This week (Mon. - Fri. 7pm)</option> 
+						<option  value ="nextweek">Next week (Mon. - Fri. 7pm)</option>     						
+						<option value ="1year" {{vars['value']}}>1 year</option>	
+						<option value ="Custom" {{vars['value']}}>Custom</option> <!-- not sure if we need a custom entry here or if we can leave it as a select-->
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<input class="submitButton" type="button" value="Submit" id="five"> 
+				</div>
+			</div>
+		</form>
+		
+		<!--this is the single user search form-->
+		<form id="test3" action="/edit">
+			<table id="singleSearch" style="border-spacing:0; width: 100%; text-align:center;">
+				<tr>
+					<th style="color:rgb(96, 194, 233);">User</th>
+				<th style="color:rgb(96, 194, 233);">Time Remaining</th>
+				</tr>
+			</table>
+			
 			<p style="text-align:center;font-size:20px;" id="one">Would you like to delete the user or extend their time?</p>
 			<div class="row" id="two">
 				<div class="col">
@@ -364,11 +406,25 @@ $(document).ready(function(){
         document.getElementById("guestSearch").style.display="block";
         document.getElementById("alerts").style.display="none";
         $('#searchbtn').toggleClass('wifipressed');
-		//document.getElementById("test2").style.display="block";
-		searchData(data);
+		whichFunction()
 	}
 	data="";
 });
+
+function whichFunction(){
+	if("{{input}}" == ""){
+		searchData(data);
+		document.getElementById("test2").style.display="block";
+		document.getElementById("test3").style.display="none";
+		
+	} else{
+		single(data);
+		document.getElementById("test2").style.display="none";
+		document.getElementById("test3").style.display="block";
+	}
+}
+
+
 $(function(){
 	$('#addtime').datepicker({
 		dateFormat: 'yy-mm-dd'
@@ -470,11 +526,44 @@ function searchData(data){
 	}
 }
 
+
+function single(data){
+	var nameStart=55;  //finds the start of the name
+	var timeStart=data.indexOf("Remaining Time")+50;  //finds the start of the time remaining
+	var name=data.slice(nameStart,data.indexOf("\n",nameStart));   //slices the name out
+	var timeRemaining=data.slice(timeStart,data.indexOf("\n",timeStart));  //slices the time remaining out
+	document.getElementById("singleSearch").style.display="table";     //displays the table
+
+	var table=document.getElementById("singleSearch");   //find the table in the html
+	var numRows=table.rows.length;   //counts the number of rows
+	if (numRows!=2){   //if there is only one row then it will add another row. However, if there is already 2 rows 
+		var row=table.insertRow(1);
+		var cell1=row.insertCell(0);
+		var cell2=row.insertCell(1);
+
+		var column1=document.createElement("p");
+		column1.style.backgroundColor="rgb(96, 194, 233)";       //sets the background colour of the p element
+		column1.style.color="white";                //sets the font color of the p element
+		column1.style.border="none";
+		var n=document.createTextNode(name);
+		column1.appendChild(n);
+		cell1.appendChild(column1);
+
+		var column2=document.createElement("p");
+		column2.style.backgroundColor="rgb(96, 194, 233)";       //sets the background colour of the p element
+		column2.style.color="white";               //sets the font color of the p element
+		column2.style.border="none";
+		var t=document.createTextNode(timeRemaining);
+		column2.appendChild(t);
+		cell2.appendChild(column2);
+	}
+}
+
 function checker(){ //this function finds which radio button was selected
 	for (i=0;i<people.length;i++){  //loops through all of the people on the list to see if they are checked
 		x=document.getElementById(people[i]);   // this finds the checkbox
 		if (x.checked==true){  //checks if the checkbox is checked
-			document.getElementById("testing").innerHTML=people[i];
+			document.getElementById("testing").innerHTML="<b>"+people[i]+"</b>";
 			//the following three lines are used to reset the page if the user decides to select another person from the list
 			document.getElementById("three").style.display="none";
 			document.getElementById("four").style.display="none";
