@@ -67,7 +67,7 @@
 
 /*Changes the color of the buttons when hovering over them*/
 .btn-group .navbtn:hover, .btn-group .navbtn:focus, .loginbtn:hover{
-	background-color: #60c2e9 ;
+	background-color: #60c2e9;
 }
 
 .wifibtn:hover{
@@ -76,13 +76,13 @@
 }
 
 /*sets all the pages to not visible when you start the page up*/
-#cwlan, #vlanMove,#WiFi,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan, #test2, #four, #five{
+#cwlan, #vlanMove,#WiFi,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan, #test2, #four, #five,#test3,#four1,#five1{
 	display:none;
 }
 a:link{
 	color: white;
 }
-#four{
+#four,#four1{
 	width:100%;
 }
 

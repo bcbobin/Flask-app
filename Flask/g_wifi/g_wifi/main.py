@@ -100,7 +100,7 @@ def record_retrieve(req_number, duration):
     info['company'] = company 
     info['details'] = details 
     info['duration_seconds'] = duration
-    info['time_active'] = timedelta(seconds=duration)              #to show time given in the email
+    info['time_active'] = timedelta(seconds=int(duration))              #to show time given in the email
     info['end_date'] = curr_date + info['time_active']                      # to show end date in the email     
    
     return info
@@ -120,7 +120,7 @@ def update_records(ritm):
     #print(sysrecords)
     sysid = sysrecords.get("records")
     sysid = sysid[0]
-    print(sysid)
+    #print(sysid)
     new = {"state" : "1"}                               #4=Closed Incomplete, 3= Closed, 2= Work in Progress, 1= Open, -5=Pending
     #updating records with html PUT request
     updateurl = 'https://economical.service-now.com/api/now/v1/table/sc_req_item/' + str(sysid)
@@ -162,12 +162,23 @@ def timeset(duration):
         return duration
     else:               #custom input- date format "2019-03-35" - "yyyy-mm-dd"
         custom = datetime.strptime(duration, "%Y-%m-%d")
-        days = (custom - curr_date).day
-        time = (days*60*60*24) + (19*60*60)                #convert days into seconds + 19 hours to make sure it ends at 7pm on the day
+        diff = (custom - curr_date).seconds
+        duration = int(diff) + (19*60*60)              #convert days into seconds + 19 hours to make sure it ends at 7pm on the day
         return duration
 
-
-
+def delex_mail(sponsor, user, edit, exflag):
+    recipients= []
+    if exflag == "true":
+        subject = "Guest wifi, user extension for "+ user
+        message = "User " + sponser + "has extended " + user + "for an additional: "+ edit
+        error= "If this change was a mistake, please contant the network team at networkgroup@economical.com and explain the error to be rectified"
+    else:
+        subject=  "Guest wifi, user: " + user + "has been deleted by: " + sponsor
+        message= "A deletion was made to the guest wifi list. User " + sponsor + "has deleted: " + user
+        error= "If this change was a mistake, please contant the network team at networkgroup@economical.com and explain the error to be rectified"
+        
+    
+    
 
 
 

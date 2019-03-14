@@ -13,6 +13,7 @@ def usersearch(user):
     else:
         output = connect.send_command("show netuser detail "+ user)
         if "Unable" in output:
+            connect.disconnect()
             return -1
     
     connect.disconnect()
@@ -20,9 +21,10 @@ def usersearch(user):
     
 def extenduser(user, time):
     for i in hosts:
-        connect = netmiko.ConnectHandler(**hosts[i])
-        result = connect.send_command("config netuser lifetime " + user + " " + time)
+        connect = netmiko.ConnectHandler(**i)
+        result = connect.send_command("config netuser lifetime " + user + " " + str(time))
         if "Invalid" in result:                         #could not find user, error
+            connect.disconnect()
             return -1
         else:                                           #user was extended 
             pass
@@ -32,7 +34,7 @@ def extenduser(user, time):
 def deleteuser(user):
     count = 0
     for i in hosts:
-        connect = netmiko.ConnectHandler(**hosts[i])
+        connect = netmiko.ConnectHandler(**i)
         result = connect.send_command("config netuser delete username "+ user)
         if "exist" in result:                       #user not found
             count += 1
@@ -40,6 +42,7 @@ def deleteuser(user):
         if "Deleted" in result:             #user was successfully deleted 
             pass
         else:
+            connect.disconnect()
             return -1               #something happened outside of expectations, error
         connect.disconnect()    
     if count == 2:

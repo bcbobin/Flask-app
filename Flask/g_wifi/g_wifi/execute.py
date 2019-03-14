@@ -195,13 +195,13 @@ def execute(guestemail, guestfullname, guestcompany, guestphone, hours, sponsord
         emailoutx =emailout.emailsponsor (subjectx, messagex,guestemail)
         subjectx="ECONOMICAL Wireless Guest User Account Details : SSID G-WLAN  "
         messagex ='INFO \n =============================================== \n\n Username:'+guestemail+' \n\n Guest Company:'+guestcompany+'  \n\n Guest Email:'+guestemail+' \n\n Guest Phone: '+guestphone+' \n\n Sponsor Email:'+sponsoremail+' \n\n Start Date: '+ startdate + ' \n Expires in: '+  expireddate + ' '
-        emailoutx =emailout.emailsponsor (subjectx, messagex,thoemail)
+        #emailoutx =emailout.emailsponsor (subjectx, messagex,thoemail)
         subjectx="ECONOMICAL Wireless Guest User Account Details : SSID G-WLAN  "
         messagex ='INFO \n =============================================== \n\n Username:'+guestemail+' \n\n Guest Company:'+guestcompany+'  \n\n Guest Email:'+guestemail+' \n\n Guest Phone: '+guestphone+' \n\n Sponsor Email:'+sponsoremail+' \n\n Start Date: '+ startdate + ' \n Expires in: '+  expireddate + ' '
-        emailoutx =emailout.emailsponsor (subjectx, messagex,ntwemail)
+        #emailoutx =emailout.emailsponsor (subjectx, messagex,ntwemail)
         subjectx="ECONOMICAL Wireless Guest User Account Details : SSID G-WLAN  "
         messagex ='INFO \n =============================================== \n\n Username:'+guestemail+' \n\n Guest Company:'+guestcompany+'  \n\n Guest Email:'+guestemail+' \n\n Guest Phone: '+guestphone+' \n\n Sponsor Email:'+sponsoremail+' \n\n Start Date: '+ startdate + ' \n Expires in: '+  expireddate + ' '
-        emailoutx =emailout.emailsponsor (subjectx, messagex,deskside)
+        #emailoutx =emailout.emailsponsor (subjectx, messagex,deskside)
         
         
             #while  b < datax:

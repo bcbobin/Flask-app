@@ -2,6 +2,10 @@ import execute, main, g_wifi
     
 def reg_add(ritm, s_email, username, password, duration):
     duration = main.timeset(duration)               #get time to send to controller 
+    #TODO- add auth step here for safety
+    auth_check = main.authorize(username,password)       #in case initial auth times out
+    if auth_check == -1:
+        return -1       
     data = main.record_retrieve(ritm, duration)     #get form information
     #add error checks
     if data['ritm_not_found'] == "true":
@@ -29,12 +33,9 @@ def controller(gemail, gname, gcompany, gphone, duration, sdept, s_email, userna
             counter = 1 + counter
         elif (status == 0):
             #flash inforamtion to the user to see the returned results of the script 
-            passinfo =["Successful addition, guest user information: ", 
-                    "Username:      " + gemail +    '        Password: '+ gpass,
-                    'Guest Company: '+ gcompany +    '     Guest Email: '+ gemail ,
-                    'Guest Phone:   '+ gphone +  '       Sponsor Email: '+ s_email ,
-                    'Time Given:    '+ time_active + '      Expires on: '+  str(end_date) ,
-                    ]
+            passinfo =("Successful addition, guest user information: </br>",
+                    "Username:      " + gemail +    '        Password: '+ gpass + '</br>' ,
+                    'Time Given:    '+ str(time_active) + '      Expires on: '+  str(end_date) + '</br>')
             break
         else:
             return status

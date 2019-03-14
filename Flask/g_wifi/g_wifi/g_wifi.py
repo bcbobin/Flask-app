@@ -1,5 +1,5 @@
 # Created by Bogdan Bobin
-# Last Updated March 8/19
+# Last Updated March 14/19
 # Version 0.9.1
 ################################################################
 
@@ -64,15 +64,17 @@ full = {
     'ritm': 'block',
 }
 
-    #########March 8th##########
+    #########March 14th##########
 #TODO - Search Table:
-#TODO - add delete and search buttons to the table as well as sort options for the columns (Ben)
-#TODO - shrink size of table text (Ben)
-
-#TODO - Form:
+#TODO - Have clicking off and back to search have results persist 
+#TODO - add custom input for extend user
+#TODO - single Search functionality 
 
 #TODO - Functionality:
-#TODO - make and test all button submits and test functionality of scripts 
+#TODO - test extend 
+#TODO - test single user search delete and extend 
+
+#TODO - Site Features: 
 #TODO - investigate logout button and fuctionality (BB)
 #TODO - intergrate database into site (BB/Tho)
 #TODO - convert all tabs/forms to work without php (BB)
@@ -85,14 +87,15 @@ def home():
 #checks user input and gives entrace to main site (will be using a database to check or servicenow)
 @app.route('/landing', methods=['GET','POST'])
 def permission():
-
     #block get requests, might be needed for security reasons
-    # if request.method == 'GET':
-        # return redirect('/', code= 302)
+    if request.method == "GET":
+        return redirect('/', code = 302)
   
     device1['username'] = request.form['login']
+    session['user'] = request.form['login']
     device2['username'] = request.form['login']
     device1['password'] = request.form['password']
+    session['pass'] = request.form['password']
     device2['password'] = request.form['password']
     
 #display vars control which buttons are visable to user, value hides select values when access is not full 
@@ -109,7 +112,7 @@ def permission():
         session['level'] = full
         return render_template("indexboot.html", vars = session['level'])
     else:
-        auth = main.authorize( device1['username'], device1['password']) 
+        auth = main.authorize( session['user'], session['pass']) 
         if auth == -1:
             flash("Authorization Failed, try again", 'danger')
             return redirect('/', code = 302)
@@ -150,18 +153,21 @@ def data():
             forminfo = adduser.missing(forminfo)                        #pull all the form info and check for blanks
             duration = main.timeset(duration)                           #convert time inputted to seconds 
             g_pass = main.pass_gen()                                    #gen guest pass
+            curr_date = datetime.datetime.now()
             #send data directly to controller as there are no records to pull or update 
-            adduser.controller(forminfo['guestemail'], forminfo['guestname'], forminfo['guestcompany'], forminfo['guestphone'], str(duration), "Network", s_email, device1['username'], device1['password'], g_pass, "N/A")
+            result = adduser.controller(forminfo['guestemail'], forminfo['guestname'], forminfo['guestcompany'], forminfo['guestphone'], str(duration), "Network", s_email, session['user'], session['pass'], g_pass, "N/A", datetime.timedelta(seconds=duration), curr_date + datetime.timedelta(seconds=duration))
         else:
-            result = adduser.reg_add(ritm_num, s_email, device1['username'], device1['password'], duration)
+            result = adduser.reg_add(ritm_num, s_email, session['user'], session['pass'], duration)
     else:
-        if(device1['username'] == "wifiadmin" or device1['username'] == "servicedesk"):
+        if(session['user'] == "wifiadmin" or session['user'] == "servicedesk"):
             device1['username'] = util.admin()
+            session['user'] = util.admin()
+            session['pass'] = util.adminp()
             device1['password'] = util.adminp()
             device2['username'] = util.admin()
             device2['password'] = util.adminp()
             
-        result = adduser.reg_add(ritm_num, s_email, device1['username'], device1['password'], duration)
+        result = adduser.reg_add(ritm_num, s_email, session['user'], session['pass'], duration)
     if (result == -10):                                     #could not match an active record to the RITM provided 
         flash("Record could not be found!" , "danger")
     elif (result == -11):                                   #this is bad, means format has changed 
@@ -178,10 +184,14 @@ def data():
         flash("Controller is busy, try again in 5 minutes", 'warning')
     else:
         #flash inforamtion to the user to see the returned results of the script 
-        flash[:result] = passinfo.join("<br/>").html_safe
+        flash(result, "success")
             
     return render_template("indexboot.html", vars = session['level'])      #return back to main page after completion 
- 
+
+@app.route('/logout', methods=['GET','POST'])
+def logout():
+    session.clear()
+    return redirect('/', code = 302)
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -204,37 +214,43 @@ def add():
         flash('User has been successfully added!', 'success')
         
         
-    return redirect('/landing', code = 302)      #return back to main page after completion 
+    return redirect('/landing', code = 302)      #return back to main page after completion, get rid of 
     
 
 @app.route('/edit', methods=['POST'])
 def delete():
     extend = request.form['extendSelect']
-    user = request.form['radioButtons']
-    if extend == 0:
+    #print (extend)
+    user = request.form['radioButtons'].lower()
+    user = user.replace("\r", "")               #get rid of html formatting
+    user = user.replace("\n", "")
+    if int(extend) == 0:
         #delete function
         result = editNetmiko.deleteuser(user)
         if result == -1:
             flash("Something went wrong, please try again. If it persists, contact the Network Team", "danger")
-        if result == 1:
+        elif result == 1:
             flash("User already did not exist!", "warning")
         else:
             flash("User was successfully deleted!", "success")
     else: 
         #extend function
+        if extend == "Custom":
+            extend = request.form['enddate']
+        extend = main.timeset(extend)
         result = editNetmiko.extenduser(user, extend)
         if result == -1:
             flash("Could not find the user to extend!", "danger")
         else:
             flash("User was successfully extended", "success")
-    return render_templete('indexboot.html', vars = session['level'])
+    return render_template('indexboot.html', vars = session['level'])
 
 @app.route('/searchdata', methods=['GET', 'POST'])
 def searchdata():
-    username = request.form['search']
+    username = request.form['search'].lower()
     username.replace(" ", "")
     output = json.dumps(editNetmiko.usersearch(username))
-    if output == -1:
+    if output == "-1":
         flash("User could not be found", "danger")
     return render_template('indexboot.html', vars = session['level'], output = output, input = username)
 
