@@ -149,9 +149,9 @@ function navigat(x){
 			//document.getElementById("two").style.marginBottom="10px";
 		} else if (x==2){ //if they select extend
 			document.getElementById("four").style.display="block";   //shows the select time drop down
-			para.innerHTML="How long would you like to extend "+"<b>"+str+"</b>?";
+			para.innerHTML="What is the time revision you would like to make to "+"<b>"+str+"</b>?";
 			document.getElementById("five").style.display="block";    //places the button on the screen
-			document.getElementById("five").value="Confirm Time Extension";  //sets the value of the button to 'Confirm Time Extension'
+			document.getElementById("five").value="Confirm Time Revision";  //sets the value of the button to 'Confirm Time Extension'
 			//document.getElementById("two").style.marginBottom="80px";
 		}
 	}
@@ -169,9 +169,9 @@ function singleNavigate(x){
 		//document.getElementById("two").style.marginBottom="10px";
 	} else if (x==2){ //if they select extend
 		document.getElementById("four1").style.display="block";   //shows the select time drop down
-		para.innerHTML="How long would you like to extend "+"<b>"+str+"</b>?";
+		para.innerHTML="What is the time revision you would like to make to "+"<b>"+str+"</b>?";
 		document.getElementById("five1").style.display="block";    //places the button on the screen
-		document.getElementById("five1").value="Confirm Time Extension";  //sets the value of the button to 'Confirm Time Extension'
+		document.getElementById("five1").value="Confirm Time Revision";  //sets the value of the button to 'Confirm Time Extension'
 		//document.getElementById("two").style.marginBottom="80px";
 	}
 }

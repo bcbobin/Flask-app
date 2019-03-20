@@ -17,6 +17,7 @@ import string
 import random 
 import smtplib 
 from email.mime.text import MIMEText 
+import emailout
 
 
 def authorize(username, password):
@@ -121,17 +122,30 @@ def update_records(ritm):
     sysid = sysrecords.get("records")
     sysid = sysid[0]
     #print(sysid)
-    new = {"state" : "1"}                               #4=Closed Incomplete, 3= Closed, 2= Work in Progress, 1= Open, -5=Pending
-    #updating records with html PUT request
-    updateurl = 'https://economical.service-now.com/api/now/v1/table/sc_req_item/' + str(sysid)
+    new = {"state" : "-5"}                               #4=Closed Incomplete, 3= Closed, 2= Work in Progress, 1= Open, -5=Pending
+    #get task sysid to close the task
+    task_url = "https://economical.service-now.com/sc_task_list.do?JSONv2&sysparm_action=getKeys&sysparm_query=request_item=" + str(sysid)
+    req = urllib.request.Request(task_url)
+    req = urllib.request.urlopen(task_url)
+    data = req.read().decode()
+    taskkey = json.loads(data)
+    #print(sysrecords)
+    taskid = taskkey.get("records")
+    taskid = taskid[0]
+    #print(taskid)
+    #updating task records with html PUT request
+    updateurl = 'https://economical.service-now.com/api/now/v1/table/sc_task/' + str(taskid)
     update = urllib.request.Request(updateurl, data=bytes(str(new), 'utf-8'), method='PUT')
     update.add_header('Content-Type', 'application/json;charset=utf-8')
     update.add_header('Accept', 'application/json')
-    urllib.request.urlopen(update)
+    res = urllib.request.urlopen(update)
+    data = res.read().decode()
+    output = json.loads(data)
+    #print(output)
 
 def timeset(duration):
     curr_date = datetime.today()           #full date of today
-    today = datetime.today().weekday()         #weekday 0=Monday 7=Sunday
+    today = datetime.today().weekday()         #weekday 0=Monday 6=Sunday
     if(duration == "4hours"):
         duration = 14400                                #4 hours in seconds
         return duration
@@ -149,34 +163,50 @@ def timeset(duration):
         return duration
     if(duration == "endofweek"):
         duration = 19 - curr_date.hour                 #hours till 7pm
-        days = 5 - today                                #days till Friday
-        duration = ((days*24) + duration)*60*60         # conver to seconds 
+        days = 4 - today                                #days till Friday
+        duration = ((days*24) + duration)*60*60         # convert to seconds 
         return duration
     if(duration == "nextweek"):
         duration = 19 - curr_date.hour                 #hours till 7pm
-        days = 7 - today + 5                            #place in the curent week plus 5 days to get to next friday
-        duration = ((days*24) + duration)*60*60         # conver to seconds 
+        days = 6 - today + 5                            #place in the curent week plus 5 days to get to next friday
+        duration = ((days*24) + duration)*60*60         # convert to seconds 
         return duration
     if(duration == "1year"):
         duration = 31536000         #1 year in seconds
         return duration
     else:               #custom input- date format "2019-03-35" - "yyyy-mm-dd"
         custom = datetime.strptime(duration, "%Y-%m-%d")
-        diff = (custom - curr_date).seconds
+        #print(custom)
+        diff = (custom - curr_date).total_seconds()
+        #print(diff)
         duration = int(diff) + (19*60*60)              #convert days into seconds + 19 hours to make sure it ends at 7pm on the day
         return duration
 
-def delex_mail(sponsor, user, edit, exflag):
-    recipients= []
-    if exflag == "true":
-        subject = "Guest wifi, user extension for "+ user
-        message = "User " + sponser + "has extended " + user + "for an additional: "+ edit
-        error= "If this change was a mistake, please contant the network team at networkgroup@economical.com and explain the error to be rectified"
+def delex_mail(s_username, s_email, user, new_time, exflag):
+    curr_date = datetime.today() 
+    #print(s_email)
+    #print("break")
+    #print(user)
+    if s_email == user:
+        recipients= [s_email] # "networkgroup@economical.com", "deskside.support@economical.com"]
     else:
-        subject=  "Guest wifi, user: " + user + "has been deleted by: " + sponsor
-        message= "A deletion was made to the guest wifi list. User " + sponsor + "has deleted: " + user
-        error= "If this change was a mistake, please contant the network team at networkgroup@economical.com and explain the error to be rectified"
-        
+        recipients= [user, s_email] # "networkgroup@economical.com", "deskside.support@economical.com"]
+    if exflag == "true":
+        end_date = curr_date + timedelta(seconds=int(new_time))
+        subject = "ECONOMICAL Wireless Guest User Account Alteration"
+        intro = "This is a confirmation email for the extension of user: " + user + " by sponsor ID: "+ s_username.upper() + "\n\n"
+        spon = "This change was made by user email: " + s_email + " on " + str(curr_date.replace(microsecond=0)) + ".\n\n"
+        info = user + "'s guest account has now been changed to last until: " + str(end_date.replace(microsecond=0)) + ".\n\n"
+        error = "If this change was a mistake, the user time can be changed again by following the same procedure"
+        message = intro + spon + info + error
+    else:
+        subject = "ECONOMICAL Wireless Guest User Account Deletion"
+        intro = "This is a confirmation email for the deletion of user: " + user + " by sponsor ID: "+ s_username.upper() + "\n\n"
+        spon = "This change was made by user email: " + s_email + " on " + str(curr_date.replace(microsecond=0)) + ".\n\n"
+        error = "If this change was a mistake, please contant the network team at networkgroup@economical.com and explain the error to be rectified"
+        message = intro + spon + error
+    for x in recipients:
+        emailout.emailsponsor(subject, message, x)
     
     
 

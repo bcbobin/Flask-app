@@ -108,7 +108,7 @@ def editconfig (host1,username1,password1,command1,command):
     time.sleep(.1)
     output = console.recv(32768).decode('utf-8', 'ignore')
     test = str(output)
-    print (output)
+    #print (output)
     ssh.close ()
     return output
 

@@ -263,6 +263,9 @@ html{
 	height: auto;
 	display: inline-block;
 }
+.flashes{
+	list-style-type: none;
+}	
 
 #footer{
 	position: fixed;

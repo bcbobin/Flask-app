@@ -1,6 +1,6 @@
 # Created by Bogdan Bobin
-# Last Updated March 14/19
-# Version 0.9.1
+# Last Updated March 19/19
+# Version 0.9.9
 ################################################################
 
 import os, tempfile, datetime
@@ -64,18 +64,11 @@ full = {
     'ritm': 'block',
 }
 
-    #########March 14th##########
-#TODO - Search Table:
-#TODO - Have clicking off and back to search have results persist 
-#TODO - add custom input for extend user
-#TODO - single Search functionality 
-
-#TODO - Functionality:
-#TODO - test extend 
-#TODO - test single user search delete and extend 
-
+    #########March 20th##########
+#TODO - Launch Version 1.1 of gwifi 
+#
+#
 #TODO - Site Features: 
-#TODO - investigate logout button and fuctionality (BB)
 #TODO - intergrate database into site (BB/Tho)
 #TODO - convert all tabs/forms to work without php (BB)
 
@@ -93,6 +86,8 @@ def permission():
   
     device1['username'] = request.form['login']
     session['user'] = request.form['login']
+    session['user_email'] = request.form['e-mail'].lower()  #TODO - is an economical check required for sponser_email(possibly)
+    session['originalID'] = request.form['login']  #store the original login, since the session user will change to give access when using the generic logins
     device2['username'] = request.form['login']
     device1['password'] = request.form['password']
     session['pass'] = request.form['password']
@@ -102,9 +97,9 @@ def permission():
     if(( device1['username'] == "wifiadmin" and device1['password'] == "4Wifi_Aut@mate") or ( device1['username'] == "servicedesk" and device1['password'] == "SDesk_Aut@mate")):
         session['level'] = guestwifi
         return render_template("indexboot.html", vars = session['level'])
-    if(device1['username'] == "gwifi" and device1['password'] == "pass"):
-        session['level'] = guestwifi
-        return render_template("indexboot.html", vars = session['level'])
+    # if(device1['username'] == "gwifi" and device1['password'] == "pass"):
+        # session['level'] = guestwifi
+        # return render_template("indexboot.html", vars = session['level'])
     elif( device1['username'] == "cwlan" and device1['password'] == "pass"):
         session['level'] = cwlan
         return render_template("indexboot.html", vars = session['level'])
@@ -133,8 +128,7 @@ def permission():
 #comunicate with other script and pull post values 
 @app.route('/new', methods=['POST'])
 def data():
-    #pull specific info from the html form by element name in html
-    s_email = request.form['sponsoremail'].lower()  #TODO - is an economical check required for sponser_email(possibly)
+    #pull specific info from the html form by element name in html 
     ritm_num = request.form['ritm']
     duration = request.form['length']
 
@@ -155,11 +149,11 @@ def data():
             g_pass = main.pass_gen()                                    #gen guest pass
             curr_date = datetime.datetime.now()
             #send data directly to controller as there are no records to pull or update 
-            result = adduser.controller(forminfo['guestemail'], forminfo['guestname'], forminfo['guestcompany'], forminfo['guestphone'], str(duration), "Network", s_email, session['user'], session['pass'], g_pass, "N/A", datetime.timedelta(seconds=duration), curr_date + datetime.timedelta(seconds=duration))
+            result = adduser.controller(forminfo['guestemail'], forminfo['guestname'], forminfo['guestcompany'], forminfo['guestphone'], str(duration), "Network", session['user_email'], session['user'], session['pass'], g_pass, "N/A", datetime.timedelta(seconds=duration), curr_date + datetime.timedelta(seconds=duration))
         else:
-            result = adduser.reg_add(ritm_num, s_email, session['user'], session['pass'], duration)
+            result = adduser.reg_add(ritm_num, session['user_email'], session['user'], session['pass'], duration)
     else:
-        if(session['user'] == "wifiadmin" or session['user'] == "servicedesk"):
+        if(session['user'] == "wifiadmin" or session['user'] == "servicedesk"):     #give generic logins, set credentials to edit controller/ticket info
             device1['username'] = util.admin()
             session['user'] = util.admin()
             session['pass'] = util.adminp()
@@ -167,13 +161,13 @@ def data():
             device2['username'] = util.admin()
             device2['password'] = util.adminp()
             
-        result = adduser.reg_add(ritm_num, s_email, session['user'], session['pass'], duration)
+        result = adduser.reg_add(ritm_num, session['user_email'], session['user'], session['pass'], duration)
     if (result == -10):                                     #could not match an active record to the RITM provided 
         flash("Record could not be found!" , "danger")
     elif (result == -11):                                   #this is bad, means format has changed 
         flash("Information could not be pulled from the RITM", "danger")
     elif (result == -12):
-        flash("The email entered on the RITM is invalid, please give a valid email on the RITM form", "danger")     #email given on RITM is not an acutal email
+        flash("The email entered on the RITM is invalid, please give a valid email on the RITM form", "danger")     #email given on RITM is not an actual email
     elif (result == -1):                                          #checks for controller auth, kept in for safety 
         flash("Invalid Username or Password", 'danger')      
     elif(result == -2):                                         #probably not need but added for safety  
@@ -184,7 +178,8 @@ def data():
         flash("Controller is busy, try again in 5 minutes", 'warning')
     else:
         #flash inforamtion to the user to see the returned results of the script 
-        flash(result, "success")
+        for x in result:
+            flash(x, "success")
             
     return render_template("indexboot.html", vars = session['level'])      #return back to main page after completion 
 
@@ -218,13 +213,14 @@ def add():
     
 
 @app.route('/edit', methods=['POST'])
-def delete():
+def editdata():
     extend = request.form['extendSelect']
     #print (extend)
     user = request.form['radioButtons'].lower()
     user = user.replace("\r", "")               #get rid of html formatting
     user = user.replace("\n", "")
-    if int(extend) == 0:
+    user = user.replace(" ", "")
+    if extend == "0":
         #delete function
         result = editNetmiko.deleteuser(user)
         if result == -1:
@@ -233,6 +229,7 @@ def delete():
             flash("User already did not exist!", "warning")
         else:
             flash("User was successfully deleted!", "success")
+            main.delex_mail(session['originalID'], session['user_email'], user, 0, "false")
     else: 
         #extend function
         if extend == "Custom":
@@ -243,6 +240,7 @@ def delete():
             flash("Could not find the user to extend!", "danger")
         else:
             flash("User was successfully extended", "success")
+            main.delex_mail(session['originalID'],session['user_email'], user, extend, "true")
     return render_template('indexboot.html', vars = session['level'])
 
 @app.route('/searchdata', methods=['GET', 'POST'])

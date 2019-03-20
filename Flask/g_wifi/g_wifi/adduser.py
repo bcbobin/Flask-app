@@ -33,9 +33,11 @@ def controller(gemail, gname, gcompany, gphone, duration, sdept, s_email, userna
             counter = 1 + counter
         elif (status == 0):
             #flash inforamtion to the user to see the returned results of the script 
-            passinfo =("Successful addition, guest user information: </br>",
-                    "Username:      " + gemail +    '        Password: '+ gpass + '</br>' ,
-                    'Time Given:    '+ str(time_active) + '      Expires on: '+  str(end_date) + '</br>')
+            passinfo =[
+                "Successful addition, guest user information:",
+                "Username: " + gemail +  '    Password: '+ gpass,
+                'Time Given: '+ str(time_active) + '    Expires on: '+  str(end_date.replace(microsecond=0)),
+                ]
             break
         else:
             return status

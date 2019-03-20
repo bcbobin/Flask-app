@@ -171,7 +171,7 @@ def execute(guestemail, guestfullname, guestcompany, guestphone, hours, sponsord
         #    print (p(0))
             #index1+=1
             
-        print ("User has been created ")
+        #print ("User has been created ")
         commandx ='config paging disable'
         command = "show netuser detail " + guestusername + "\n"
         prod = show.editconfig (host1,username1,password1,commandx,command)
