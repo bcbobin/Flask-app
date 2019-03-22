@@ -117,14 +117,14 @@
 					
 			<div id="ritminput" class="row" >
 				<div class="col">
-					<label>ServiceNow RITM: (Don't have? Click <a id="ritmlink" href="https://economical.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D683658ed1868710097bb8c7099cc7d96%26sysparm_link_parent%3Dd65ddead18a8710097bb8c7099cc7dcb%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default" target="_blank">here</a>)</label>
-					<input type="text" name="ritm" required>
+					<label>ServiceNow RITM: (Don't have? Click <a id="ritmlink" style="color: #60c2e9;" href="https://economical.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D683658ed1868710097bb8c7099cc7d96%26sysparm_link_parent%3Dd65ddead18a8710097bb8c7099cc7dcb%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default" target="_blank">here</a>)</label>
+					<input type="text" name="ritm" placeholder="RITMXXXXXXX" required>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
 					<label>Access Time Duration (Time Begins on Submit!)</label>
-					<select onchange="customcheck(this)" name="length" class="selectDuration" required>
+					<select onchange="customcheck(this)" name="length" class="selectDuration" id="addSelect" required>
 						<option selected value="0"> Please Select a Time </option>
 						<option  value = "4hours">4 hours</option>
 						<option  value = "today">Today (7am - 7pm)</option>
@@ -419,7 +419,6 @@
 <script>
 $(document).ready(function(){
 	data = "{{output}}";
-
 	if (data == "-1"){
 		document.getElementById("guestWiFi").style.display="none";
         document.getElementById("guestSearch").style.display="block";

@@ -45,16 +45,22 @@ def authorize(username, password):
     return 0
 
 def record_retrieve(req_number, duration):
+    req = req_number.replace(" ", "")
     curr_date = datetime.now()                             
     info = {}
     info['ritm_not_found'] = "false"
     info['fail'] = "false"
     info['email_invalid'] = "false"
+    info['http'] = "false"
     
     #retreive item sysid by sending a query
-    idurl = "https://economical.service-now.com/sc_req_item.do?JSONv2&sysparm_action=getRecords&sysparm_query=active=true^GOTOnumberLIKE" + str(req_number) + "^ORDERBYnumber&displayvariables=true&displayvalue=true"
+    idurl = "https://economical.service-now.com/sc_req_item.do?JSONv2&sysparm_action=getRecords&sysparm_query=active=true^GOTOnumberLIKE" + str(req) + "^ORDERBYnumber&displayvariables=true&displayvalue=true"
     req = urllib.request.Request(idurl)
-    req = urllib.request.urlopen(idurl)
+    try:
+        req = urllib.request.urlopen(idurl)
+    except: 
+        info['http'] = true
+        return info
     data = req.read().decode()
     #print(data)
     data = json.loads(data)
@@ -70,10 +76,11 @@ def record_retrieve(req_number, duration):
         sponsor_name = child[0]['children'][0]['value']
         recipient = child[0]['children'][1]['value']
         department = child[0]['children'][2]['value']
-        email = child[4]['children'][2]['children'][0]['value']  
-        phone = child[4]['children'][0]['children'][0]['value']
-        details = child[6]['children'][0]['value']
-    except(KeyError, IndexError):                       #error when attempting to retrieve information
+        email = child[3]['children'][2]['children'][0]['value']  
+        phone = child[3]['children'][0]['children'][0]['value']
+        details = child[5]['children'][0]['value']
+        #print(child[3])
+    except(KeyError, IndexError, TypeError):                       #error when attempting to retrieve information
         info['fail'] = "true"
         return info
     try:
@@ -107,7 +114,7 @@ def record_retrieve(req_number, duration):
     return info
 
     
-def pass_gen(size = 8, chars='abcdefghjkmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ' + string.digits + '!@#$%^&*()'):
+def pass_gen(size = 8, chars='abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ' + string.digits + '!@#$%^&*()'):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
@@ -122,7 +129,7 @@ def update_records(ritm):
     sysid = sysrecords.get("records")
     sysid = sysid[0]
     #print(sysid)
-    new = {"state" : "-5"}                               #4=Closed Incomplete, 3= Closed, 2= Work in Progress, 1= Open, -5=Pending
+    new = {"state" : "3"}                               #4=Closed Incomplete, 3= Closed, 2= Work in Progress, 1= Open, -5=Pending
     #get task sysid to close the task
     task_url = "https://economical.service-now.com/sc_task_list.do?JSONv2&sysparm_action=getKeys&sysparm_query=request_item=" + str(sysid)
     req = urllib.request.Request(task_url)
@@ -188,9 +195,9 @@ def delex_mail(s_username, s_email, user, new_time, exflag):
     #print("break")
     #print(user)
     if s_email == user:
-        recipients= [s_email] # "networkgroup@economical.com", "deskside.support@economical.com"]
+        recipients= [s_email ,"networkgroup@economical.com", "deskside.support@economical.com"]
     else:
-        recipients= [user, s_email] # "networkgroup@economical.com", "deskside.support@economical.com"]
+        recipients= [user, s_email, "networkgroup@economical.com", "deskside.support@economical.com"]
     if exflag == "true":
         end_date = curr_date + timedelta(seconds=int(new_time))
         subject = "ECONOMICAL Wireless Guest User Account Alteration"

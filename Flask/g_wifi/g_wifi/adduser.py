@@ -14,6 +14,8 @@ def reg_add(ritm, s_email, username, password, duration):
         return -11
     elif data['email_invalid'] == "true":
         return -12
+    elif data['http'] == "true":
+        return -13
     data = missing(data)                            #fill any empty fields with n/a to avoid whitespace issues
     guest_pass = main.pass_gen()                    #generate the guest's password
     #send the info to the controller 

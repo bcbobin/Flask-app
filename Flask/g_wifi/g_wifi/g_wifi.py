@@ -32,7 +32,7 @@ device2 = {
 
 #access levels
 guestwifi ={
-    'value': "hidden",
+    'value': "disabled",
     'cwlandisplay': "none",
     'wifidisplay': "",
     'vlandisplay': "none",
@@ -43,7 +43,7 @@ guestwifi ={
 }
 
 cwlan = {
-    'value': "hidden",
+    'value': "disabled",
     'cwlandisplay': "",
     'wifidisplay': "none",
     'vlandisplay': "none",
@@ -153,21 +153,23 @@ def data():
         else:
             result = adduser.reg_add(ritm_num, session['user_email'], session['user'], session['pass'], duration)
     else:
-        if(session['user'] == "wifiadmin" or session['user'] == "servicedesk"):     #give generic logins, set credentials to edit controller/ticket info
-            device1['username'] = util.admin()
-            session['user'] = util.admin()
-            session['pass'] = util.adminp()
-            device1['password'] = util.adminp()
-            device2['username'] = util.admin()
-            device2['password'] = util.adminp()
+        #if(session['user'] == "wifiadmin" or session['user'] == "servicedesk"):     #give generic logins, set credentials to edit controller/ticket info
+        device1['username'] = util.admin()
+        session['user'] = util.admin()
+        session['pass'] = util.adminp()
+        device1['password'] = util.adminp()
+        device2['username'] = util.admin()
+        device2['password'] = util.adminp()
             
         result = adduser.reg_add(ritm_num, session['user_email'], session['user'], session['pass'], duration)
     if (result == -10):                                     #could not match an active record to the RITM provided 
         flash("Record could not be found!" , "danger")
     elif (result == -11):                                   #this is bad, means format has changed 
-        flash("Information could not be pulled from the RITM", "danger")
+        flash("Information could not be pulled from the RITM, please contact the Network team", "danger")
     elif (result == -12):
         flash("The email entered on the RITM is invalid, please give a valid email on the RITM form", "danger")     #email given on RITM is not an actual email
+    elif (result == -13):                                   #http error, not good, could be due to faulty input
+        flash("Error occured when trying to pull RITM info", "danger")
     elif (result == -1):                                          #checks for controller auth, kept in for safety 
         flash("Invalid Username or Password", 'danger')      
     elif(result == -2):                                         #probably not need but added for safety  
