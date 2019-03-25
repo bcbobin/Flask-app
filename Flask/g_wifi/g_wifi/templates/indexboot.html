@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>NTW Tools</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<link href="static/home.css" rel="stylesheet" type="text/css">    <!-- acesses the css file-->
+<!-- Load an icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="static/jquery-ui/jquery-ui.theme.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="static/jquery-ui/jquery.js"></script>
+<script src="static/jquery-ui/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+        <img src="static/economical.jpg" alt="Economical Logo" style="width:11.25em;height:3em;">
+    </div>
+    <div class="col-6" style="text-align: center;">
+        <p id="title" style="font-size:150%;font-family:verdana;font-weight:bold">Network Tools Portal</p>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
+<!-- header buttons -->
+<nav id="header" class="btn-group navbar navbar-expand-lg navbar-dark"> 
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background-color: #003359">
+       <button id= "vlanbtn" style="display: {{vars['vlandisplay']}}" class="navbtn nav-item" onclick="nav(1)"><i class="fa fa-fw fa-user"></i> VLAN Move</button><!--
+    --><button  id= "wifibtn" style="display: {{vars['wifidisplay']}}" class="navbtn nav-item pressed" onclick="nav(2)"><i class="fa fa-fw fa-wifi"></i> Guest Wi-Fi</button><!--
+    --><button  id = "cwlanbtn" style="display: {{vars['cwlandisplay']}}" class="navbtn nav-item" onclick="nav(3)"><i class="fa fa-fw fa-signal"></i> C-WLAN</button>
+		<form action="/logout"><button type="submit" id="logout" style="position: absolute;right: 0;top: 0;" class="navbtn nav-item"><i class="fa fa-fw fa-sign-out"></i> Logout</button></form>
+	
+    </div>
+</nav>
+
+<p/>  <!--this puts a space between the header and the welcome-->
+
+
+<hr/>
+<!-- this is the block that allows python message flashes to work  -->
+<div class="container" id="alerts">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+		<ul class="flashes">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible" role="alert" style="margin-bottom: 0;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<li>{{message}}</li>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    {% block body %}{% endblock %}
+</div>
+
+<!-- guest wifi form--> 
+<div style="display: {{vars['showwifi']}}" id="WiFi" class="backgroundForms">
+    <p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;">Guest Wi-Fi</p>
+    <p style="text-align:center"><b>Would you like to add a New User or edit an existing user?</b></p>
+        <div style="background-color:#003359;">
+            
+            <button id="addbtn" class="wifibtn" onclick="Navigate(1, '{{output}}', '{{input}}')">Add New User</button><!--
+            --><div class="divider"></div><!--
+            --><button id="searchbtn" class="wifibtn" onclick="Navigate(2, '{{output}}', '{{input}}')">Search for User</button>
+				
+        </div>
+        <hr>
+        <!--Add new user form-->
+       <form id="guestWiFi" action="/new" method="post" enctype="multipart/form-data">
+            <p style="font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;"><b>Sponsor</b></p>    
+            <div class="row" style="display: {{vars['ritm']}};">
+				<div class="col">
+					<label>Do you have an RITM number? <label>
+					<label style="padding-left: 6em; padding-right: 3em;" class="radio-inline">
+						<input type="radio" name="ritmcheck" value="Yes" checked> Yes
+					</label>
+					<label style="padding-left: 3em; padding-right: 3em;" class="radio-inline">
+						<input type="radio" name="ritmcheck" value="No"> No
+					</label>
+				</div>
+			</div>
+			<div id= "noritm" style="display: none;">
+				<div class="row">
+					<div class = "col">
+						<label>Guest Name:</label>
+						<input type="text" name="guestname">
+					</div>
+					<div class ="col">
+						<label>Guest Email:</label>
+						<input type="email" name="guestemail">
+					</div>
+				</div>
+				<div class="row">
+					<div class = "col">
+						<label>Company:</label>
+						<input type="text" name="guestcompany" >
+					</div>
+					<div class ="col">
+						<label>Guest Phone:</label>
+						<input type="text" name="guestphone" >
+					</div>
+				</div>
+			</div>
+					
+					
+			<div id="ritminput" class="row" >
+				<div class="col">
+					<label>ServiceNow RITM: (Don't have? Click <a id="ritmlink" style="color: #60c2e9;" href="https://economical.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D683658ed1868710097bb8c7099cc7d96%26sysparm_link_parent%3Dd65ddead18a8710097bb8c7099cc7dcb%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default" target="_blank">here</a>)</label>
+					<input type="text" name="ritm" placeholder="RITMXXXXXXX" required>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label>Access Time Duration (Time Begins on Submit!)</label>
+					<select onchange="customcheck(this)" name="length" class="selectDuration" id="addSelect" required>
+						<option selected value="0"> Please Select a Time </option>
+						<option  value = "4hours">4 hours</option>
+						<option  value = "today">Today (7am - 7pm)</option>
+						<option  value ="tomorrow">Tomorrow (7am - 7pm)</option>
+						<option  value ="3days">3 days</option>
+						<option  value ="endofweek">This week (Mon. - Fri. 7pm)</option> 
+						<option  value ="nextweek">Next week (Mon. - Fri. 7pm)</option>     						
+						<option value ="1year" {{vars['value']}}>1 year</option>	
+						<option value ="Custom" {{vars['value']}}>Custom</option>
+					</select>
+				</div>
+			</div>
+			<div style="display:none;" id="customlabel" class="row">
+				<div class = "col">
+					<label>End Date: </label>
+				</div>
+			</div>
+			<div style="display:none;" id="custominput" class="row">
+				<div class = "col">
+					<input id= "addtime" type="text" name="enddate">
+				</div>
+			</div>
+            <input value="Submit" type="submit" class="submitButton">
+        </form>
+    
+        <!--Search for user form-->
+        <form id="guestSearch" action="/searchdata" method="post" enctype="multipart/form-data">
+            <p></p>
+            <div class="row">
+                <div class="col-11">
+                    <label>Search for user by email address:</label>
+                    <input name="search" type="email" placeholder="jondoe@hotmail.com.." id="searchField"><!--
+                 --><button type="submit" class="searchButton" ><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <p id="userFound"></p>
+        </form>
+        
+        
+		<form id="test2" action="/edit" method="post" enctype="multipart/form-data">
+			<table id="table1" style="border-spacing:0; width: 100%; text-align:center;" onclick="checker()">
+				<tr>
+					<td style="color:rgb(96, 194, 233); width:55%"><b>User </b></td>
+					<td style="color:rgb(96, 194, 233); width: 40%"><b>Time Remaining </b></td>
+					<td style="color:rgb(96, 194, 233);"><b>Select</b></td>
+				</tr>
+			</table>
+			<p style="text-align:center;font-size:20px;">You have selected:</p>
+			<p id="testing" style="text-align:center;font-size:20px;"><b>Please select a user from the list above</b></p>
+			<p style="text-align:center;font-size:20px;" id="one">Would you like to delete the user or revise their time?</p>
+			<div class="row" id="two">
+				<div class="col">
+					<input type="button" style="width:100%;" value="Delete User" class="DelOrExt wifibtn" onclick="navigat(1)" id="delete">
+				</div>
+				<div class="col">
+					<input type="button" style="width:100%;" value="Revise Time" class="DelOrExt wifibtn" onclick="navigat(2)" id="extend">
+				</div>
+			</div>
+			<p id="three" style="margin-top: 16px; text-align:center;font-size:20px;"></p>
+			<div class="row">
+				<div class="col">
+					<select onchange="customcheckall(this)" name="extendSelect" id="four" class="selectDuration">
+						<option selected value="0"> Please Select a Time </option>
+						<option  value = "4hours">4 hours</option>
+						<option  value = "today">Today (7am - 7pm)</option>
+						<option  value ="tomorrow">Tomorrow (7am - 7pm)</option>
+						<option  value ="3days">3 days</option>
+						<option  value ="endofweek">This week (Mon. - Fri. 7pm)</option> 
+						<option  value ="nextweek">Next week (Mon. - Fri. 7pm)</option>     						
+						<option value ="1year" {{vars['value']}}>1 year</option>	
+						<option value ="Custom" {{vars['value']}}>Custom</option> <!-- not sure if we need a custom entry here or if we can leave it as a select-->
+					</select>
+				</div>
+			</div>
+			<div style="display:none;" id="allcustom" class="row">
+				<div class = "col">
+					<label style="margin-top: 8px;">End Date: </label>
+				</div>
+			</div>
+			<div style="display:none;" id="allinput" class="row">
+				<div class = "col">
+					<input id= "addtimeall" type="text" name="enddate" style="width: 100%">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<input class="submitButton" type="submit" value="Submit" id="five"> 
+				</div>
+			</div>
+		</form>
+		
+		<!--this is the single user search form-->
+		<form id="test3" action="/edit" method="post" enctype="multipart/form-data">
+			<table id="singleSearch" style="border-spacing:0; width: 100%; text-align:center;">
+				<tr>
+					<th style="color:rgb(96, 194, 233);">User</th>
+					<th style="color:rgb(96, 194, 233);">Time Remaining</th>
+				</tr>
+			</table>
+			
+			<p style="text-align:center;font-size:20px;" id="one">Would you like to delete the user or revise their time?</p>
+			<div class="row" id="two">
+				<div class="col">
+					<input type="button" style="width:100%;" value="Delete User" class="DelOrExt wifibtn" onclick="singleNavigate(1)" id="delete">
+				</div>
+				<div class="col">
+					<input type="button" style="width:100%;" value="Revise Time" class="DelOrExt wifibtn" onclick="singleNavigate(2)" id="extend">
+				</div>
+			</div>
+			<p id="three1" style="margin-top: 16px; text-align:center;font-size:20px;"></p>
+			<div class="row">
+				<div class="col">
+					<select onchange="customchecksingle(this)" name="extendSelect" id="four1" class="selectDuration">
+						<option selected value="0"> Please Select a Time </option>
+						<option  value = "4hours">4 hours</option>
+						<option  value = "today">Today (7am - 7pm)</option>
+						<option  value ="tomorrow">Tomorrow (7am - 7pm)</option>
+						<option  value ="3days">3 days</option>
+						<option  value ="endofweek">This week (Mon. - Fri. 7pm)</option> 
+						<option  value ="nextweek">Next week (Mon. - Fri. 7pm)</option>     						
+						<option value ="1year" {{vars['value']}}>1 year</option>	
+						<option value ="Custom" {{vars['value']}}>Custom</option> <!-- not sure if we need a custom entry here or if we can leave it as a select-->
+					</select>
+				</div>
+			</div>
+			<div style="display:none;" id="singlecustom" class="row">
+				<div class = "col">
+					<label style = "margin-top: 8px;">End Date: </label>
+				</div>
+			</div>
+			<div style="display:none;" id="singleinput" class="row">
+				<div class = "col">
+					<input id= "addtimesingle" type="text" name="enddate" style="width: 100%">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<input class="submitButton" type="submit" value="Submit" id="five1"> 
+				</div>
+			</div>
+		</form>
+</div>
+
+<!-- vlan move form -->
+
+<form id="vlanMove" style="display: {{vars['showvlan']}}" class="backgroundForms" action="/index.php" method="post" enctype="multipart/form-data"> 
+    <p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;">VLAN Move Request</p>
+    <hr/>
+        <label> Device Location:</label>
+        <select name="devlocation" required>
+            <option selected="true" disabled="true"><b>WESTMOUNT (10.1.X.X)</b></option>
+            <option value="Westmount:Upper Floor">Westmount:Upper Floor</option>
+            <option value="Westmount:Main Floor">Westmount:Main Floor</option>
+            <option value="Westmount:Lower Floor">Westmount:Lower Floor</option>
+            <option selected="true" disabled="true"><b>RIVERBEND (10.2.X.X)</b></option>
+            <option value="Riverbend: 2nd Floor">Riverbend: Second Floor</option>
+            <option value="Riverbend: 3rd Floor">Riverbend: Third Floor</option>
+            <option value="Riverbend: 4th Floor">Riverbend: Fourth Floor</option>
+            <option value="Riverbend: 5th Floor">Riverbend: Fifth Floor</option>
+            <option selected="true" disabled="true"><b>Deskside Support Labs (10.2.254.X)</b></option>
+            <option value="Riverbend: intellab">Riverbend: intellab</option>
+            <option value="Riverbend: rbs2_level2lab">Riverbend: rbs2_level2lab</option>
+        </select>   
+        <label>VLAN Selection:</label>
+        <select name="vlanselect" required>
+            <option selected="true" disabled="true"><b>Special VLAN</b></option>
+            <option value="Special VLAN 253">Special VLAN 253</option>
+            <option selected="true" disabled="true"><b>Riverbend</b></option>
+            <option value="402">Workstation VLAN (402) Second Floor</option>
+            <option value="403">Workstation VLAN (403) Third Floor</option>
+            <option value="404">Workstation VLAN (404) Fourth Floor</option>
+            <option value="405">Workstation VLAN (405) Fifth Floor</option>
+            <option value="406">Workstation New VLAN (406) Second Floor</option>
+            <option selected="true" disabled="true"><b>Westmount</b></option>
+            <option value="121">Upper Floor VLAN (121)</option>
+            <option value="120">Upper Floor VLAN (120)</option>
+            <option value="117">Main Floor VLAN (117)</option>
+            <option value="119">Lower Floor VLAN (119)</option>
+            <option selected="true" disabled="true"><b>Deskside Support Labs</b></option>
+            <option value="40">E-WLAN VLAN (40)</option>
+            <option value="45">C-WLAN VLAN (45)</option>
+            <option value="70">IP_Phone VLAN (70)</option>
+            <option value="71">IP_Phone VLAN (71)</option>
+            <option value="72">IP_Phone VLAN (72)</option>
+            <option value="73">IP_Phone VLAN (73)</option>
+            <option value="74">IP_Phone VLAN (74)</option>
+            <option value="81">Printers (81)</option>
+            <option value="89">Dev_Voice_GW (89)</option>
+        </select>   
+        
+        <div class="row">
+            <div class="col">
+                <label>MAC Address:</label>
+                    <input type="text" id="macAddress" name="vlanmac" placeholder="XX:XX:XX:XX:XX:XX" maxlength='17' required>
+            </div>
+            <div class="col">
+                <label>Device IP:</label>
+                    <input type="text" name="IP" placeholder="Input Device IP.."required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Change Ticket #:</label>
+                    <input type="text" name="chg" placeholder="Change #.." required>
+            </div>
+            <div class="col">
+                <label>Work Station Number:</label>
+                    <input type="text" name="workstation" placeholder="Workstation.." required>
+            </div>
+        </div>
+        <input type="submit" value="Submit" class="submitButton" style="width:100%;">
+</form>
+
+
+<!-- c-wlan form -->
+
+<div id="cwlan" style="display: {{vars['showcwlan']}}" class="backgroundForms"> 
+    <p style="margin-top: .5em;margin-bottom: 1em;font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;">C-WLAN</p>
+    <p style="text-align:center"><b>Would you like to add a New User or edit an existing user?</b></p>
+        <div style="background-color:#003359;">
+            <button id="cwlanaddbtn" class="wifibtn" onclick="cwlan(1)">Add New User</button><!--
+            --><div class="divider"></div><!--
+            --><button id="cwlansearchbtn" class="wifibtn" onclick="cwlan(2)">Search for User</button>
+        </div>
+    <hr>
+     <!--Add new user form-->
+    <form id="addcwlan" action="/add" method="post" enctype="multipart/form-data"> 
+        <p style="font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;"><b>Add User</b></p>    
+        <div class="row">
+            <div class="col">
+                <label>Wireless MAC address:</label>
+                    <input type="text" id="cwlanmacAddress" name="cwlanmac" placeholder="XX:XX:XX:XX:XX:XX" maxlength='17' required>
+            </div>
+        </div>
+        <div class="row">
+            <label style="padding-left:15px">Sponsor Information:</label>
+        </div>
+        <div class="row">
+            <div class="col">
+                    <input type="text" name="spon_name" placeholder="Full Name" required>
+            </div>
+            <div class="col">
+    
+                    <input type="email" name="spon_email" placeholder="E-mail" required>
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Start Date:</label>
+                    <input type="date" name="startdate" required>
+            </div>
+            <div class="col">
+                <label>End Date:</label>
+                    <input type="date" name="enddate" required>
+            </div>
+        </div>
+        <div class="row">
+            <label style="padding-left:15px">User Information:</label>
+        </div>
+        <div class="row">
+            <div class="col">
+                    <input type="text" name="users_name" placeholder="Full Name" required>
+            </div>
+            <div class="col">
+                    <input type="email" name="user_email" placeholder="E-mail" required>
+            </div>
+            <div class="col">
+                    <input type="text" name="user_company" placeholder="Company" required>
+            </div>
+        </div>
+        
+    <input type="submit" value="Submit" class="submitButton" style="width:100%;">
+    </form>
+    
+    <!--Implement new search functionality -->
+    <form id="searchcwlan" action="/cwlan" method="post" enctype="multipart/form-data">
+        <p style="font-size:35px;text-align:center;background-color:#60c2e9;color:white; padding:10px;"><b>Work In Progress...</b></p> 
+    </form>
+</div>
+
+<!-- footer element  -->
+<div id= "footer">
+    <footer>
+        <p id="tag">Powered by NTW</p><p align="right" id="contactfooter">Questions? E-mail <a id="contactemail" href="mailto:networkgroup@economical.com?Subject=Webpage%20Support" target="_top">networkgroup@economical.com</a></p>
+    </footer>
+</div>
+
+<script type="text/javascript" src="static/home.js"></script>   <!-- accesses the javascript file-->
+<!-- bootstrap link in case of use  -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function(){
+	data = "{{output}}";
+	if (data == "-1"){
+		document.getElementById("guestWiFi").style.display="none";
+        document.getElementById("guestSearch").style.display="block";
+		$('#searchbtn').toggleClass('wifipressed');
+		document.getElementById("test2").style.display="none";
+		document.getElementById("test3").style.display="none";
+	}
+	else if (data != ""){
+		document.getElementById("guestWiFi").style.display="none";
+        document.getElementById("guestSearch").style.display="block";
+        //document.getElementById("alerts").style.display="none";
+        $('#searchbtn').toggleClass('wifipressed');
+		whichFunction()
+	}
+	data="";
+});
+$('#logout').click(function(){
+	$.ajax({url: "/logout"})
+});
+
+function whichFunction(){
+	if("{{input}}" == ""){
+		searchData(data);
+		document.getElementById("test2").style.display="block";
+		document.getElementById("test3").style.display="none";
+		
+	} else{
+		single(data);
+		document.getElementById("test2").style.display="none";
+		document.getElementById("test3").style.display="block";
+	}
+}
+
+
+$(function(){
+	$('#addtime').datepicker({
+		dateFormat: 'yy-mm-dd',
+		minDate: 0
+	});
+	$('#addtimeall').datepicker({
+		dateFormat: 'yy-mm-dd',
+		minDate: 0
+	});
+	$('#addtimesingle').datepicker({
+		dateFormat: 'yy-mm-dd',
+		minDate: 0
+	});
+});
+$('input[type=radio][name=ritmcheck]').change(function(){					//so form can submit, since the hidden fields will not be required 
+	if (this.value == "Yes"){
+		document.getElementById("noritm").style.display="none";
+		document.getElementById("ritminput").style.display="block";
+		$('input[type=text][name=guestname]').prop('required',false);
+		$('input[type=text][name=guestemail]').prop('required',false);
+		$('input[type=text][name=ritm]').prop('required',true);
+	}
+	if (this.value == "No"){
+		document.getElementById("noritm").style.display="block";
+		document.getElementById("ritminput").style.display="none";
+		$('input[type=text][name=guestname]').prop('required',true);
+		$('input[type=text][name=guestemail]').prop('required',true);
+		$('input[type=text][name=ritm]').prop('required',false);
+	}
+});
+
+function customcheck(selected){											//checks for the custom option to reveal a calandar input 
+	if(selected.value == "Custom"){
+		document.getElementById('customlabel').style.display = "block";
+		document.getElementById('custominput').style.display = "block";
+	}
+	else{
+		document.getElementById('customlabel').style.display = "none";
+		document.getElementById('custominput').style.display = "none";
+	}
+}
+
+function customcheckall(selected){											//checks for the custom option to reveal a calandar input 
+	if(selected.value == "Custom"){
+		document.getElementById('allcustom').style.display = "block";
+		document.getElementById('allinput').style.display = "block";
+	}
+	else{
+		document.getElementById('allcustom').style.display = "none";
+		document.getElementById('allinput').style.display = "none";
+	}
+}
+
+function customchecksingle(selected){											//checks for the custom option to reveal a calandar input 
+	if(selected.value == "Custom"){
+		document.getElementById('singlecustom').style.display = "block";
+		document.getElementById('singleinput').style.display = "block";
+	}
+	else{
+		document.getElementById('singlecustom').style.display = "none";
+		document.getElementById('singleinput').style.display = "none";
+	}
+}
+
+var people=[]
+function searchData(data){
+	data = data;
+	if (data == ""){
+		return
+	}
+	; //this array will store the names of all the people
+	lines=data.split(" "); //this separates the data word by word
+
+	for(i=0;i<lines.length;i++){   //this for loop will cycle through the lines array 
+		var rowCount=1;  //this will be where the new row is added in the table, the first row will start at 1
+		var table=document.getElementById("table1");   //this finds the table element in the html
+		
+		for(i=0;i<lines.length;i++){   //goes through the lines array
+			if(lines[i].indexOf(".com")!=-1 || lines[i].indexOf(".ca")!=-1){   //this checks for .com and .ca since every email address in the system will end in one of the 2
+				placeholder=lines[i].slice(lines[i].indexOf("\n"),lines[i].length);
+				
+				people.push(placeholder);  //pushes the name into the people array
+				start=data.indexOf(placeholder);  //this is where to start searching					
+				if (rowCount%2==1){//this will change the background colour in the table
+					var coloring = "rgb(96, 194, 233)";  
+					var fontColor="white";
+					var bording="none";
+				} else {
+					var coloring = "white";
+					var fontColor="rgb(96, 194, 233)";
+					var bording="1px solid rgb(96, 194, 233)";
+				}
+				var date=data.slice(data.indexOf("Guest",start)+6, data.indexOf("sec",start)+3); //slices the date out
+				var row=table.insertRow(rowCount);  //inserts a row at the position of rowCount
+				var cell1=row.insertCell(0);   //left hand column 
+				var cell2=row.insertCell(1);   //middle column
+				var cell3=row.insertCell(2);   //right hand column
+				
+				var column1=document.createElement("p");  //creates a p element
+				column1.style.backgroundColor=coloring;   //sets the background colour of the p element
+				column1.style.color=fontColor;            //sets the font color of the p element
+				column1.style.border=bording;             //sets the border of the p element
+				var names=document.createTextNode(placeholder);  //creates a text node with the value of the persons name
+				column1.appendChild(names);    //appends the text node into the p element
+				cell1.appendChild(column1);    //appends the p element to the left hand cell in the table
+				
+				var column2=document.createElement("p");  //creates a p element
+				column2.style.backgroundColor=coloring;   //sets the background color of the p element
+				column2.style.color=fontColor;            //sets the font color of the p element
+				column2.style.border=bording;             //sets the border of the p element
+				var date=document.createTextNode(date);   //creates a text node with a value of the date
+				column2.appendChild(date);                //appends the date to the p elememt 
+				cell2.appendChild(column2);               //appends the p element to the middle cell of the table
+				
+				var column3=document.createElement("p");  //creates a p element
+				column3.style.backgroundColor=coloring;    //sets the background colour of the p element
+				column3.style.color=fontColor;             //sets the font color of the p element
+				column3.style.border=bording;              //sets the border of the p element
+				var selects=document.createElement("input");  //creates an input element
+				selects.type="radio";           //sets the type of the input to radio
+				selects.name="radioButtons"    //the radio buttons all need to have the same name in a table or else they act like check boxes and users would be able to select multiple people at one time
+				selects.id=placeholder;           //sets the id of the radio button to the persons name --> this will be used in the function "checker"
+				selects.className="radioButtons"
+				selects.value=placeholder;
+				column3.appendChild(selects);   //appends the radio button to the p element
+				cell3.appendChild(column3);     //appends the p element to the right hand cell of the table
+				
+				rowCount++;  //increases the row count by one so the next name will be added into the next row
+			}
+		}
+	}
+}
+
+
+function single(data){
+	var nameStart=55;  //finds the start of the name
+	var timeStart=data.indexOf("Remaining Time")+50;  //finds the start of the time remaining
+	var name=data.slice(nameStart,data.indexOf("\n",nameStart));   //slices the name out
+	var timeRemaining=data.slice(timeStart,data.indexOf("\n",timeStart));  //slices the time remaining out
+	document.getElementById("singleSearch").style.display="table";     //displays the table
+
+	var table=document.getElementById("singleSearch");   //find the table in the html
+	var numRows=table.rows.length;   //counts the number of rows
+	if (numRows!=2){   //if there is only one row then it will add another row. However, if there is already 2 rows 
+		var row=table.insertRow(1);
+		var cell1=row.insertCell(0);
+		var cell2=row.insertCell(1);
+
+		var column1=document.createElement("p");
+		column1.style.backgroundColor="rgb(96, 194, 233)";       //sets the background colour of the p element
+		column1.style.color="white";                //sets the font color of the p element
+		column1.style.border="none";
+		column1.value=name;
+		column1.id="nameHere";
+		var n=document.createTextNode(name);
+		column1.appendChild(n);
+		cell1.appendChild(column1);
+
+		var column2=document.createElement("p");
+		column2.style.backgroundColor="rgb(96, 194, 233)";       //sets the background colour of the p element
+		column2.style.color="white";               //sets the font color of the p element
+		column2.style.border="none";
+		var t=document.createTextNode(timeRemaining);
+		column2.appendChild(t);
+		cell2.appendChild(column2);
+		
+		var newRow=table.insertRow(2);
+		newRow.style.display="none";
+		var cell3=newRow.insertCell(0);
+		var column3=document.createElement("p");  //creates a p element
+		var selects=document.createElement("input");  //creates an input element
+		selects.type="radio";           //sets the type of the input to radio
+		selects.name="radioButtons"    //the radio buttons all need to have the same name in a table or else they act like check boxes and users would be able to select multiple people at one time
+		selects.id="nameHere";           //sets the id of the radio button to the persons name --> this will be used in the function "checker"
+		selects.className="radioButtons"
+		selects.value=name;
+		selects.checked=true;
+		column3.appendChild(selects);   //appends the radio button to the p element
+		cell3.appendChild(column3);     //appends the p element to the right hand cell of the table*/
+	}
+}
+
+function checker(){ //this function finds which radio button was selected
+	for (i=0;i<people.length;i++){  //loops through all of the people on the list to see if they are checked
+		x=document.getElementById(people[i]);   // this finds the checkbox
+		if (x.checked==true){  //checks if the checkbox is checked
+			document.getElementById("testing").innerHTML="<b>"+people[i]+"</b>";
+			//the following three lines are used to reset the page if the user decides to select another person from the list
+			document.getElementById("three").style.display="none";
+			document.getElementById("four").style.display="none";
+			document.getElementById("five").style.display="none";
+			//document.getElementById("two").style.marginBottom="200px";
+		} 
+	}
+}
+</script>
+
+</body>
+
+
+</html>

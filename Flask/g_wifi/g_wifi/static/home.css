@@ -46,7 +46,7 @@
 	font-size:20px;
 	cursor:pointer;
 	color:white;
-	width:49.619%;
+	width:49.5%;
 	transition:0.3s;
 }
 /*must be declared after in order for it to take priority over the other button class for the colors to change*/
@@ -67,7 +67,7 @@
 
 /*Changes the color of the buttons when hovering over them*/
 .btn-group .navbtn:hover, .btn-group .navbtn:focus, .loginbtn:hover{
-	background-color: #60c2e9 ;
+	background-color: #60c2e9;
 }
 
 .wifibtn:hover{
@@ -76,13 +76,15 @@
 }
 
 /*sets all the pages to not visible when you start the page up*/
-#cwlan, #vlanMove,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan{
+#cwlan, #vlanMove,#WiFi,#guestWiFi, #guestSearch, #guestDelete, #guestExtend, #addcwlan, #searchcwlan, #test2, #four, #five,#test3,#four1,#five1{
 	display:none;
 }
 a:link{
 	color: white;
 }
-
+#four,#four1{
+	width:100%;
+}
 
 /*the border around all of the forms*/
 .backgroundForms {
@@ -101,7 +103,7 @@ a:link{
 	margin-bottom: 3em;
 }
 
-#vlanMove input[type=text], #WiFi input[type=email], #guestWiFi input[type=text], #guestWiFi input[type=email], #guestDelete input[type=text], #guestExtend input[type=text], #cwlan input[type=text], #cwlan input[type=date],#cwlan input[type=email]{
+#vlanMove input[type=text], #WiFi input[type=email], #guestWiFi input[type=text],#guestWiFi input[type=date], #guestWiFi input[type=email], #guestDelete input[type=text], #guestExtend input[type=text], #cwlan input[type=text], #cwlan input[type=date],#cwlan input[type=email]{
 	border:1px solid black;
 	border-radius:5px;
 	width:100%;
@@ -140,7 +142,7 @@ p{
 /*the search button on the search for user and delete user page*/
 .searchButton{
 	background-color:white;
-	width:8%;
+	width:9%;
 	height: 52px;
 	border: 1px solid black;
 	border-radius:5px;
@@ -171,7 +173,7 @@ p{
 	
 }
 
-#vlanMove select, #guestWiFi select, #cwlan select{
+#vlanMove select, #guestWiFi select, #cwlan select,#extendSelect{
 	border:1px solid black;
 	border-radius:5px;
 	width:100%;
@@ -183,7 +185,7 @@ p{
 
 /*formats the submit button on the VLAN Move page*/
 .submitButton{
-	background-color:#60c2e9;
+	background-color:#aa272f;
 	width:100%;
 	color:white;
 	padding:15px;
@@ -195,7 +197,7 @@ p{
 }
 
 .submitButton:hover{
-	color: #60c2e9;
+	color: #aa272f;
 	background-color: white;
 }
 /* formats the login pages button */
@@ -253,6 +255,17 @@ body{
 	min-height: 100%;
 	
 }
+html{
+	overflow-y: scroll;
+}
+.divider{
+	width:1.001%;
+	height: auto;
+	display: inline-block;
+}
+.flashes{
+	list-style-type: none;
+}	
 
 #footer{
 	position: fixed;
