@@ -106,7 +106,7 @@ def permission():
     elif( device1['username'] == "admin" and device1['password'] == "pass"):
         session['level'] = full
         return render_template("indexboot.html", vars = session['level'])
-    else:
+    else:                                                                   #allows regular user sign in, can be altered if only want set up accounts to work
         auth = main.authorize( session['user'], session['pass']) 
         if auth == -1:
             flash("Authorization Failed, try again", 'danger')
@@ -239,9 +239,9 @@ def editdata():
         extend = main.timeset(extend)
         result = editNetmiko.extenduser(user, extend)
         if result == -1:
-            flash("Could not find the user to extend!", "danger")
+            flash("Could not find the user to revise!", "danger")
         else:
-            flash("User was successfully extended", "success")
+            flash("User was successfully revised", "success")
             main.delex_mail(session['originalID'],session['user_email'], user, extend, "true")
     return render_template('indexboot.html', vars = session['level'])
 

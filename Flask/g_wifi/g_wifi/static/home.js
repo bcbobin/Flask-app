@@ -146,6 +146,7 @@ function navigat(x){
 			document.getElementById("four").style.display="none";   //if the extend time select drop down is on the screen it is hidden
 			document.getElementById("five").style.display="block";  //places the button on the screen
 			document.getElementById("five").value="Confirm Deletion";  //sets the value of the button to 'Confirm Deletion'
+			$('#four').val(0)										//if they move to delete tab, reset time selected on revise to 0
 			//document.getElementById("two").style.marginBottom="10px";
 		} else if (x==2){ //if they select extend
 			document.getElementById("four").style.display="block";   //shows the select time drop down
@@ -166,6 +167,7 @@ function singleNavigate(x){
 		document.getElementById("four1").style.display="none";   //if the extend time select drop down is on the screen it is hidden
 		document.getElementById("five1").style.display="block";  //places the button on the screen
 		document.getElementById("five1").value="Confirm Deletion";  //sets the value of the button to 'Confirm Deletion'
+		$('#four1').val(0)											//if they move to delete tab, reset time selected on revise to 0
 		//document.getElementById("two").style.marginBottom="10px";
 	} else if (x==2){ //if they select extend
 		document.getElementById("four1").style.display="block";   //shows the select time drop down
